@@ -22,3 +22,26 @@ export function pluralize<S extends string, P extends string>(
 	if (plural) return plural;
 	return `${word}s` as const;
 }
+
+export function quantify<S extends string>(word: S, n: number): string;
+export function quantify<S extends string, P extends string>(
+	word: S,
+	quantity: number,
+	plural: P,
+): string;
+export function quantify<S extends string, P extends string>(
+	word: S,
+	quantity: number,
+	plural?: P,
+) {
+	return `${quantity} ${
+		plural ? pluralize(word, quantity, plural) : pluralize(word, quantity)
+	}` as const;
+}
+
+export function titalize(str: string): string {
+	return str
+		.split(" ")
+		.map(word => capitalize(word))
+		.join(" ");
+}
