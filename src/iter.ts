@@ -9,7 +9,7 @@ export function range(
 	max: number,
 	step?: number,
 ): Generator<number>;
-export function range(max: number): number;
+export function range(array: number[]): number;
 export function* range(
 	minOrMaxOrArray: number | number[],
 	maxValue?: number,

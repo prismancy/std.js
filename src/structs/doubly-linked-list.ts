@@ -9,7 +9,7 @@ export class DoublyLinkedList<T> {
 	private tail?: Node<T>;
 	private size = 0;
 
-	static fromArray<T>(values: T[]): DoublyLinkedList<T> {
+	static fromArray<T>(values: readonly T[]): DoublyLinkedList<T> {
 		const list = new DoublyLinkedList<T>();
 		for (const value of values) {
 			list.push(value);

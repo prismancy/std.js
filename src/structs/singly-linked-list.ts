@@ -6,7 +6,7 @@ interface Node<T> {
 export class SinglyLinkedList<T> {
 	node?: Node<T>;
 
-	static fromArray<T>(values: T[]): SinglyLinkedList<T> {
+	static fromArray<T>(values: readonly T[]): SinglyLinkedList<T> {
 		const list = new SinglyLinkedList<T>();
 		let node: Node<T> | undefined;
 		for (const value of values) {

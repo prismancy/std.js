@@ -3,7 +3,7 @@ import { descend } from "./compare";
 
 export class MaxHeap<T> extends Array<T> {
 	constructor(
-		array: T[],
+		array: readonly T[],
 		readonly compare = descend,
 	) {
 		super(...array);

@@ -2,7 +2,10 @@ import { pickByKeys } from "./object";
 import { randomInt } from "./random";
 import { type AnyRecord } from "./types";
 
-export function zip<T, U>(array1: T[], array2: U[]): Array<[T, U]> {
+export function zip<T, U>(
+	array1: readonly T[],
+	array2: readonly U[],
+): Array<[T, U]> {
 	const length = Math.min(array1.length, array2.length);
 	const array = Array.from<[T, U]>({ length });
 	for (let i = 0; i < length; i++) {
@@ -12,7 +15,7 @@ export function zip<T, U>(array1: T[], array2: U[]): Array<[T, U]> {
 	return array;
 }
 
-export function unzip<T, U>(array: Array<[T, U]>): [T[], U[]] {
+export function unzip<T, U>(array: ReadonlyArray<readonly [T, U]>): [T[], U[]] {
 	const array1 = Array.from<T>({ length: array.length });
 	const array2 = Array.from<U>({ length: array.length });
 	for (const [i, [a, b]] of array.entries()) {
@@ -50,7 +53,7 @@ export function unorderedRemove<T>(array: T[], index: number): T[] {
 	return array;
 }
 
-export function chunk<T>(array: ConcatArray<T>, size: number): T[][] {
+export function chunk<T>(array: readonly T[], size: number): T[][] {
 	const result: T[][] = [];
 	for (let i = 0; i < array.length; i += size) {
 		result.push(array.slice(i, i + size));
@@ -59,7 +62,10 @@ export function chunk<T>(array: ConcatArray<T>, size: number): T[][] {
 	return result;
 }
 
-export function intersection<T>(array1: T[], array2: T[]): T[] {
+export function intersection<T>(
+	array1: readonly T[],
+	array2: readonly T[],
+): T[] {
 	return array1.filter(item => array2.includes(item));
 }
 
@@ -73,18 +79,32 @@ export function changes<T, U>(
 	];
 }
 
-export function difference<T>(array1: T[], array2: T[]): T[] {
+export function difference<T>(array1: readonly T[], array2: readonly T[]): T[] {
 	const [added, removed] = changes(array1, array2);
 	return [...added, ...removed];
 }
 
-export function union<T>(array1: T[], array2: T[]): T[] {
+export function union<T>(array1: readonly T[], array2: readonly T[]): T[] {
 	return [...array1, ...array2.filter(item => !array1.includes(item))];
 }
 
-export function sample<T>(array: T[], numberItems: number): T[] {
-	if (!array.length || !numberItems) return [];
-	return Array.from<T>({ length: numberItems }).map(
+export function sample<T>(array: readonly T[], n: number): T[];
+export function sample<T>(string: string, n: number): string;
+export function sample<T>(
+	array: readonly T[] | string,
+	n: number,
+): T[] | string {
+	if (!array.length || !n) return [];
+	if (typeof array === "string") {
+		let result = "";
+		for (let i = 0; i < n; i++) {
+			result += array[randomInt(array.length)];
+		}
+
+		return result;
+	}
+
+	return Array.from<T>({ length: n }).map(
 		() => array[randomInt(array.length)]!,
 	);
 }
@@ -106,7 +126,7 @@ export function pick<T extends AnyRecord, K extends keyof T>(
 	return array.map(item => item[keys]);
 }
 
-export function arraysEqual<T>(a: T[], b: T[]) {
+export function arraysEqual<T>(a: readonly T[], b: readonly T[]) {
 	if (a.length !== b.length) return false;
 	for (const [item1, item2] of zip(a, b)) {
 		if (item1 !== item2) return false;
@@ -115,11 +135,11 @@ export function arraysEqual<T>(a: T[], b: T[]) {
 	return true;
 }
 
-export function includesAny<T, U>(a: T[], b: U[]) {
+export function includesAny<T, U>(a: readonly T[], b: readonly U[]) {
 	return b.some(item => a.includes(item as unknown as T));
 }
 
-export function includesAll<T, U>(a: T[], b: U[]) {
+export function includesAll<T, U>(a: readonly T[], b: readonly U[]) {
 	return b.every(item => a.includes(item as unknown as T));
 }
 
