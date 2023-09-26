@@ -1,1 +1,1 @@
-module.exports = require("@in5net/prettier-config");
+export { default } from "@in5net/prettier-config";

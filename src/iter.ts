@@ -1,3 +1,8 @@
+export const serial = (() => {
+	let id = 1;
+	return () => id++;
+})();
+
 export function range(max: number): Generator<number>;
 export function range(
 	min: number,

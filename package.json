@@ -1,11 +1,11 @@
 {
   "name": "@in5net/std",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "lint": "xo",
     "build": "unbuild",
-    "pub": "npm publish",
+    "pub": "bun run build && npm publish",
     "commit": "./commit.sh"
   },
   "files": [

@@ -1,1 +1,1 @@
-module.exports = require("@in5net/xo-config");
+export { default } from "@in5net/xo-config";
