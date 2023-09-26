@@ -1,0 +1,91 @@
+{
+  "name": "@in5net/std",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "lint": "xo",
+    "build": "unbuild",
+    "pub": "npm publish",
+    "commit": "./commit.sh"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./math": {
+      "import": "./dist/math/index.mjs",
+      "require": "./dist/math/index.cjs",
+      "types": "./dist/math/index.d.ts"
+    },
+    "./string": {
+      "import": "./dist/string/index.mjs",
+      "require": "./dist/string/index.cjs",
+      "types": "./dist/string/index.d.ts"
+    },
+    "./structs": {
+      "import": "./dist/structs/index.mjs",
+      "require": "./dist/structs/index.cjs",
+      "types": "./dist/structs/index.d.ts"
+    },
+    "./array": {
+      "import": "./dist/array.mjs",
+      "require": "./dist/array.cjs",
+      "types": "./dist/array.d.ts"
+    },
+    "./async": {
+      "import": "./dist/async.mjs",
+      "require": "./dist/async.cjs",
+      "types": "./dist/async.d.ts"
+    },
+    "./easing": {
+      "import": "./dist/easing.mjs",
+      "require": "./dist/easing.cjs",
+      "types": "./dist/easing.d.ts"
+    },
+    "./fn": {
+      "import": "./dist/fn.mjs",
+      "require": "./dist/fn.cjs",
+      "types": "./dist/fn.d.ts"
+    },
+    "./iter": {
+      "import": "./dist/iter.mjs",
+      "require": "./dist/iter.cjs",
+      "types": "./dist/iter.d.ts"
+    },
+    "./number": {
+      "import": "./dist/number.mjs",
+      "require": "./dist/number.cjs",
+      "types": "./dist/number.d.ts"
+    },
+    "./object": {
+      "import": "./dist/object.mjs",
+      "require": "./dist/object.cjs",
+      "types": "./dist/object.d.ts"
+    },
+    "./random": {
+      "import": "./dist/random.mjs",
+      "require": "./dist/random.cjs",
+      "types": "./dist/random.d.ts"
+    },
+    "./time": {
+      "import": "./dist/time.mjs",
+      "require": "./dist/time.cjs",
+      "types": "./dist/time.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types.mjs",
+      "require": "./dist/types.cjs",
+      "types": "./dist/types.d.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@in5net/prettier-config": "^1.1.0",
+    "@in5net/xo-config": "^1.5.0",
+    "typescript": "^5.2.2",
+    "unbuild": "^2.0.0",
+    "xo": "^0.56.0"
+  }
+}
