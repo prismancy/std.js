@@ -1,6 +1,5 @@
-import assert from "node:assert";
-import test from "node:test";
-import Matrix, { mat } from "./mat";
+import { assert, test } from "vitest";
+import { Matrix, mat } from "./mat";
 
 const a = mat(4, 3).set([
 	[1, 5, 4],
@@ -14,9 +13,8 @@ const b = mat([
 	[0, 8],
 ]);
 
-await test("multiply", () => {
+test("multiply", () => {
 	const ans = Matrix.mult(a, b);
-	ans.log();
 	assert(
 		ans.equals([
 			[16, 49],

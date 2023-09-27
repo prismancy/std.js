@@ -9,26 +9,19 @@ export function range(
 	max: number,
 	step?: number,
 ): Generator<number>;
-export function range(array: number[]): number;
-export function* range(
-	minOrMaxOrArray: number | number[],
-	maxValue?: number,
-	step = 1,
-): number | Generator<number> {
-	if (Array.isArray(minOrMaxOrArray))
-		return Math.max(...minOrMaxOrArray) - Math.min(...minOrMaxOrArray);
-	if (maxValue !== undefined) {
+export function* range(min: number, max?: number, step = 1): Generator<number> {
+	if (max === undefined) {
+		yield* range(0, min);
+	} else {
 		const absStep = Math.abs(step);
-		if (maxValue > minOrMaxOrArray) {
-			for (let i = 0; i <= maxValue; i += absStep) {
+		if (max > min) {
+			for (let i = min; i < max; i += absStep) {
 				yield i;
 			}
 		} else {
-			for (let i = maxValue; i >= minOrMaxOrArray; i -= absStep) {
+			for (let i = min; i > max; i -= absStep) {
 				yield i;
 			}
 		}
 	}
-
-	return range(0, minOrMaxOrArray);
 }
