@@ -26,12 +26,13 @@ export function unzip<T, U>(array: ReadonlyArray<readonly [T, U]>): [T[], U[]] {
 	return [array1, array2];
 }
 
-export function swap<T>(array: T[], i: number, j: number): T[] {
-	[array[i], array[j]] = [array[j]!, array[i]!];
-	return array;
+export function swap<T>(array: T[], i: number, j: number) {
+	const temp = array[i]!;
+	array[i] = array[j]!;
+	array[j] = temp;
 }
 
-export function shuffle<T>(array: T[]): T[] {
+export function shuffle<T>(array: T[]) {
 	for (let i = 0, { length } = array; i < length; i++) {
 		const j = randomInt(i, length);
 		swap(array, i, j);
@@ -40,20 +41,19 @@ export function shuffle<T>(array: T[]): T[] {
 	return array;
 }
 
-export function remove<T>(array: T[], item: T): boolean {
+export function remove<T>(array: T[], item: T) {
 	const index = array.indexOf(item);
 	if (index === -1) return false;
 	array.splice(index, 1);
 	return true;
 }
 
-export function unorderedRemove<T>(array: T[], index: number): T[] {
+export function unorderedRemove<T>(array: T[], index: number) {
 	swap(array, index, array.length - 1);
 	array.pop();
-	return array;
 }
 
-export function chunk<T>(array: readonly T[], size: number): T[][] {
+export function chunk<T>(array: readonly T[], size: number) {
 	const result: T[][] = [];
 	for (let i = 0; i < array.length; i += size) {
 		result.push(array.slice(i, i + size));
@@ -79,12 +79,12 @@ export function changes<T, U>(
 	];
 }
 
-export function difference<T>(array1: readonly T[], array2: readonly T[]): T[] {
+export function difference<T>(array1: readonly T[], array2: readonly T[]) {
 	const [added, removed] = changes(array1, array2);
 	return [...added, ...removed];
 }
 
-export function union<T>(array1: readonly T[], array2: readonly T[]): T[] {
+export function union<T>(array1: readonly T[], array2: readonly T[]) {
 	return [...array1, ...array2.filter(item => !array1.includes(item))];
 }
 
@@ -146,7 +146,7 @@ export function includesAll<T, U>(a: readonly T[], b: readonly U[]) {
 export function dedupe<T extends { [K in keyof T]: T[K] }>(
 	array: readonly T[],
 	key: keyof T,
-): T[] {
+) {
 	const copy = [...array];
 	const values = new Set<PropertyKey>();
 	for (let i = copy.length - 1; i >= 0; i--) {
@@ -203,7 +203,7 @@ export function partition<T>(
 export function count<T>(
 	array: readonly T[],
 	predicate: (item: T) => boolean = Boolean,
-): number {
+) {
 	let count = 0;
 	for (const item of array) {
 		if (predicate(item)) count++;

@@ -1,3 +1,4 @@
+export * from "./constants";
 export * from "./word";
 
 export function reverse(str: string): string {

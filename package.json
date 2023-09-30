@@ -1,10 +1,11 @@
 {
   "name": "@in5net/std",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "type": "module",
   "scripts": {
     "lint": "xo",
     "test": "vitest",
+    "bench": "vitest bench",
     "build": "unbuild",
     "pub": "bun run build && npm publish",
     "commit": "./commit.sh"
@@ -13,6 +14,11 @@
     "dist"
   ],
   "exports": {
+    "./async": {
+      "import": "./dist/async/index.mjs",
+      "require": "./dist/async/index.cjs",
+      "types": "./dist/async/index.d.ts"
+    },
     "./math": {
       "import": "./dist/math/index.mjs",
       "require": "./dist/math/index.cjs",
@@ -33,10 +39,15 @@
       "require": "./dist/array.cjs",
       "types": "./dist/array.d.ts"
     },
-    "./async": {
-      "import": "./dist/async.mjs",
-      "require": "./dist/async.cjs",
-      "types": "./dist/async.d.ts"
+    "./bytes": {
+      "import": "./dist/bytes.mjs",
+      "require": "./dist/bytes.cjs",
+      "types": "./dist/bytes.d.ts"
+    },
+    "./cmp": {
+      "import": "./dist/cmp.mjs",
+      "require": "./dist/cmp.cjs",
+      "types": "./dist/cmp.d.ts"
     },
     "./easing": {
       "import": "./dist/easing.mjs",

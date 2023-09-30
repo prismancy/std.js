@@ -1,4 +1,4 @@
-import { descend } from "./compare";
+import { descend } from "../cmp";
 
 interface Node<T> {
 	value: T;
