@@ -26,6 +26,10 @@ export class SortedArray<T> implements Iterable<T> {
 		yield* this.data.values();
 	}
 
+	at(index: number) {
+		return this.data[index];
+	}
+
 	/**
 	 * Returns the index of the value if it exists, otherwise -1
 	 * @param value

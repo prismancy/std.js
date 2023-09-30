@@ -61,12 +61,12 @@ export class Heap<T> implements Iterable<T> {
 	 * @param value
 	 */
 	push(...values: T[]) {
-		const { data } = this;
+		const { data, compare } = this;
 		for (const value of values) {
 			data.push(value);
 			let i = data.length - 1;
 			let parent = Math.floor((i - 1) / 2);
-			while (i > 0 && this.compare(data[i]!, data[parent]!) < 0) {
+			while (i > 0 && compare(data[i]!, data[parent]!) < 0) {
 				swap(data, i, parent);
 				i = parent;
 				parent = Math.floor((i - 1) / 2);
