@@ -1,5 +1,4 @@
-import { swap } from "../array";
-import { descend } from "../cmp";
+import { ascend } from "../cmp";
 
 /**
  * A sorted array is an array that maintains sorted order
@@ -8,7 +7,7 @@ import { descend } from "../cmp";
  * | -------------- | ------------ | ---------- |
  * | indexOf(value) | O(log n)     | O(log n)   |
  * | has(value)     | O(log n)     | O(log n)   |
- * | insert(value)  | O(n)         | O(n)       |
+ * | push(value)    | O(n)         | O(n)       |
  *
  *
  * @see https://en.wikipedia.org/wiki/Sorted_array
@@ -16,7 +15,7 @@ import { descend } from "../cmp";
 export class SortedArray<T> implements Iterable<T> {
 	constructor(
 		private readonly data: T[] = [],
-		readonly compare = descend,
+		readonly compare = ascend,
 		sort = true,
 	) {
 		if (sort) this.data.sort(compare);
@@ -62,9 +61,8 @@ export class SortedArray<T> implements Iterable<T> {
 	 * Binary inserts a value into the array while maintaining sorted order
 	 * @param value
 	 */
-	insert(value: T) {
+	push(value: T) {
 		const { data, compare } = this;
-		data.push(value);
 
 		let low = 0;
 		let high = data.length - 1;
@@ -74,10 +72,6 @@ export class SortedArray<T> implements Iterable<T> {
 			else low = mid + 1;
 		}
 
-		let j = data.length - 1;
-		while (j > low) {
-			swap(data, j, j - 1);
-			j--;
-		}
+		data.splice(low, 0, value);
 	}
 }
