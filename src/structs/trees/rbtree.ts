@@ -1,9 +1,6 @@
-import { BST } from "./bst";
+import { type BinaryNode, BinarySearchTree } from "./bst";
 
-export interface RedBlackNode<T> {
-	value: T;
-	left?: RedBlackNode<T>;
-	right?: RedBlackNode<T>;
+export interface RedBlackNode<T> extends BinaryNode<T> {
 	red: boolean;
 }
 
@@ -20,10 +17,10 @@ export interface RedBlackNode<T> {
  * @see https://en.wikipedia.org/wiki/Red%E2%80%93black_tree
  * @unstable
  */
-export class RedBlackTree<T> extends BST<T> {
+export class RedBlackTree<T> extends BinarySearchTree<T> {
 	protected declare root?: RedBlackNode<T>;
 
-	static override from<T>(values: T[]) {
+	static override from<T>(values: Iterable<T>) {
 		const rbtree = new RedBlackTree<T>();
 		for (const value of values) rbtree.insert(value);
 		return rbtree;

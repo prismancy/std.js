@@ -97,7 +97,7 @@ export function difference<T>(array1: readonly T[], array2: readonly T[]) {
  * @param arrays
  */
 export function union<T>(...arrays: ReadonlyArray<readonly T[]>) {
-	return [new Set(...arrays)];
+	return [...new Set(arrays.flat())];
 }
 
 /**
@@ -242,7 +242,7 @@ export function groupBy<T extends AnyRecord, K extends keyof T>(
  */
 export function partition<T>(
 	array: readonly T[],
-	predicate: (item: T) => boolean,
+	predicate: (item: T) => any,
 ): [pass: T[], fail: T[]] {
 	const pass: T[] = [];
 	const fail: T[] = [];

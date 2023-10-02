@@ -1,7 +1,7 @@
 export function* zip<T, U>(
 	iterable1: Iterable<T>,
 	iterable2: Iterable<U>,
-): Iterator<[T, U]> {
+): Generator<[T, U]> {
 	const iter1 = iterable1[Symbol.iterator]();
 	const iter2 = iterable2[Symbol.iterator]();
 	while (true) {

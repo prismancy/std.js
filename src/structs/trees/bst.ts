@@ -1,13 +1,16 @@
 import { ascend } from "../../cmp";
 
-export interface BinarySearchNode<T> {
+export interface BinaryNode<T> {
+	parent?: BinaryNode<T>;
 	value: T;
-	left?: BinarySearchNode<T>;
-	right?: BinarySearchNode<T>;
+	left?: BinaryNode<T>;
+	right?: BinaryNode<T>;
 }
 
+type Direction = "left" | "right";
+
 /**
- * ## Binary Search Tree
+ * ## Binary Search Tree (BST)
  * An unbalanced binary tree
  *
  * | Method        | Average Case | Worst Case |
@@ -19,14 +22,14 @@ export interface BinarySearchNode<T> {
  * @see https://en.wikipedia.org/wiki/Binary_search_tree
  * @unstable
  */
-export class BST<T> {
-	protected root?: BinarySearchNode<T>;
+export class BinarySearchTree<T> implements Iterable<T> {
+	protected root?: BinaryNode<T>;
 	#size = 0;
 
 	constructor(readonly compare = ascend) {}
 
-	static from<T>(values: T[]) {
-		const bst = new BST<T>();
+	static from<T>(values: Iterable<T>) {
+		const bst = new BinarySearchTree<T>();
 		for (const value of values) bst.insert(value);
 		return bst;
 	}
@@ -48,60 +51,64 @@ export class BST<T> {
 	}
 
 	has(value: T) {
+		return !!this.findNode(value);
+	}
+
+	protected findNode(value: T) {
 		let { root: node, compare } = this;
 		while (node) {
 			const comparison = compare(value, node.value);
-			if (!comparison) return true;
+			if (!comparison) return node;
 			node = comparison < 0 ? node.left : node.right;
 		}
 
-		return false;
+		return node;
 	}
 
-	insert(value: T) {
+	protected rotate(node: BinaryNode<any>, direction: Direction) {
+		const replacementDirection: Direction =
+			direction === "left" ? "right" : "left";
+		const replacement = node[replacementDirection];
+		if (!replacement) return;
+		replacement.parent = node.parent;
+		node.parent = replacement;
+		node[replacementDirection] = replacement[direction];
+		const grandchild = replacement[direction];
+		if (grandchild) grandchild.parent = node;
+		replacement[direction] = node;
+		return replacement;
+	}
+
+	protected insertNode(node: BinaryNode<T>) {
 		const { root, compare } = this;
-		const node: BinarySearchNode<T> = { value };
 		if (root) {
 			let parent = root;
-			while (parent) {
+			const { value } = node;
+			while (this) {
 				const comparison = compare(value, parent.value);
-				const { left, right } = parent;
-				if (comparison < 0) {
-					if (left) parent = left;
-					else {
-						parent.left = node;
-						this.#size++;
-						return true;
-					}
-				} else if (right) parent = right;
-				else {
-					parent.right = node;
+				if (!comparison) break;
+				const direction: Direction = comparison < 0 ? "left" : "right";
+				const child = parent[direction];
+				if (child) {
+					parent = child;
+				} else {
+					node.parent = parent;
+					parent[direction] = node;
 					this.#size++;
-					return true;
+					return node;
 				}
 			}
 
-			return false;
+			return;
 		}
 
 		this.root = node;
 		this.#size++;
-		return true;
+		return node;
 	}
 
-	remove(value: T) {
-		const { root, compare } = this;
-		let parent: BinarySearchNode<T> | undefined;
-		let node = root;
-		while (node) {
-			const comparison = compare(value, node.value);
-			if (!comparison) break;
-			parent = node;
-			node = comparison < 0 ? node.left : node.right;
-		}
-
-		if (!node) return;
-		this.#size--;
+	protected removeNode(node: BinaryNode<T>) {
+		const { parent } = node;
 		if (!node.left && !node.right) {
 			if (!parent) this.root = undefined;
 			else if (parent.left === node) parent.left = undefined;
@@ -124,6 +131,27 @@ export class BST<T> {
 		} else if (!parent) this.root = node.left;
 		else if (parent.left === node) parent.left = node.left;
 		else parent.right = node.left;
+		return node;
+	}
+
+	/**
+	 * Inserts a value into the BST
+	 * @param value
+	 * @returns the inserted node if it was inserted, otherwise undefined
+	 */
+	insert(value: T): BinaryNode<T> | undefined {
+		return this.insertNode({ value });
+	}
+
+	/**
+	 * Inserts a value into the BST
+	 * @param value
+	 * @returns the inserted node if it was inserted, otherwise undefined
+	 */
+	remove(value: T) {
+		const node = this.findNode(value);
+		if (!node) return;
+		return this.removeNode(node);
 	}
 
 	/**
@@ -131,7 +159,7 @@ export class BST<T> {
 	 * retrieving values from the binary search tree.
 	 */
 	*lnrValues(): IterableIterator<T> {
-		const nodes: Array<BinarySearchNode<T>> = [];
+		const nodes: Array<BinaryNode<T>> = [];
 		let node = this.root;
 		while (nodes.length || node) {
 			if (node) {
@@ -150,7 +178,7 @@ export class BST<T> {
 	 * retrieving values from the binary search tree.
 	 */
 	*rnlValues(): IterableIterator<T> {
-		const nodes: Array<BinarySearchNode<T>> = [];
+		const nodes: Array<BinaryNode<T>> = [];
 		let node = this.root;
 		while (nodes.length || node) {
 			if (node) {
@@ -169,7 +197,7 @@ export class BST<T> {
 	 * retrieving values from the binary search tree.
 	 */
 	*nlrValues(): IterableIterator<T> {
-		const nodes: Array<BinarySearchNode<T>> = [];
+		const nodes: Array<BinaryNode<T>> = [];
 		if (this.root) nodes.push(this.root);
 		while (nodes.length) {
 			const node = nodes.pop()!;
@@ -184,15 +212,15 @@ export class BST<T> {
 	 * retrieving values from the binary search tree.
 	 */
 	*lrnValues(): IterableIterator<T> {
-		const nodes: Array<BinarySearchNode<T>> = [];
+		const nodes: Array<BinaryNode<T>> = [];
 		let node = this.root;
-		let lastNodeVisited: BinarySearchNode<T> | undefined;
+		let lastNodeVisited: BinaryNode<T> | undefined;
 		while (nodes.length || node) {
 			if (node) {
 				nodes.push(node);
 				node = node.left;
 			} else {
-				const lastNode: BinarySearchNode<T> = nodes.at(-1)!;
+				const lastNode: BinaryNode<T> = nodes.at(-1)!;
 				if (lastNode.right && lastNode.right !== lastNodeVisited) {
 					node = lastNode.right;
 				} else {
@@ -208,7 +236,7 @@ export class BST<T> {
 	 * retrieving values from the binary search tree.
 	 */
 	*lvlValues(): IterableIterator<T> {
-		const children: Array<BinarySearchNode<T>> = [];
+		const children: Array<BinaryNode<T>> = [];
 		let cursor = this.root;
 		while (cursor) {
 			yield cursor.value;

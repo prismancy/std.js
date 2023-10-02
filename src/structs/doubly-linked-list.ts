@@ -4,12 +4,12 @@ interface Node<T> {
 	prev?: Node<T>;
 }
 
-export class DoublyLinkedList<T> {
+export class DoublyLinkedList<T> implements Iterable<T> {
 	private head?: Node<T>;
 	private tail?: Node<T>;
 	private size = 0;
 
-	static fromArray<T>(values: readonly T[]): DoublyLinkedList<T> {
+	static from<T>(values: Iterable<T>): DoublyLinkedList<T> {
 		const list = new DoublyLinkedList<T>();
 		for (const value of values) {
 			list.push(value);

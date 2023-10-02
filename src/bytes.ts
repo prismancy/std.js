@@ -3,7 +3,7 @@
  * @param buffer
  * @returns hex string
  */
-export function hex(buffer: IterableIterator<number>): string {
+export function hex(buffer: Iterable<number>): string {
 	const hexCodes: string[] = [];
 	for (const element of buffer) {
 		hexCodes.push(element.toString(16).padStart(2, "0"));

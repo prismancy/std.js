@@ -3,11 +3,11 @@ interface Node<T> {
 	next?: Node<T>;
 }
 
-export class SinglyLinkedList<T> {
+export class LinkedList<T> implements Iterable<T> {
 	node?: Node<T>;
 
-	static fromArray<T>(values: readonly T[]): SinglyLinkedList<T> {
-		const list = new SinglyLinkedList<T>();
+	static from<T>(values: Iterable<T>): LinkedList<T> {
+		const list = new LinkedList<T>();
 		let node: Node<T> | undefined;
 		for (const value of values) {
 			const child = { value };

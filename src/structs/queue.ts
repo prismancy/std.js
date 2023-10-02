@@ -9,7 +9,7 @@
  *
  * @see https://en.wikipedia.org/wiki/Queue_(abstract_data_type)
  */
-export class Queue<T> {
+export class Queue<T> implements Iterable<T> {
 	constructor(protected items: T[] = []) {}
 
 	get size() {
