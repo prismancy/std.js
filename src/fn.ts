@@ -2,6 +2,9 @@ import { type Maybe } from "./types";
 
 export const identity = <T>(x: T) => x;
 
+/**
+ * Allows a function to be called only once
+ */
 export function once<T>(fn: () => T): () => Maybe<T> {
 	let called = false;
 	let result: T;
@@ -13,6 +16,9 @@ export function once<T>(fn: () => T): () => Maybe<T> {
 	};
 }
 
+/**
+ * Caches the result of a function for each given parameter
+ */
 export function memoize<P, R>(func: (arg: P) => R): (arg: P) => R {
 	const cache = new Map<P, R>();
 	return (arg: P) => {

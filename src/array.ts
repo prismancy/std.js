@@ -1,37 +1,25 @@
+import { zip } from "./iter";
 import { pickByKeys } from "./object";
 import { randomInt } from "./random";
 import { type AnyRecord } from "./types";
 
-export function zip<T, U>(
-	array1: readonly T[],
-	array2: readonly U[],
-): Array<[T, U]> {
-	const length = Math.min(array1.length, array2.length);
-	const array = Array.from<[T, U]>({ length });
-	for (let i = 0; i < length; i++) {
-		array[i] = [array1[i]!, array2[i]!];
-	}
-
-	return array;
-}
-
-export function unzip<T, U>(array: ReadonlyArray<readonly [T, U]>): [T[], U[]] {
-	const array1 = Array.from<T>({ length: array.length });
-	const array2 = Array.from<U>({ length: array.length });
-	for (const [i, [a, b]] of array.entries()) {
-		array1[i] = a;
-		array2[i] = b;
-	}
-
-	return [array1, array2];
-}
-
+/**
+ * Switches the positions of two values in an array in-place
+ * @param array
+ * @param i the first index
+ * @param j the second index
+ */
 export function swap<T>(array: T[], i: number, j: number) {
 	const temp = array[i]!;
 	array[i] = array[j]!;
 	array[j] = temp;
 }
 
+/**
+ * Randomizes the order of items in an array in-place
+ * @param array
+ * @returns the original array
+ */
 export function shuffle<T>(array: T[]) {
 	for (let i = 0, { length } = array; i < length; i++) {
 		const j = randomInt(i, length);
@@ -41,6 +29,12 @@ export function shuffle<T>(array: T[]) {
 	return array;
 }
 
+/**
+ * Removes a value from an array
+ * @param array
+ * @param item
+ * @returns if the item was removed
+ */
 export function remove<T>(array: T[], item: T) {
 	const index = array.indexOf(item);
 	if (index === -1) return false;
@@ -48,11 +42,22 @@ export function remove<T>(array: T[], item: T) {
 	return true;
 }
 
+/**
+ * Removes an item from an array without maintaining order
+ * @param array
+ * @param index
+ */
 export function unorderedRemove<T>(array: T[], index: number) {
 	swap(array, index, array.length - 1);
 	array.pop();
 }
 
+/**
+ * Splits an array into equally-sized sub arrays
+ * @param array
+ * @param size the length of each chunk
+ * @returns the chunks
+ */
 export function chunk<T>(array: readonly T[], size: number) {
 	const result: T[][] = [];
 	for (let i = 0; i < array.length; i += size) {
@@ -62,11 +67,14 @@ export function chunk<T>(array: readonly T[], size: number) {
 	return result;
 }
 
-export function intersection<T>(
-	array1: readonly T[],
-	array2: readonly T[],
-): T[] {
-	return array1.filter(item => array2.includes(item));
+/**
+ * Returns an array containing items found in all arrays
+ * @param arrays
+ */
+export function intersection<T>(...arrays: ReadonlyArray<readonly T[]>): T[] {
+	const [first, ...rest] = arrays;
+	if (!first) return [];
+	return first.filter(item => rest.every(array => array.includes(item)));
 }
 
 export function changes<T, U>(
@@ -84,11 +92,27 @@ export function difference<T>(array1: readonly T[], array2: readonly T[]) {
 	return [...added, ...removed];
 }
 
-export function union<T>(array1: readonly T[], array2: readonly T[]) {
-	return [...array1, ...array2.filter(item => !array1.includes(item))];
+/**
+ * Returns an array containing items from all arrays deduplicated
+ * @param arrays
+ */
+export function union<T>(...arrays: ReadonlyArray<readonly T[]>) {
+	return [new Set(...arrays)];
 }
 
+/**
+ * Get random items from an array
+ * @param array
+ * @param n number of items to pick
+ * @returns an array containing the random items
+ */
 export function sample<T>(array: readonly T[], n: number): T[];
+/**
+ * Get random characters from a string
+ * @param string
+ * @param n number of characters to pick
+ * @returns a string of the random chars
+ */
 export function sample<T>(string: string, n: number): string;
 export function sample<T>(
 	array: readonly T[] | string,
@@ -109,10 +133,22 @@ export function sample<T>(
 	);
 }
 
+/**
+ * Using an array of objects, extract the value from each object
+ * @param array
+ * @param key a key in each object
+ * @returns the array of values
+ */
 export function pick<T extends AnyRecord, K extends keyof T>(
 	array: readonly T[],
 	key: K,
 ): Array<T[K]>;
+/**
+ * Using an array of objects, extract part of each object
+ * @param array
+ * @param keys an array of keys in each object
+ * @returns the array of object only containing the keys specified
+ */
 export function pick<T extends AnyRecord, K extends keyof T>(
 	array: readonly T[],
 	keys: K[],
@@ -135,10 +171,22 @@ export function arraysEqual<T>(a: readonly T[], b: readonly T[]) {
 	return true;
 }
 
+/**
+ * Check if an array contains at least one of the items in another
+ * @param a the array to check
+ * @param b items the array should include
+ * @returns if the `a` has at least one of the items in `b`
+ */
 export function includesAny<T, U>(a: readonly T[], b: readonly U[]) {
 	return b.some(item => a.includes(item as unknown as T));
 }
 
+/**
+ * Check if an array contains all of the items in another
+ * @param a the array to check
+ * @param b items the array should include
+ * @returns if the `a` has all of the items in `b`
+ */
 export function includesAll<T, U>(a: readonly T[], b: readonly U[]) {
 	return b.every(item => a.includes(item as unknown as T));
 }
@@ -186,6 +234,12 @@ export function groupBy<T extends AnyRecord, K extends keyof T>(
 	return groups;
 }
 
+/**
+ * Splits an array into two halves based on a condition
+ * @param array
+ * @param predicate a function to test each item
+ * @returns a tuple with items that either pass or fail the `predicate`
+ */
 export function partition<T>(
 	array: readonly T[],
 	predicate: (item: T) => boolean,
@@ -198,18 +252,6 @@ export function partition<T>(
 	}
 
 	return [pass, fail];
-}
-
-export function count<T>(
-	array: readonly T[],
-	predicate: (item: T) => boolean = Boolean,
-) {
-	let count = 0;
-	for (const item of array) {
-		if (predicate(item)) count++;
-	}
-
-	return count;
 }
 
 export function filterByKey<T>(array: readonly T[], key: keyof T) {

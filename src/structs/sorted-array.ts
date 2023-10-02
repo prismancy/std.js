@@ -1,14 +1,14 @@
 import { ascend } from "../cmp";
 
 /**
- * A sorted array is an array that maintains sorted order
+ * ## Sorted Array
+ * An array that maintains sorted order
  *
  * | Method         | Average Case | Worst Case |
  * | -------------- | ------------ | ---------- |
  * | indexOf(value) | O(log n)     | O(log n)   |
  * | has(value)     | O(log n)     | O(log n)   |
  * | push(value)    | O(n)         | O(n)       |
- *
  *
  * @see https://en.wikipedia.org/wiki/Sorted_array
  */
@@ -27,6 +27,10 @@ export class SortedArray<T> implements Iterable<T> {
 
 	at(index: number) {
 		return this.data[index];
+	}
+
+	copy() {
+		return new SortedArray([...this.data], this.compare, false);
 	}
 
 	/**

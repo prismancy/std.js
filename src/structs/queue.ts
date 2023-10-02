@@ -1,5 +1,6 @@
 /**
- * A queue is a data structure that follows a first-in-first-out (FIFO) order
+ * ## Queue
+ * A data structure that follows a first-in-first-out (FIFO) order
  *
  * | Method      | Average Case | Worst Case |
  * | ----------- | ------------ | ---------- |

@@ -1,3 +1,8 @@
+/**
+ * Convert binary into its hex representation
+ * @param buffer
+ * @returns hex string
+ */
 export function hex(buffer: IterableIterator<number>): string {
 	const hexCodes: string[] = [];
 	for (const element of buffer) {
@@ -7,6 +12,11 @@ export function hex(buffer: IterableIterator<number>): string {
 	return hexCodes.join("");
 }
 
+/**
+ * Convert a hex string into binary
+ * @param hex
+ * @returns uint8 buffer
+ */
 export function unhex(hex: string): Uint8Array {
 	const bytes = new Uint8Array(hex.length / 2);
 	for (let i = 0; i < bytes.length; i++) {

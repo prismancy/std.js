@@ -19,6 +19,11 @@
       "require": "./dist/async/index.cjs",
       "types": "./dist/async/index.d.ts"
     },
+    "./iter": {
+      "import": "./dist/iter/index.mjs",
+      "require": "./dist/iter/index.cjs",
+      "types": "./dist/iter/index.d.ts"
+    },
     "./math": {
       "import": "./dist/math/index.mjs",
       "require": "./dist/math/index.cjs",
@@ -58,11 +63,6 @@
       "import": "./dist/fn.mjs",
       "require": "./dist/fn.cjs",
       "types": "./dist/fn.d.ts"
-    },
-    "./iter": {
-      "import": "./dist/iter.mjs",
-      "require": "./dist/iter.cjs",
-      "types": "./dist/iter.d.ts"
     },
     "./number": {
       "import": "./dist/number.mjs",

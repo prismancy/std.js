@@ -2,7 +2,8 @@ import { swap } from "../../array";
 import { type Compare } from "../../cmp";
 
 /**
- * A heap is a tree-based data structure in which any given node is the max or min of its children
+ * ## Binary Heap
+ * A tree in which any given node is the max or min of its children
  *
  * | Method      | Average Case | Worst Case |
  * | ----------- | ------------ | ---------- |
