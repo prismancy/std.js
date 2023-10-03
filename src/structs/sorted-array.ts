@@ -21,8 +21,24 @@ export class SortedArray<T> implements Iterable<T> {
 		if (sort) this.data.sort(compare);
 	}
 
-	*[Symbol.iterator](): IterableIterator<T> {
-		yield* this.data.values();
+	keys() {
+		return this.data.keys();
+	}
+
+	values() {
+		return this.data.values();
+	}
+
+	entries() {
+		return this.data.entries();
+	}
+
+	[Symbol.iterator]() {
+		return this.values();
+	}
+
+	length() {
+		return this.data.length;
 	}
 
 	at(index: number) {
@@ -64,18 +80,24 @@ export class SortedArray<T> implements Iterable<T> {
 	/**
 	 * Binary inserts a value into the array while maintaining sorted order
 	 * @param value
+	 * @returns the index of where the value was inserted
 	 */
 	push(value: T) {
 		const { data, compare } = this;
-
 		let low = 0;
 		let high = data.length - 1;
 		while (low <= high) {
 			const mid = Math.floor((low + high) / 2);
-			if (compare(value, data[mid]!) < 0) high = mid - 1;
-			else low = mid + 1;
+			const cmp = compare(value, data[mid]!);
+			if (cmp < 0) high = mid - 1;
+			else if (cmp > 0) low = mid + 1;
+			else {
+				data.splice(mid, 0, value);
+				return mid;
+			}
 		}
 
 		data.splice(low, 0, value);
+		return low;
 	}
 }

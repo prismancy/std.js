@@ -1,6 +1,6 @@
 import { zip } from "./iter";
 import { pickByKeys } from "./object";
-import { randomInt } from "./random";
+import { random, randomInt } from "./random";
 import { type AnyRecord } from "./types";
 
 /**
@@ -21,8 +21,8 @@ export function swap<T>(array: T[], i: number, j: number) {
  * @returns the original array
  */
 export function shuffle<T>(array: T[]) {
-	for (let i = 0, { length } = array; i < length; i++) {
-		const j = randomInt(i, length);
+	for (let { length } = array, i = length - 1; i > 0; i--) {
+		const j = randomInt(i);
 		swap(array, i, j);
 	}
 
@@ -122,14 +122,14 @@ export function sample<T>(
 	if (typeof array === "string") {
 		let result = "";
 		for (let i = 0; i < n; i++) {
-			result += array[randomInt(array.length)];
+			result += random(array);
 		}
 
 		return result;
 	}
 
 	return Array.from<T>({ length: n }).map(
-		() => array[randomInt(array.length)]!,
+		() => array[randomInt(array.length - 1)]!,
 	);
 }
 
