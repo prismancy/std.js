@@ -8,4 +8,6 @@ export function nth<T>(iter: Iterable<T>, n: number) {
 	for (const value of iter) {
 		if (i++ === n) return value;
 	}
+
+	return undefined;
 }
