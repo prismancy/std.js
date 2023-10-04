@@ -3,3 +3,5 @@ export type Maybe<T> = T | undefined;
 export type Nullish<T> = Maybe<T> | null;
 
 export type AnyRecord = Record<PropertyKey, any>;
+
+export type Indexable<T> = Record<number, T>;

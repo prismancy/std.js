@@ -1,7 +1,7 @@
 import { zip } from "./iter";
 import { pickByKeys } from "./object";
 import { random, randomInt } from "./random";
-import { type AnyRecord } from "./types";
+import { type AnyRecord, type Indexable } from "./types";
 
 /**
  * Switches the positions of two values in an array in-place
@@ -9,7 +9,7 @@ import { type AnyRecord } from "./types";
  * @param i the first index
  * @param j the second index
  */
-export function swap<T>(array: T[], i: number, j: number) {
+export function swap<T>(array: Indexable<T>, i: number, j: number) {
 	const temp = array[i]!;
 	array[i] = array[j]!;
 	array[j] = temp;
@@ -20,7 +20,7 @@ export function swap<T>(array: T[], i: number, j: number) {
  * @param array
  * @returns the original array
  */
-export function shuffle<T>(array: T[]) {
+export function shuffle<T>(array: ArrayLike<T>) {
 	for (let { length } = array, i = length - 1; i > 0; i--) {
 		const j = randomInt(i);
 		swap(array, i, j);
@@ -106,7 +106,7 @@ export function union<T>(...arrays: ReadonlyArray<readonly T[]>) {
  * @param n number of items to pick
  * @returns an array containing the random items
  */
-export function sample<T>(array: readonly T[], n: number): T[];
+export function sample<T>(array: ArrayLike<T>, n: number): T[];
 /**
  * Get random characters from a string
  * @param string
@@ -115,7 +115,7 @@ export function sample<T>(array: readonly T[], n: number): T[];
  */
 export function sample<T>(string: string, n: number): string;
 export function sample<T>(
-	array: readonly T[] | string,
+	array: ArrayLike<T> | string,
 	n: number,
 ): T[] | string {
 	if (!array.length || !n) return [];
@@ -205,53 +205,6 @@ export function dedupe<T extends { [K in keyof T]: T[K] }>(
 	}
 
 	return copy;
-}
-
-export function associateBy<T extends AnyRecord, K extends keyof T>(
-	array: readonly T[],
-	key: K,
-) {
-	const map = new Map<T[K], T>();
-	for (const item of array) {
-		map[item[key]] = item;
-	}
-
-	return map;
-}
-
-export function groupBy<T extends AnyRecord, K extends keyof T>(
-	array: readonly T[],
-	key: K,
-) {
-	const groups = new Map<T[K], T[]>();
-	for (const item of array) {
-		const value = item[key];
-		const group = groups.get(value);
-		if (group) group.push(item);
-		else groups.set(value, [item]);
-	}
-
-	return groups;
-}
-
-/**
- * Splits an array into two halves based on a condition
- * @param array
- * @param predicate a function to test each item
- * @returns a tuple with items that either pass or fail the `predicate`
- */
-export function partition<T>(
-	array: readonly T[],
-	predicate: (item: T) => any,
-): [pass: T[], fail: T[]] {
-	const pass: T[] = [];
-	const fail: T[] = [];
-	for (const item of array) {
-		if (predicate(item)) pass.push(item);
-		else fail.push(item);
-	}
-
-	return [pass, fail];
 }
 
 export function filterByKey<T>(array: readonly T[], key: keyof T) {

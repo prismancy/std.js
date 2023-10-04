@@ -35,6 +35,10 @@ export class Heap<T> implements Iterable<T> {
 		return Math.floor(Math.log2(this.length)) + 1;
 	}
 
+	valueOf() {
+		return this.peek();
+	}
+
 	copy() {
 		return new Heap(this.compare, [...this.data], false);
 	}

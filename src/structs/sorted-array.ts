@@ -21,6 +21,10 @@ export class SortedArray<T> implements Iterable<T> {
 		if (sort) this.data.sort(compare);
 	}
 
+	valueOf() {
+		return this.at(0);
+	}
+
 	keys() {
 		return this.data.keys();
 	}

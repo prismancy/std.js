@@ -1,3 +1,19 @@
+/**
+ * Determines if a value is a number other than `NaN`
+ * @param x
+ */
+export function isNumber(x: unknown): x is number {
+	return typeof x === "number" && !Number.isNaN(x);
+}
+
+/**
+ * Determines if a value is a finite number other than `NaN`
+ * @param x
+ */
+export function isReal(x: unknown): x is number {
+	return isNumber(x) && Number.isFinite(x);
+}
+
 export function toFloor(a: number, n: number): number {
 	return Math.floor(a / n) * n;
 }
