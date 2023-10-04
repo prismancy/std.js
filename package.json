@@ -39,6 +39,11 @@
       "require": "./dist/structs/index.cjs",
       "types": "./dist/structs/index.d.ts"
     },
+    "./time": {
+      "import": "./dist/time/index.mjs",
+      "require": "./dist/time/index.cjs",
+      "types": "./dist/time/index.d.ts"
+    },
     "./array": {
       "import": "./dist/array.mjs",
       "require": "./dist/array.cjs",
@@ -78,11 +83,6 @@
       "import": "./dist/random.mjs",
       "require": "./dist/random.cjs",
       "types": "./dist/random.d.ts"
-    },
-    "./time": {
-      "import": "./dist/time.mjs",
-      "require": "./dist/time.cjs",
-      "types": "./dist/time.d.ts"
     },
     "./types": {
       "import": "./dist/types.mjs",
