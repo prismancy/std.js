@@ -14,8 +14,21 @@ export function isReal(x: unknown): x is number {
 	return isNumber(x) && Number.isFinite(x);
 }
 
-export function toFloor(a: number, n: number): number {
-	return Math.floor(a / n) * n;
+/**
+ * Rounds `x` to the nearest multiple of `n`
+ * @param x the number to round
+ * @param n the multiple to round to
+ */
+export function roundToMultiple(x: number, n: number): number {
+	return Math.floor(x / n) * n;
+}
+
+/**
+ * Rounds `x` to the nearest even number
+ * @param x
+ */
+export function roundToEven(x: number): number {
+	return roundToMultiple(x, 2);
 }
 
 // https://minershaven.fandom.com/wiki/Cash_Suffixes#List_of_Cash_Suffixes
@@ -203,7 +216,7 @@ export function toSuffix(x: number, shortNotation = false): string {
 			suffix;
 		const index = order3 - order30 * 10 - 1;
 		const [long, short] = prefixes[index]!;
-		const n = toFloor(x / 10 ** (order3 * 3), 0.001);
+		const n = roundToMultiple(x / 10 ** (order3 * 3), 0.001);
 
 		if (shortNotation) {
 			if (index === 0) return `${n} ${firstSymbol}`;

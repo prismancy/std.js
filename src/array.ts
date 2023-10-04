@@ -1,7 +1,6 @@
 import { zip } from "./iter";
-import { pickByKeys } from "./object";
 import { random, randomInt } from "./random";
-import { type AnyRecord, type Indexable } from "./types";
+import { type Indexable } from "./types";
 
 /**
  * Switches the positions of two values in an array in-place
@@ -131,35 +130,6 @@ export function sample<T>(
 	return Array.from<T>({ length: n }).map(
 		() => array[randomInt(array.length - 1)]!,
 	);
-}
-
-/**
- * Using an array of objects, extract the value from each object
- * @param array
- * @param key a key in each object
- * @returns the array of values
- */
-export function pick<T extends AnyRecord, K extends keyof T>(
-	array: readonly T[],
-	key: K,
-): Array<T[K]>;
-/**
- * Using an array of objects, extract part of each object
- * @param array
- * @param keys an array of keys in each object
- * @returns the array of object only containing the keys specified
- */
-export function pick<T extends AnyRecord, K extends keyof T>(
-	array: readonly T[],
-	keys: K[],
-): Array<Pick<T, K>>;
-export function pick<T extends AnyRecord, K extends keyof T>(
-	array: readonly T[],
-	keys: K | K[],
-): Array<T[K]> | Array<Pick<T, K>> {
-	if (Array.isArray(keys)) return array.map(item => pickByKeys(item, keys));
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-	return array.map(item => item[keys]);
 }
 
 export function arraysEqual<T>(a: readonly T[], b: readonly T[]) {
