@@ -1,5 +1,7 @@
 import { type Maybe } from "../types";
 
+export * from "./curry";
+export * from "./dual";
 export * from "./pipe";
 
 export const identity = <T>(x: T) => x;
