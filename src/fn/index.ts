@@ -1,4 +1,6 @@
-import { type Maybe } from "./types";
+import { type Maybe } from "../types";
+
+export * from "./pipe";
 
 export const identity = <T>(x: T) => x;
 

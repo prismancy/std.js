@@ -1,4 +1,5 @@
-import { type BinaryNode, BinarySearchTree } from "./bst";
+import { type Compare } from "../../cmp";
+import { BinarySearchTree, type BinaryNode } from "./bst";
 
 export interface RedBlackNode<T> extends BinaryNode<T> {
 	red: boolean;
@@ -20,8 +21,8 @@ export interface RedBlackNode<T> extends BinaryNode<T> {
 export class RedBlackTree<T> extends BinarySearchTree<T> {
 	protected declare root?: RedBlackNode<T>;
 
-	static override from<T>(values: Iterable<T>) {
-		const rbtree = new RedBlackTree<T>();
+	static override from<T>(values: Iterable<T>, compare?: Compare<T>) {
+		const rbtree = new RedBlackTree<T>(compare);
 		for (const value of values) rbtree.insert(value);
 		return rbtree;
 	}

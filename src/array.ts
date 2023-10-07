@@ -19,7 +19,7 @@ export function swap<T>(array: Indexable<T>, i: number, j: number) {
  * @param array
  * @returns the original array
  */
-export function shuffle<T>(array: ArrayLike<T>) {
+export function shuffle<T extends ArrayLike<unknown>>(array: T) {
 	for (let { length } = array, i = length - 1; i > 0; i--) {
 		const j = randomInt(i);
 		swap(array, i, j);
@@ -49,21 +49,6 @@ export function remove<T>(array: T[], item: T) {
 export function unorderedRemove<T>(array: T[], index: number) {
 	swap(array, index, array.length - 1);
 	array.pop();
-}
-
-/**
- * Splits an array into equally-sized sub arrays
- * @param array
- * @param size the length of each chunk
- * @returns the chunks
- */
-export function chunk<T>(array: readonly T[], size: number) {
-	const result: T[][] = [];
-	for (let i = 0; i < array.length; i += size) {
-		result.push(array.slice(i, i + size));
-	}
-
-	return result;
 }
 
 /**

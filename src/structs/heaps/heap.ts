@@ -17,7 +17,7 @@ export class Heap<T> implements Iterable<T> {
 	data: T[];
 
 	constructor(
-		readonly compare: Compare,
+		readonly compare: Compare<T>,
 		data: T[] = [],
 		heapify = true,
 	) {

@@ -1,7 +1,6 @@
 import { expect, test } from "vitest";
 import {
 	changes,
-	chunk,
 	difference,
 	includesAll,
 	includesAny,
@@ -16,15 +15,6 @@ test("swap", () => {
 	expect(array).toEqual([5, 2, 3, 4, 1]);
 	swap(array, 0, 2);
 	expect(array).toEqual([3, 2, 5, 4, 1]);
-});
-
-test("chunk", () => {
-	const array = [1, 2, 3, 4, 5];
-	expect(chunk(array, 2)).toEqual([[1, 2], [3, 4], [5]]);
-	expect(chunk(array, 3)).toEqual([
-		[1, 2, 3],
-		[4, 5],
-	]);
 });
 
 test("intersection", () => {

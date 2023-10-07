@@ -1,4 +1,4 @@
-import { ascend } from "../../cmp";
+import { ascend, type Compare } from "../../cmp";
 
 export interface BinaryNode<T> {
 	parent?: BinaryNode<T>;
@@ -7,7 +7,7 @@ export interface BinaryNode<T> {
 	right?: BinaryNode<T>;
 }
 
-type Direction = "left" | "right";
+export type BinaryNodeDirection = "left" | "right";
 
 /**
  * ## Binary Search Tree (BST)
@@ -26,11 +26,29 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	protected root?: BinaryNode<T>;
 	#size = 0;
 
-	constructor(readonly compare = ascend) {}
+	constructor(readonly compare: Compare<T> = ascend) {}
 
-	static from<T>(values: Iterable<T>) {
-		const bst = new BinarySearchTree<T>();
-		for (const value of values) bst.insert(value);
+	static from<T>(
+		values: Iterable<T> | BinarySearchTree<T>,
+		compare?: Compare<T>,
+	) {
+		const bst = new BinarySearchTree<T>(compare);
+		if (values instanceof BinarySearchTree) {
+			const nodes: Array<BinaryNode<T>> = [];
+			if (values.root) {
+				bst.root = { ...values.root };
+				nodes.push(bst.root);
+			}
+
+			while (nodes.length) {
+				const node = nodes.pop()!;
+				if (node.left) nodes.push({ ...node.left, parent: node });
+				if (node.right) nodes.push({ ...node.right, parent: node });
+			}
+		} else {
+			for (const value of values) bst.insert(value);
+		}
+
 		return bst;
 	}
 
@@ -50,6 +68,11 @@ export class BinarySearchTree<T> implements Iterable<T> {
 		return node?.value;
 	}
 
+	clear() {
+		delete this.root;
+		this.#size = 0;
+	}
+
 	has(value: T) {
 		return !!this.findNode(value);
 	}
@@ -65,18 +88,13 @@ export class BinarySearchTree<T> implements Iterable<T> {
 		return node;
 	}
 
-	protected rotate(node: BinaryNode<any>, direction: Direction) {
-		const replacementDirection: Direction =
-			direction === "left" ? "right" : "left";
-		const replacement = node[replacementDirection];
-		if (!replacement) return;
-		replacement.parent = node.parent;
-		node.parent = replacement;
-		node[replacementDirection] = replacement[direction];
-		const grandchild = replacement[direction];
-		if (grandchild) grandchild.parent = node;
-		replacement[direction] = node;
-		return replacement;
+	/**
+	 * Inserts a value into the BST
+	 * @param value
+	 * @returns the inserted node if it was inserted, otherwise undefined
+	 */
+	insert(value: T): BinaryNode<T> | undefined {
+		return this.insertNode({ value });
 	}
 
 	protected insertNode(node: BinaryNode<T>) {
@@ -87,7 +105,8 @@ export class BinarySearchTree<T> implements Iterable<T> {
 			while (this) {
 				const comparison = compare(value, parent.value);
 				if (!comparison) break;
-				const direction: Direction = comparison < 0 ? "left" : "right";
+				const direction: BinaryNodeDirection =
+					comparison < 0 ? "left" : "right";
 				const child = parent[direction];
 				if (child) {
 					parent = child;
@@ -107,51 +126,71 @@ export class BinarySearchTree<T> implements Iterable<T> {
 		return node;
 	}
 
-	protected removeNode(node: BinaryNode<T>) {
-		const { parent } = node;
-		if (!node.left && !node.right) {
-			if (!parent) this.root = undefined;
-			else if (parent.left === node) parent.left = undefined;
-			else parent.right = undefined;
-		} else if (!node.left) {
-			if (!parent) this.root = node.right;
-			else if (parent.left === node) parent.left = node.right;
-			else parent.right = node.right;
-		} else if (node.right) {
-			let parent = node;
-			let child = node.right;
-			while (child.left) {
-				parent = child;
-				child = child.left;
-			}
-
-			node.value = child.value;
-			if (parent === node) parent.right = child.right;
-			else parent.left = child.right;
-		} else if (!parent) this.root = node.left;
-		else if (parent.left === node) parent.left = node.left;
-		else parent.right = node.left;
-		return node;
-	}
-
 	/**
-	 * Inserts a value into the BST
+	 * Removes a value into the BST
 	 * @param value
-	 * @returns the inserted node if it was inserted, otherwise undefined
-	 */
-	insert(value: T): BinaryNode<T> | undefined {
-		return this.insertNode({ value });
-	}
-
-	/**
-	 * Inserts a value into the BST
-	 * @param value
-	 * @returns the inserted node if it was inserted, otherwise undefined
+	 * @returns if the value was removed
 	 */
 	remove(value: T) {
 		const node = this.findNode(value);
-		if (!node) return;
-		return this.removeNode(node);
+		if (!node) return false;
+		this.removeNode(node);
+		return true;
+	}
+
+	protected removeNode(node: BinaryNode<T>) {
+		// Zero children
+		if (!node.left && !node.right) {
+			if (node.parent) {
+				const direction: BinaryNodeDirection =
+					node.parent.left === node ? "left" : "right";
+				node.parent[direction] = undefined;
+			} else {
+				this.root = undefined;
+			}
+
+			return;
+		}
+
+		// One child
+		if (!node.left || !node.right) {
+			if (node.left) {
+				node.value = node.left.value;
+				node.left = undefined;
+			} else {
+				node.value = node.right!.value;
+				node.right = undefined;
+			}
+
+			return;
+		}
+
+		// Two children
+		let successor = node.right;
+		while (successor?.left) successor = successor.left;
+		node.value = successor.value;
+		successor.parent![successor === successor.parent!.left ? "left" : "right"] =
+			undefined;
+	}
+
+	/**
+	 * Rotates a node in the given direction
+	 * @param node
+	 * @param direction which direction to rotate the node
+	 * @returns if the rotation was successful (the node had a child in the given direction)
+	 */
+	protected rotate(node: BinaryNode<any>, direction: BinaryNodeDirection) {
+		const replacementDirection: BinaryNodeDirection =
+			direction === "left" ? "right" : "left";
+		const replacement = node[replacementDirection];
+		if (!replacement) return false;
+		replacement.parent = node.parent;
+		node.parent = replacement;
+		node[replacementDirection] = replacement[direction];
+		const grandchild = replacement[direction];
+		if (grandchild) grandchild.parent = node;
+		replacement[direction] = node;
+		return true;
 	}
 
 	/**
@@ -220,7 +259,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 				nodes.push(node);
 				node = node.left;
 			} else {
-				const lastNode: BinaryNode<T> = nodes.at(-1)!;
+				const lastNode = nodes.at(-1)!;
 				if (lastNode.right && lastNode.right !== lastNodeVisited) {
 					node = lastNode.right;
 				} else {

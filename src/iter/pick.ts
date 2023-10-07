@@ -24,7 +24,7 @@ export function pick<T extends AnyRecord, K extends keyof T>(
 export function* pick<T extends AnyRecord, K extends keyof T>(
 	iter: Iterable<T>,
 	keys: K | K[],
-): Generator<T[K]> | Generator<Pick<T, K>> {
+) {
 	if (Array.isArray(keys)) {
 		for (const item of iter) {
 			yield pickByKeys(item, keys);
