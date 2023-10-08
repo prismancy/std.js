@@ -1,19 +1,14 @@
 {
   "name": "@in5net/std",
-  "version": "0.8.1",
-  "type": "module",
-  "scripts": {
-    "lint": "xo",
-    "test": "vitest",
-    "typecheck": "vitest typecheck",
-    "bench": "vitest bench",
-    "build": "unbuild",
-    "pub": "bun run build && npm publish",
-    "commit": "./commit.sh"
+  "version": "0.8.2",
+  "devDependencies": {
+    "@in5net/prettier-config": "^1.1.0",
+    "@in5net/xo-config": "^1.5.0",
+    "typescript": "^5.2.2",
+    "unbuild": "^2.0.0",
+    "vitest": "^0.34.5",
+    "xo": "^0.56.0"
   },
-  "files": [
-    "dist"
-  ],
   "exports": {
     "./async": {
       "import": "./dist/async/index.mjs",
@@ -91,18 +86,20 @@
       "types": "./dist/types.d.ts"
     }
   },
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "ts-toolbelt": "^9.6.0"
+  "scripts": {
+    "lint": "xo",
+    "test": "vitest",
+    "typecheck": "vitest typecheck",
+    "bench": "vitest bench",
+    "build": "unbuild",
+    "pub": "bun run build && npm publish",
+    "commit": "./commit.sh"
   },
-  "devDependencies": {
-    "@in5net/prettier-config": "^1.1.0",
-    "@in5net/xo-config": "^1.5.0",
-    "typescript": "^5.2.2",
-    "unbuild": "^2.0.0",
-    "vitest": "^0.34.5",
-    "xo": "^0.56.0"
-  }
+  "type": "module"
 }

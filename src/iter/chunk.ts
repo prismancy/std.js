@@ -7,7 +7,6 @@ import { type Repeat } from "../types";
  * @param size the length of each chunk
  * @returns the chunks
  */
-// @ts-expect-error `dual` doesn't support generics
 export const chunk: {
 	<T, N extends number>(first: Iterable<T>, size: N): Generator<Repeat<T, N>>;
 	<T, N extends number>(

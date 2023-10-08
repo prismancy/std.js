@@ -7,7 +7,6 @@ import { range } from "./range";
  * Returns a tuple of iterables, which all yield the same items as the original iterable
  * @param iter
  */
-// @ts-expect-error `dual` doesn't support generics
 export const tee: {
 	<T, N extends number = 2>(
 		first: Iterable<T>,
