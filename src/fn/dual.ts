@@ -1,76 +1,31 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/prefer-ts-expect-error */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
+import { type AnyFunction } from "../types";
+
+export type Dual<Fn extends AnyFunction, Args = Parameters<Fn>> = Args extends [
+	infer First,
+	...infer Rest,
+]
+	? {
+			(first: First, ...rest: Rest): ReturnType<Fn>;
+			(...rest: Rest): (first: First) => ReturnType<Fn>;
+	  }
+	: never;
+
 /**
- * Allows a function to be used in a data-first or data-last manner in a pipe
- * @param arity the number of arguments the function takes
+ * Allows a function to be used in a data-first manner in a pipe
  * @param fn
- * @returns
+ * @returns a functions a that takes in the rest of the arguments of `fn` and returns a function that takes the first argument of `fn` to finally return the result of `fn`
  */
-export const dual: {
-	<
-		DataLast extends (...args: any[]) => any,
-		DataFirst extends (...args: any[]) => any,
-	>(
-		arity: Parameters<DataFirst>["length"],
-		fn: DataFirst,
-	): DataLast & DataFirst;
-	<
-		DataLast extends (...args: any[]) => any,
-		DataFirst extends (...args: any[]) => any,
-	>(
-		isDataFirst: (args: IArguments) => boolean,
-		fn: DataFirst,
-	): DataLast & DataFirst;
-} = function (arity, fn) {
-	if (typeof arity === "function") {
-		return () => {
-			if (arity(arguments))
-				// @ts-expect-error TS doesn't know that the arity is correct
-				return Reflect.apply(fn, this, arguments);
-			return ((self: any) => fn(self, ...arguments)) as any;
-		};
-	}
-
-	switch (arity) {
-		case 0: {
-			return fn;
-		}
-
-		case 1: {
-			return a => {
-				if (arguments.length >= 1) return fn(a);
-				return () => fn(a);
-			};
-		}
-
-		case 2: {
-			return (a, b) => {
-				if (arguments.length >= 2) return fn(a, b);
-				return (self: any) => fn(self, a);
-			};
-		}
-
-		case 3: {
-			return (a, b, c) => {
-				if (arguments.length >= 3) return fn(a, b, c);
-				return (self: any) => fn(self, a, b);
-			};
-		}
-
-		case 4: {
-			return (a, b, c, d) => {
-				if (arguments.length >= 4) return fn(a, b, c, d);
-				return (self: any) => fn(self, a, b, c);
-			};
-		}
-
-		default: {
-			return () => {
-				if (arguments.length >= arity)
-					// @ts-expect-error TS doesn't know that the arity is correct
-					return Reflect.apply(fn, this, arguments);
-				const args = arguments;
-				return (self: any) => fn(self, ...args);
-			};
-		}
-	}
-};
+export const dual =
+	<Fn extends AnyFunction>(fn: Fn): Dual<Fn> =>
+	// @ts-ignore
+	(...args: any[]) => {
+		// @ts-ignore
+		if (args.length === fn.length) return fn(...args);
+		// @ts-ignore
+		return (first: First) => fn(first, ...args);
+	};

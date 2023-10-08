@@ -1,5 +1,3 @@
-import { type Pipe, type Strings, type Tuples } from "hotscript";
-
 /**
  * Capitalizes the first character in the word
  * @param word a string
@@ -41,12 +39,9 @@ export function quantify<S extends string, P extends string>(
 	}` as const;
 }
 
-export function titalize<T extends string>(str: T) {
+export function titalize(str: string) {
 	return str
 		.split(" ")
 		.map(word => capitalize(word))
-		.join(" ") as Pipe<
-		T,
-		[Strings.Split<" ">, Tuples.Map<Strings.Capitalize>, Tuples.Join<" ">]
-	>;
+		.join(" ");
 }

@@ -1,3 +1,4 @@
+import { dual } from "../fn";
 import { type NonFalsy } from "../types";
 
 /**
@@ -5,19 +6,21 @@ import { type NonFalsy } from "../types";
  * @param iter
  * @param predicate a function that filters based on the truthiness of the return value
  */
-export function filter<T>(
-	iter: Iterable<T>,
-	predicate: BooleanConstructor,
-): Generator<NonFalsy<T>>;
-export function filter<T, S extends T>(
-	iter: Iterable<T>,
-	predicate: (value: T) => value is S,
-): Generator<S>;
-export function filter<T>(
-	iter: Iterable<T>,
-	predicate: (value: T) => unknown,
-): Generator<T>;
-export function* filter<T, S extends T>(
+export const filter: {
+	<T>(iter: Iterable<T>, predicate: BooleanConstructor): Generator<NonFalsy<T>>;
+	<T>(
+		predicate: BooleanConstructor,
+	): (iter: Iterable<T>) => Generator<NonFalsy<T>>;
+	<T, S extends T>(
+		iter: Iterable<T>,
+		predicate: (value: T) => value is S,
+	): Generator<S>;
+	<T, S extends T>(
+		predicate: (value: T) => value is S,
+	): (iter: Iterable<T>) => Generator<S>;
+	<T>(iter: Iterable<T>, predicate: (value: T) => unknown): Generator<T>;
+	<T>(predicate: (value: T) => unknown): (iter: Iterable<T>) => Generator<T>;
+} = dual(function* <T, S extends T>(
 	iter: Iterable<T>,
 	predicate:
 		| ((value: T) => value is S)
@@ -27,4 +30,4 @@ export function* filter<T, S extends T>(
 	for (const value of iter) {
 		if (predicate(value)) yield value as S;
 	}
-}
+});

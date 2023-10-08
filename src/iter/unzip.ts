@@ -1,4 +1,9 @@
-export function unzip<T, U>(iterable: Iterable<readonly [T, U]>): [T[], U[]] {
+import { dual } from "../fn";
+
+export const unzip: {
+	<T, U>(iterable: Iterable<readonly [T, U]>): [T[], U[]];
+	<T, U>(): (iterable: Iterable<readonly [T, U]>) => [T[], U[]];
+} = dual(<T, U>(iterable: Iterable<readonly [T, U]>): [T[], U[]] => {
 	const array1: T[] = [];
 	const array2: U[] = [];
 	let i = 0;
@@ -9,4 +14,4 @@ export function unzip<T, U>(iterable: Iterable<readonly [T, U]>): [T[], U[]] {
 	}
 
 	return [array1, array2];
-}
+});

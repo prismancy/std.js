@@ -1,4 +1,5 @@
-export type Pipeable = {
+export type Pipe = {
+	<T>(x: T): T;
 	<T, R0>(x: T, fn0: (x: T) => R0): R0;
 	<T, R0, R1>(x: T, fn0: (x: T) => R0, fn1: (x: R0) => R1): R1;
 	<T, R0, R1, R2>(
@@ -79,5 +80,5 @@ export type Pipeable = {
 	): R9;
 };
 
-export const pipe: Pipeable = <T>(x: T, ...fns: Array<(x: T) => T>) =>
+export const pipe: Pipe = <T>(x: T, ...fns: Array<(x: T) => T>) =>
 	fns.reduce((x, fn) => fn(x), x);

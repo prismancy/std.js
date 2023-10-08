@@ -1,4 +1,18 @@
-export function* slidingWindow<T>(
+import { dual } from "../fn";
+
+export const slidingWindow: {
+	<T>(
+		iter: Iterable<T>,
+		{ size, partial }: { size: number; partial?: boolean },
+	): Generator<T[]>;
+	<T>({
+		size,
+		partial,
+	}: {
+		size: number;
+		partial?: boolean;
+	}): (iter: Iterable<T>) => Generator<T[]>;
+} = dual(function* <T>(
 	iter: Iterable<T>,
 	{ size, partial }: { size: number; partial?: boolean },
 ): Generator<T[]> {
@@ -15,4 +29,4 @@ export function* slidingWindow<T>(
 			yield [...window];
 		}
 	}
-}
+});

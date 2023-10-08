@@ -4,7 +4,15 @@ export * from "./curry";
 export * from "./dual";
 export * from "./pipe";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+export const noop = () => {};
+
 export const identity = <T>(x: T) => x;
+
+export const constant =
+	<T>(x: T) =>
+	() =>
+		x;
 
 /**
  * Allows a function to be called only once
