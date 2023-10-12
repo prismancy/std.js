@@ -32,12 +32,12 @@ export class BinarySearchTree<T> implements Iterable<T> {
 		values: Iterable<T> | BinarySearchTree<T>,
 		compare?: Compare<T>,
 	) {
-		const bst = new BinarySearchTree<T>(compare);
+		const tree = new BinarySearchTree<T>(compare);
 		if (values instanceof BinarySearchTree) {
 			const nodes: Array<BinaryNode<T>> = [];
 			if (values.root) {
-				bst.root = { ...values.root };
-				nodes.push(bst.root);
+				tree.root = { ...values.root };
+				nodes.push(tree.root);
 			}
 
 			while (nodes.length) {
@@ -46,10 +46,10 @@ export class BinarySearchTree<T> implements Iterable<T> {
 				if (node.right) nodes.push({ ...node.right, parent: node });
 			}
 		} else {
-			for (const value of values) bst.insert(value);
+			for (const value of values) tree.insert(value);
 		}
 
-		return bst;
+		return tree;
 	}
 
 	get size() {
@@ -91,10 +91,10 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	/**
 	 * Inserts a value into the BST
 	 * @param value
-	 * @returns the inserted node if it was inserted, otherwise undefined
+	 * @returns if the value was inserted
 	 */
-	insert(value: T): BinaryNode<T> | undefined {
-		return this.insertNode({ value });
+	insert(value: T) {
+		return !!this.insertNode({ value });
 	}
 
 	protected insertNode(node: BinaryNode<T>) {

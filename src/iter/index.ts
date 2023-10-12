@@ -27,6 +27,7 @@ export * from "./sum";
 export * from "./take";
 export * from "./tap";
 export * from "./tee";
+export * from "./unique";
 export * from "./unique-by";
 export * from "./unzip";
 export * from "./zip";

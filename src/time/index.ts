@@ -19,28 +19,49 @@ export function durationFromMillis(ms: number) {
 	});
 }
 
-export function addDuration(date: Date, duration: DurationLike): Date {
+interface DurationLikeWithMonths extends DurationLike {
+	months?: number;
+}
+export function addDuration(
+	date: Date,
+	{
+		years,
+		days,
+		months,
+		hours,
+		minutes,
+		seconds,
+		milliseconds,
+	}: DurationLikeWithMonths,
+): Date {
 	const newDate = new Date(date);
-	if (duration.years)
-		newDate.setFullYear(newDate.getFullYear() + duration.years);
-	if (duration.days) newDate.setDate(newDate.getDate() + duration.days);
-	if (duration.hours) newDate.setHours(newDate.getHours() + duration.hours);
-	if (duration.minutes)
-		newDate.setMinutes(newDate.getMinutes() + duration.minutes);
-	if (duration.seconds)
-		newDate.setSeconds(newDate.getSeconds() + duration.seconds);
-	if (duration.milliseconds)
-		newDate.setMilliseconds(newDate.getMilliseconds() + duration.milliseconds);
+	if (years) newDate.setFullYear(newDate.getFullYear() + years);
+	if (months) newDate.setMonth(newDate.getMonth() + months);
+	if (days) newDate.setDate(newDate.getDate() + days);
+	if (hours) newDate.setHours(newDate.getHours() + hours);
+	if (minutes) newDate.setMinutes(newDate.getMinutes() + minutes);
+	if (seconds) newDate.setSeconds(newDate.getSeconds() + seconds);
+	if (milliseconds)
+		newDate.setMilliseconds(newDate.getMilliseconds() + milliseconds);
 	return newDate;
 }
 
 export function subtractDuration(
 	date: Date,
-	{ years, days, hours, minutes, seconds, milliseconds }: DurationLike,
+	{
+		years,
+		days,
+		months,
+		hours,
+		minutes,
+		seconds,
+		milliseconds,
+	}: DurationLikeWithMonths,
 ): Date {
 	const newDate = new Date(date);
 	if (years) newDate.setFullYear(newDate.getFullYear() - years);
 	if (days) newDate.setDate(newDate.getDate() - days);
+	if (months) newDate.setMonth(newDate.getMonth() - months);
 	if (hours) newDate.setHours(newDate.getHours() - hours);
 	if (minutes) newDate.setMinutes(newDate.getMinutes() - minutes);
 	if (seconds) newDate.setSeconds(newDate.getSeconds() - seconds);
