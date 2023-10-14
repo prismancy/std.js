@@ -44,6 +44,25 @@ export class Duration {
 		return `${this.years}y ${this.days}d ${this.hours}h ${this.minutes}m ${this.seconds}s ${this.milliseconds}ms`;
 	}
 
+	static fromMillis(ms: number) {
+		const milliseconds = ms % 1000;
+		const seconds = Math.floor(ms / 1000);
+		const minutes = Math.floor(seconds / 60);
+		const hours = Math.floor(minutes / 60);
+		const days = Math.floor(hours / 24);
+		const months = Math.floor(days / 30);
+		const years = Math.floor(months / 12);
+
+		return new Duration({
+			years,
+			days,
+			hours,
+			minutes,
+			seconds,
+			milliseconds,
+		});
+	}
+
 	as(unit: DurationUnit) {
 		const { years, days, hours, minutes, seconds, milliseconds } = this;
 		const denominator =

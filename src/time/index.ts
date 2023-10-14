@@ -1,24 +1,5 @@
 import { Duration, type DurationLike } from "./duration";
 
-export function durationFromMillis(ms: number) {
-	const milliseconds = ms % 1000;
-	const seconds = Math.floor(ms / 1000);
-	const minutes = Math.floor(seconds / 60);
-	const hours = Math.floor(minutes / 60);
-	const days = Math.floor(hours / 24);
-	const months = Math.floor(days / 30);
-	const years = Math.floor(months / 12);
-
-	return new Duration({
-		years,
-		days,
-		hours,
-		minutes,
-		seconds,
-		milliseconds,
-	});
-}
-
 interface DurationLikeWithMonths extends DurationLike {
 	months?: number;
 }
@@ -33,7 +14,7 @@ export function addDuration(
 		seconds,
 		milliseconds,
 	}: DurationLikeWithMonths,
-): Date {
+) {
 	const newDate = new Date(date);
 	if (years) newDate.setFullYear(newDate.getFullYear() + years);
 	if (months) newDate.setMonth(newDate.getMonth() + months);
@@ -57,7 +38,7 @@ export function subtractDuration(
 		seconds,
 		milliseconds,
 	}: DurationLikeWithMonths,
-): Date {
+) {
 	const newDate = new Date(date);
 	if (years) newDate.setFullYear(newDate.getFullYear() - years);
 	if (days) newDate.setDate(newDate.getDate() - days);
@@ -78,7 +59,7 @@ export function subtractDuration(
  */
 export function since(a: Date, b: Date) {
 	const millis = a.getTime() - b.getTime();
-	return durationFromMillis(millis);
+	return Duration.fromMillis(millis);
 }
 
 /**
@@ -89,7 +70,7 @@ export function since(a: Date, b: Date) {
  */
 export function until(a: Date, b: Date) {
 	const millis = b.getTime() - a.getTime();
-	return durationFromMillis(millis);
+	return Duration.fromMillis(millis);
 }
 
 export const stripTime = (date: Date) =>

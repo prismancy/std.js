@@ -35,40 +35,16 @@ export class RedBlackTree<T> extends BinarySearchTree<T> {
 	}
 
 	override insert(value: T) {
-		let node: RedBlackNode<T> = {
-			value,
-			red: true,
-		};
-		if (!this.insertNode(node)) return false;
-
-		while (node.parent?.red) {
-			let { parent } = node;
-			const parentDirection: BinaryNodeDirection =
-				node === parent.left ? "left" : "right";
-			const uncleDirection: BinaryNodeDirection =
-				parentDirection === "left" ? "right" : "left";
-			const grandparent = parent.parent!;
-			const uncle = grandparent[uncleDirection];
-			if (uncle?.red) {
-				parent.red = false;
-				uncle.red = false;
-				grandparent.red = true;
-				node = grandparent;
-			} else {
-				if (node === parent[uncleDirection]) {
-					node = parent;
-					this.rotate(node, parentDirection);
-					parent = node.parent!;
-				}
-
-				parent.red = false;
-				grandparent.red = true;
-				this.rotate(grandparent, uncleDirection);
-			}
-		}
-
-		this.root!.red = false;
+		const node = this.insertNode({ value, red: true });
+		if (!node) return false;
+		this.rebalance(node);
 		return true;
+	}
+
+	protected override insertNode(
+		node: RedBlackNode<T>,
+	): RedBlackNode<T> | undefined {
+		return super.insertNode(node) as RedBlackNode<T> | undefined;
 	}
 
 	override remove(value: T): boolean {

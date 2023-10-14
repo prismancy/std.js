@@ -84,15 +84,28 @@ export function deepCopy<T>(object: T): T {
 	return copy;
 }
 
-export function pickByKeys<T, K extends keyof T>(
+export function pickByKey<T, K extends keyof T>(object: T, key: K): T[K];
+export function pickByKey<T, K extends keyof T>(
 	object: T,
 	keys: readonly K[],
-): Pick<T, K> {
-	// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-	const result = {} as Pick<T, K>;
-	for (const key of keys) {
-		result[key] = object[key];
+): Pick<T, K>;
+export function pickByKey<T, K extends keyof T>(
+	object: T,
+	keys: K | readonly K[],
+) {
+	if (Array.isArray(keys)) {
+		// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+		const result = {} as Pick<T, K>;
+		for (const key of keys) {
+			// @ts-expect-error
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			result[key] = object[key];
+		}
+
+		return result;
 	}
 
-	return result;
+	// @ts-expect-error
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+	return object[keys];
 }

@@ -1,16 +1,20 @@
-export class Complex {
+export interface ComplexLike {
+	readonly real: number;
+	readonly imaginary: number;
+}
+
+export class Complex implements ComplexLike {
 	constructor(
 		public real = 0,
 		public imaginary = 0,
 	) {}
 
-	toString(): string {
+	toString() {
 		return `${this.real} + ${this.imaginary}i`;
 	}
 
-	log(): this {
-		console.log(this.toString());
-		return this;
+	valueOf() {
+		return this.toString();
 	}
 
 	copy(): Complex {
@@ -25,7 +29,7 @@ export class Complex {
 		return complex(Math.cos(angle), Math.sin(angle)).mult(mag);
 	}
 
-	add(c: number | Complex): this {
+	add(c: number | ComplexLike): this {
 		if (typeof c === "number") {
 			this.real += c;
 			return this;
@@ -36,7 +40,7 @@ export class Complex {
 		return this;
 	}
 
-	sub(c: number | Complex): this {
+	sub(c: number | ComplexLike): this {
 		if (typeof c === "number") {
 			this.real -= c;
 			return this;
@@ -47,7 +51,7 @@ export class Complex {
 		return this;
 	}
 
-	mult(c: number | Complex): this {
+	mult(c: number | ComplexLike): this {
 		if (typeof c === "number") {
 			this.real *= c;
 			this.imaginary *= c;
@@ -90,7 +94,7 @@ export class Complex {
 		return Math.atan2(this.imaginary, this.real);
 	}
 
-	pow(c: Complex): this {
+	pow(c: ComplexLike): this {
 		const { real, imaginary } = this;
 		const { real: re, imaginary: im } = c;
 		this.real = real ** re * imaginary ** im;

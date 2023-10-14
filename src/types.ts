@@ -1,13 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-types */
 
 export type Maybe<T> = T | undefined;
-
 export type Nullish<T> = Maybe<T> | null;
 
-export type AnyRecord = Record<PropertyKey, any>;
-export type AnyFunction = (...args: any[]) => any;
+export type AnyRecord = Record<PropertyKey, unknown>;
+export type AnyFunction = (...args: unknown[]) => unknown;
+
+export type MaybeArray<T> = T | T[];
+export type MaybeReadonlyArray<T> = T | readonly T[];
+
+export type Dict<T> = Record<string, T>;
 
 export type Indexable<T> = Record<number, T>;
+
+export type Awaitable<T> = T | Promise<T>;
 
 // https://github.com/total-typescript/ts-reset/blob/main/src/entrypoints/utils.d.ts
 export type NonFalsy<T> = T extends false | 0 | "" | null | undefined | 0n

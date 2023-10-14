@@ -1,3 +1,5 @@
+export * from "./serial";
+
 /**
  * Determines if a value is a number other than `NaN`
  * @param x

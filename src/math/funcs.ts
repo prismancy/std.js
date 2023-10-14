@@ -1,4 +1,4 @@
-import { mean, minmax } from "./stats";
+import { avg, minmax } from "../iter";
 
 export function norm(x: number, min: number, max: number): number {
 	return (x - min) / (max - min);
@@ -50,6 +50,30 @@ export function closer(
 	return Math.abs(x - a[0]) < Math.abs(x - b[0]) ? a[1] : b[1];
 }
 
+export function round(n: number, precision = 0): number {
+	const factor = 10 ** precision;
+	return Math.round(n * factor) / factor;
+}
+
+export function floor(n: number, precision = 0): number {
+	const factor = 10 ** precision;
+	return Math.floor(n * factor) / factor;
+}
+
+export function ceil(n: number, precision = 0): number {
+	const factor = 10 ** precision;
+	return Math.ceil(n * factor) / factor;
+}
+
+export function trunc(n: number, precision = 0): number {
+	const factor = 10 ** precision;
+	return Math.trunc(n * factor) / factor;
+}
+
+export function closeTo(n: number, target: number, precision = 5): boolean {
+	return Math.abs(n - target) < 10 ** -precision;
+}
+
 export function factorial(n: number): number {
 	let total = 1;
 	for (let i = n; i > 1; i--) {
@@ -94,25 +118,25 @@ export const fahrenheit = (celsius: number): number => celsius * (9 / 5) + 32;
  * @param points a list of (x,y) points
  * @returns the line of best fit in terms of m and b in the form y = mx + b
  */
-export function bestFitLine(
+export function lineOfBestFit(
 	points: Array<{ x: number; y: number }>,
 ): [m: number, b: number] {
 	const xs = points.map(p => p.x);
 	const ys = points.map(p => p.y);
 
-	const meanX = mean(xs);
-	const meanY = mean(ys);
+	const meanX = avg(xs);
+	const meanY = avg(ys);
 
-	let number_ = 0;
+	let n = 0;
 	let den = 0;
 	for (let i = 0; i < points.length; i++) {
 		const x = xs[i]!;
 		const y = ys[i]!;
-		number_ += (x - meanX) * (y - meanY);
+		n += (x - meanX) * (y - meanY);
 		den += (x - meanX) ** 2;
 	}
 
-	const m = number_ / den;
+	const m = n / den;
 	const b = meanY - m * meanX;
 	return [m, b];
 }

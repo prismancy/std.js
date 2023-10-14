@@ -1,38 +1,8 @@
-export function min(array: number[]): number {
-	let min = Number.POSITIVE_INFINITY;
-	for (const x of array) {
-		if (x < min) min = x;
-	}
+import { sortByKey } from "../array";
+import { descend } from "../cmp";
+import { avg, map, tee } from "../iter";
 
-	return min;
-}
-
-export function max(array: number[]): number {
-	let max = Number.NEGATIVE_INFINITY;
-	for (const x of array) {
-		if (x > max) max = x;
-	}
-
-	return max;
-}
-
-export function minmax(...nums: number[]): [min: number, max: number] {
-	return [min(nums), max(nums)];
-}
-
-export function sum(array: number[]): number {
-	return array.reduce((sum, current) => sum + current, 0);
-}
-
-export function mean(array: number[]): number {
-	const { length } = array;
-	if (!length) return 0;
-	return sum(array) / length;
-}
-
-export const average = mean;
-
-export function median(array: number[]): number {
+export function median(array: number[]) {
 	const { length } = array;
 	if (!length) return 0;
 	const sorted = [...array].sort((a, b) => a - b);
@@ -40,28 +10,32 @@ export function median(array: number[]): number {
 	return (sorted[length / 2 - 1]! + sorted[length / 2]!) / 2;
 }
 
-export function mode(array: number[]): number[] {
-	const counts: Record<number, number> = {};
-	for (const n of array) {
-		if (counts[n]) counts[n]++;
-		else counts[n] = 1;
+export function mode(iter: Iterable<number>) {
+	const counts = new Map<number, number>();
+	for (const n of iter) {
+		const count = counts.get(n) || 0;
+		counts.set(n, count + 1);
 	}
 
-	const sortedCounts = Object.entries(counts).sort((a, b) => a[1] - b[1]);
+	const sortedCounts = sortByKey([...counts.entries()], 1, descend);
+	const topEntry = sortedCounts[0];
+	if (!topEntry) return [];
 	const sortedNumbers = sortedCounts.map(n => n[1]);
-	return sortedNumbers.filter(n => n === sortedCounts[0]![1]);
+	return sortedNumbers.filter(n => n === topEntry[1]);
 }
 
-export function variance(array: number[]): number {
-	const m = mean(array);
-	return mean(array.map(n => (n - m) ** 2));
+export function variance(iter: Iterable<number>) {
+	const [a, b] = tee(iter);
+	const m = avg(a);
+	return avg(map(b, n => (n - m) ** 2));
 }
 
-export function stddev(array: number[]): number {
-	return Math.sqrt(variance(array));
+export function stddev(iter: Iterable<number>) {
+	return Math.sqrt(variance(iter));
 }
 
-export function meanAbsDev(array: number[]): number {
-	const m = mean(array);
-	return mean(array.map(n => n - m));
+export function meanAbsDev(iter: Iterable<number>) {
+	const [a, b] = tee(iter);
+	const m = avg(a);
+	return avg(map(b, n => n - m));
 }

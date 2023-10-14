@@ -1,6 +1,6 @@
 {
   "name": "@in5net/std",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "devDependencies": {
     "@in5net/prettier-config": "^1.1.0",
     "@in5net/xo-config": "^1.5.0",
@@ -29,6 +29,11 @@
       "import": "./dist/math/index.mjs",
       "require": "./dist/math/index.cjs",
       "types": "./dist/math/index.d.ts"
+    },
+    "./number": {
+      "import": "./dist/number/index.mjs",
+      "require": "./dist/number/index.cjs",
+      "types": "./dist/number/index.d.ts"
     },
     "./string": {
       "import": "./dist/string/index.mjs",
@@ -64,11 +69,6 @@
       "import": "./dist/easing.mjs",
       "require": "./dist/easing.cjs",
       "types": "./dist/easing.d.ts"
-    },
-    "./number": {
-      "import": "./dist/number.mjs",
-      "require": "./dist/number.cjs",
-      "types": "./dist/number.d.ts"
     },
     "./object": {
       "import": "./dist/object.mjs",

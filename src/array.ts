@@ -1,6 +1,6 @@
+import { ascend, type Compare } from "./cmp";
 import { zip } from "./iter";
-import { random, randomInt } from "./random";
-import { type Indexable } from "./types";
+import { type Indexable, type MaybeArray } from "./types";
 
 /**
  * Switches the positions of two values in an array in-place
@@ -12,20 +12,6 @@ export function swap<T>(array: Indexable<T>, i: number, j: number) {
 	const temp = array[i]!;
 	array[i] = array[j]!;
 	array[j] = temp;
-}
-
-/**
- * Randomizes the order of items in an array in-place
- * @param array
- * @returns the original array
- */
-export function shuffle<T extends ArrayLike<unknown>>(array: T) {
-	for (let { length } = array, i = length - 1; i > 0; i--) {
-		const j = randomInt(i);
-		swap(array, i, j);
-	}
-
-	return array;
 }
 
 /**
@@ -84,39 +70,6 @@ export function union<T>(...arrays: ReadonlyArray<readonly T[]>) {
 	return [...new Set(arrays.flat())];
 }
 
-/**
- * Get random items from an array
- * @param array
- * @param n number of items to pick
- * @returns an array containing the random items
- */
-export function sample<T>(array: ArrayLike<T>, n: number): T[];
-/**
- * Get random characters from a string
- * @param string
- * @param n number of characters to pick
- * @returns a string of the random chars
- */
-export function sample<T>(string: string, n: number): string;
-export function sample<T>(
-	array: ArrayLike<T> | string,
-	n: number,
-): T[] | string {
-	if (!array.length || !n) return [];
-	if (typeof array === "string") {
-		let result = "";
-		for (let i = 0; i < n; i++) {
-			result += random(array);
-		}
-
-		return result;
-	}
-
-	return Array.from<T>({ length: n }).map(
-		() => array[randomInt(array.length - 1)]!,
-	);
-}
-
 export function arraysEqual<T>(a: readonly T[], b: readonly T[]) {
 	if (a.length !== b.length) return false;
 	for (const [item1, item2] of zip(a, b)) {
@@ -164,4 +117,22 @@ export function dedupe<T extends { [K in keyof T]: T[K] }>(
 
 export function filterByKey<T>(array: readonly T[], key: keyof T) {
 	return array.filter(item => item[key]);
+}
+
+export function sortByKey<T, K extends keyof T>(
+	array: readonly T[],
+	key: MaybeArray<K>,
+	compare: Compare<T[K]> = ascend,
+) {
+	return [...array].sort((a, b) => {
+		const keys = Array.isArray(key) ? key : [key];
+		for (const key of keys) {
+			const value1 = a[key];
+			const value2 = b[key];
+			const cmp = compare(value1, value2);
+			if (cmp) return cmp;
+		}
+
+		return 0;
+	});
 }
