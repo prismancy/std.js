@@ -1,4 +1,4 @@
-import { ascend } from "../cmp";
+import { type Compare, ascend } from "../cmp";
 
 /**
  * ## Sorted Array
@@ -15,7 +15,7 @@ import { ascend } from "../cmp";
 export class SortedArray<T> implements Iterable<T> {
 	constructor(
 		private readonly data: T[] = [],
-		readonly compare = ascend,
+		readonly compare: Compare<T> = ascend,
 		sort = true,
 	) {
 		if (sort) this.data.sort(compare);
