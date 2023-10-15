@@ -5,12 +5,13 @@ import { dual } from "../fn";
  * @param iter
  * @param predicate a function to test each item
  */
-export const every = dual(
-	<T>(iter: Iterable<T>, predicate: (item: T) => unknown = Boolean) => {
-		for (const item of iter) {
-			if (!predicate(item)) return false;
-		}
+export const every: {
+	<T>(iter: Iterable<T>, predicate?: (item: T) => unknown): boolean;
+	<T>(predicate?: (item: T) => unknown): (iter: Iterable<T>) => boolean;
+} = dual(<T>(iter: Iterable<T>, predicate: (item: T) => unknown = Boolean) => {
+	for (const item of iter) {
+		if (!predicate(item)) return false;
+	}
 
-		return true;
-	},
-);
+	return true;
+});

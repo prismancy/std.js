@@ -84,12 +84,12 @@ export function deepCopy<T>(object: T): T {
 	return copy;
 }
 
-export function pickByKey<T, K extends keyof T>(object: T, key: K): T[K];
-export function pickByKey<T, K extends keyof T>(
+export function pickByKeys<T, K extends keyof T>(object: T, key: K): T[K];
+export function pickByKeys<T, K extends keyof T>(
 	object: T,
 	keys: readonly K[],
 ): Pick<T, K>;
-export function pickByKey<T, K extends keyof T>(
+export function pickByKeys<T, K extends keyof T>(
 	object: T,
 	keys: K | readonly K[],
 ) {

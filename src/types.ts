@@ -3,8 +3,8 @@
 export type Maybe<T> = T | undefined;
 export type Nullish<T> = Maybe<T> | null;
 
-export type AnyRecord = Record<PropertyKey, unknown>;
-export type AnyFunction = (...args: unknown[]) => unknown;
+export type AnyRecord = Record<PropertyKey, any>;
+export type AnyFunction = (...args: any[]) => any;
 
 export type MaybeArray<T> = T | T[];
 export type MaybeReadonlyArray<T> = T | readonly T[];

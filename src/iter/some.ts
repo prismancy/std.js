@@ -5,12 +5,13 @@ import { dual } from "../fn";
  * @param iter
  * @param predicate a function to test each item
  */
-export const some = dual(
-	<T>(iter: Iterable<T>, predicate: (item: T) => unknown = Boolean) => {
-		for (const item of iter) {
-			if (predicate(item)) return true;
-		}
+export const some: {
+	<T>(iter: Iterable<T>, predicate?: (item: T) => unknown): boolean;
+	<T>(predicate?: (item: T) => unknown): (iter: Iterable<T>) => boolean;
+} = dual(<T>(iter: Iterable<T>, predicate: (item: T) => unknown = Boolean) => {
+	for (const item of iter) {
+		if (predicate(item)) return true;
+	}
 
-		return false;
-	},
-);
+	return false;
+});
