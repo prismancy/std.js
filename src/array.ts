@@ -103,16 +103,17 @@ export function dedupe<T extends { [K in keyof T]: T[K] }>(
 	array: readonly T[],
 	key: keyof T,
 ) {
-	const copy = [...array];
+	const result: T[] = [];
 	const values = new Set<PropertyKey>();
-	for (let i = copy.length - 1; i >= 0; i--) {
-		const item = copy[i]!;
+	for (const item of array) {
 		const value = item[key];
-		if (values.has(value)) copy.splice(i, 1);
-		else values.add(value);
+		if (!values.has(value)) {
+			result.push(item);
+			values.add(value);
+		}
 	}
 
-	return copy;
+	return result;
 }
 
 export function filterByKey<T>(array: readonly T[], key: keyof T) {
