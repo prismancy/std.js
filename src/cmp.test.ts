@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
-import { shuffle } from "./array";
 import { ascend, descend } from "./cmp";
 import { range } from "./iter";
+import { shuffle } from "./random";
 
 test("ascend", () => {
 	const array = shuffle([...range(100)]);

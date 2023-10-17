@@ -1,4 +1,4 @@
-import { swap } from "./array";
+import { swap, unorderedRemove } from "./array";
 
 /**
  * Returns a random number from 0 to a maximum non-inclusive
@@ -11,20 +11,7 @@ export function random(max?: number): number;
  * @param max
  */
 export function random(min?: number, max?: number): number;
-/**
- * Returns a random from an array
- * @param array
- */
-export function random<T>(array: T[]): T[][number];
-/**
- * Returns a character from a string
- * @param string
- */
-export function random(string: string): string;
-export function random<T>(min?: number | T[] | string, max?: number) {
-	if (Array.isArray(min)) return min[randomInt(min.length - 1)];
-	if (typeof min === "string") return min[randomInt(min.length - 1)];
-
+export function random(min?: number, max?: number) {
 	if (!min) return Math.random();
 	if (!max) return Math.random() * min;
 	const Min = Math.min(min, max);
@@ -62,20 +49,34 @@ export function shuffle<T extends ArrayLike<unknown>>(array: T) {
 }
 
 /**
+ * Chooses a random character from a string
+ * @param string
+ */
+export function choice<T>(string: string): string;
+/**
+ * Chooses a random item from an array
+ * @param array
+ */
+export function choice<T>(array: ArrayLike<T>): T | undefined;
+export function choice<T>(array: string | ArrayLike<T>) {
+	return array[randomInt(array.length - 1)];
+}
+
+/**
  * Get random items from an array
  * @param array
  * @param n number of items to pick
  * @returns an array containing the random items
  */
-export function sample<T>(array: ArrayLike<T>, n: number): T[];
+export function choices<T>(array: ArrayLike<T>, n: number): T[];
 /**
  * Get random characters from a string
  * @param string
  * @param n number of characters to pick
  * @returns a string of the random chars
  */
-export function sample<T>(string: string, n: number): string;
-export function sample<T>(
+export function choices<T>(string: string, n: number): string;
+export function choices<T>(
 	array: ArrayLike<T> | string,
 	n: number,
 ): T[] | string {
@@ -83,7 +84,7 @@ export function sample<T>(
 	if (typeof array === "string") {
 		let result = "";
 		for (let i = 0; i < n; i++) {
-			result += random(array);
+			result += choice(array);
 		}
 
 		return result;
@@ -92,4 +93,22 @@ export function sample<T>(
 	return Array.from<T>({ length: n }).map(
 		() => array[randomInt(array.length - 1)]!,
 	);
+}
+
+/**
+ * Chooses unique random items from an array
+ * @param array
+ * @param n number of items to pick
+ * @returns an array containing the random items
+ */
+export function sample<T>(array: ArrayLike<T> & Iterable<T>, n: number) {
+	const copy = [...array];
+	const result = Array.from<T>({ length: n });
+	for (let i = 0; i < n; i++) {
+		const index = randomInt(copy.length - 1);
+		const item = unorderedRemove(copy, index);
+		if (item) result[i] = item;
+	}
+
+	return result;
 }

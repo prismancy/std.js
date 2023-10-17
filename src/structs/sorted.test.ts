@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
-import { shuffle } from "../array";
 import { range } from "../iter";
+import { shuffle } from "../random";
 import { SortedArray } from "./sorted-array";
 
 test("push() keeps sorted order", () => {

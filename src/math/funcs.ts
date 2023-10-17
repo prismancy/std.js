@@ -1,4 +1,4 @@
-import { avg, minmax } from "../iter";
+import { avg, minmax } from "../stats";
 
 export function norm(x: number, min: number, max: number): number {
 	return (x - min) / (max - min);
@@ -33,8 +33,8 @@ export function overlap(
 	min2: number,
 	max2: number,
 ): number {
-	[min1, max1] = minmax(min1, max1);
-	[min2, max2] = minmax(min2, max2);
+	[min1, max1] = minmax([min1, max1]);
+	[min2, max2] = minmax([min2, max2]);
 	const range1 = max1 - min1;
 	const range2 = max2 - min2;
 	const range = Math.max(max1, max2) - Math.min(min1, min2);
@@ -96,7 +96,12 @@ export const ln = Math.log;
  * @param b a number
  */
 export function gcd(a: number, b: number): number {
-	while (b !== 0) [a, b] = [b, a % b];
+	while (b !== 0) {
+		const temp = b;
+		b = a % b;
+		a = temp;
+	}
+
 	return a;
 }
 
@@ -144,3 +149,23 @@ export function lineOfBestFit(
 export const sigmoid = (x: number) => 1 / (1 + Math.exp(-x));
 export const relu = (x: number) => (x > 0 ? x : 0);
 export const leakyRelu = (x: number, a = 0.01) => (x > 0 ? x : a * x);
+
+/**
+ * Calculates the number of ways to choose `k` items from `n` items without repeating and with ordering
+ * @param n the number of items
+ * @param k the number of choices being made
+ */
+export function permutations(n: number, k: number) {
+	if (k > n) return 0;
+	return factorial(n) / factorial(n - k);
+}
+
+/**
+ * Calculates the number of ways to choose `k` items from `n` items without repeating or ordering
+ * @param n the number of items
+ * @param k the number of choices being made
+ */
+export function combinations(n: number, k: number) {
+	if (k > n) return 0;
+	return permutations(n, k) / factorial(k);
+}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-eq-null */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
@@ -71,8 +72,7 @@ export const objectFromEntries = Object.fromEntries as <T>(
 
 export function deepCopy<T>(object: T): T {
 	if (object == null) return object;
-	// @ts-expect-error Array.isArray returns an unknown[]
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+	// @ts-expect-error Array.isArray returns any[]
 	if (Array.isArray(object)) return object.map(deepCopy);
 	if (typeof object !== "object") return object;
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -106,6 +106,5 @@ export function pickByKeys<T, K extends keyof T>(
 	}
 
 	// @ts-expect-error
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 	return object[keys];
 }

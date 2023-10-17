@@ -31,10 +31,11 @@ export function remove<T>(array: T[], item: T) {
  * Removes an item from an array without maintaining order
  * @param array
  * @param index
+ * @returns the removed item
  */
 export function unorderedRemove<T>(array: T[], index: number) {
 	swap(array, index, array.length - 1);
-	array.pop();
+	return array.pop();
 }
 
 /**
@@ -120,7 +121,7 @@ export function filterByKey<T>(array: readonly T[], key: keyof T) {
 	return array.filter(item => item[key]);
 }
 
-export function sortByKey<T, K extends keyof T>(
+export function sortByKeys<T, K extends keyof T>(
 	array: readonly T[],
 	key: MaybeArray<K>,
 	compare: Compare<T[K]> = ascend,
