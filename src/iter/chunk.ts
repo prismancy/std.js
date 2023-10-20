@@ -13,12 +13,12 @@ export const chunk: {
 		size: N,
 	): (first: Iterable<T>) => Generator<Repeat<T, N>>;
 } = dual(function* <T, N extends number>(iter: Iterable<T>, size: N) {
-	const result: T[] = [];
+	let result: T[] = [];
 	for (const value of iter) {
 		result.push(value);
 		if (result.length === size) {
 			yield result as Repeat<T, N>;
-			result.length = 0;
+			result = [];
 		}
 	}
 
