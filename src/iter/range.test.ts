@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
+import { serial } from "../number";
 import { range } from "./range";
-import { serial } from "./serial";
 
 test("serial", () => {
 	const id1 = serial();

@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { every, filter } from "../iter";
+import { collect, every, filter } from "../iter";
 import { pipe } from "./pipe";
 
 test(() => {
@@ -23,10 +23,29 @@ test(() => {
 
 test(() => {
 	const array = [1, 2, 3, 4, 5];
+	const even = pipe(
+		array,
+		filter(x => !(x % 2)),
+		collect,
+	);
+	expect(even).toEqual([2, 4]);
+});
+
+test(() => {
+	const array = [1, 2, 3, 4, 5];
 	const gotEven = pipe(
 		array,
-		filter(x => x % 2 === 0),
-		every(x => x % 2 === 0),
+		filter(x => !(x % 2)),
+		every(x => !(x % 2)),
 	);
 	expect(gotEven);
+});
+
+test(() => {
+	const array = [1, 2, 3, 4, 5];
+	const allEven = pipe(
+		array,
+		every(x => !(x % 2)),
+	);
+	expect(!allEven);
 });
