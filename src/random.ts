@@ -58,7 +58,7 @@ export function choice<T>(string: string): string;
  * @param array
  */
 export function choice<T>(array: ArrayLike<T>): T | undefined;
-export function choice<T>(array: string | ArrayLike<T>) {
+export function choice<T>(array: ArrayLike<T>) {
 	return array[randomInt(array.length - 1)];
 }
 
@@ -76,10 +76,7 @@ export function choices<T>(array: ArrayLike<T>, n: number): T[];
  * @returns a string of the random chars
  */
 export function choices<T>(string: string, n: number): string;
-export function choices<T>(
-	array: ArrayLike<T> | string,
-	n: number,
-): T[] | string {
+export function choices<T>(array: ArrayLike<T>, n: number): T[] | string {
 	if (!array.length || !n) return [];
 	if (typeof array === "string") {
 		let result = "";

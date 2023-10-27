@@ -34,7 +34,7 @@ export class AvlTree<T> extends BinarySearchTree<T> {
 		return tree;
 	}
 
-	override insert(value: T): boolean {
+	override insert(value: T) {
 		const node = this.insertNode({ value, bf: 0 });
 		if (!node) return false;
 		this.rebalance(node);
@@ -45,7 +45,7 @@ export class AvlTree<T> extends BinarySearchTree<T> {
 		return super.insertNode(node) as AvlNode<T> | undefined;
 	}
 
-	override remove(value: T): boolean {
+	override remove(value: T) {
 		const node = this.findNode(value) as AvlNode<T> | undefined;
 		if (!node) return false;
 
@@ -76,7 +76,7 @@ export class AvlTree<T> extends BinarySearchTree<T> {
 	protected override rotate(
 		node: AvlNode<any>,
 		direction: BinaryNodeDirection,
-	): boolean {
+	) {
 		if (!super.rotate(node, direction)) return false;
 
 		const replacementDirection: BinaryNodeDirection =

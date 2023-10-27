@@ -21,7 +21,7 @@ export function isReal(x: unknown): x is number {
  * @param x the number to round
  * @param n the multiple to round to
  */
-export function roundToMultiple(x: number, n: number): number {
+export function roundToMultiple(x: number, n: number) {
 	return Math.floor(x / n) * n;
 }
 
@@ -29,7 +29,7 @@ export function roundToMultiple(x: number, n: number): number {
  * Rounds `x` to the nearest even number
  * @param x
  */
-export function roundToEven(x: number): number {
+export function roundToEven(x: number) {
 	return roundToMultiple(x, 2);
 }
 
@@ -204,7 +204,7 @@ export const suffixes: Array<
 	],
 ];
 
-export function toSuffix(x: number, shortNotation = false): string {
+export function toSuffix(x: number, shortNotation = false) {
 	const power = Math.log10(x);
 	const order = Math.floor(power);
 	const order3 = Math.floor(order / 3);

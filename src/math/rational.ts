@@ -1,5 +1,5 @@
 function gcd(a: bigint, b: bigint) {
-	while (b !== 0n) {
+	while (b) {
 		const temp = b;
 		b = a % b;
 		a = temp;
@@ -16,10 +16,23 @@ export class Rational {
 		public denominator = 1n,
 	) {}
 
+	toString() {
+		return `${this.numerator}/${this.denominator}`;
+	}
+
+	valueOf() {
+		return Number(this.numerator) / Number(this.denominator);
+	}
+
 	simplify() {
 		const divisor = gcd(this.numerator, this.denominator);
 		this.numerator /= divisor;
 		this.denominator /= divisor;
+		if (this.denominator < 0n) {
+			this.numerator = -this.numerator;
+			this.denominator = -this.denominator;
+		}
+
 		return this;
 	}
 

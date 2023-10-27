@@ -17,19 +17,19 @@ export class Complex implements ComplexLike {
 		return this.toString();
 	}
 
-	copy(): Complex {
-		return complex(+this.real, +this.imaginary);
+	copy() {
+		return complex(this.real, this.imaginary);
 	}
 
-	get conjugate(): Complex {
+	get conjugate() {
 		return complex(+this.real, -this.imaginary);
 	}
 
-	static fromAngle(angle: number, mag = 1): Complex {
+	static fromAngle(angle: number, mag = 1) {
 		return complex(Math.cos(angle), Math.sin(angle)).mult(mag);
 	}
 
-	add(c: number | ComplexLike): this {
+	add(c: number | ComplexLike) {
 		if (typeof c === "number") {
 			this.real += c;
 			return this;
@@ -40,7 +40,7 @@ export class Complex implements ComplexLike {
 		return this;
 	}
 
-	sub(c: number | ComplexLike): this {
+	sub(c: number | ComplexLike) {
 		if (typeof c === "number") {
 			this.real -= c;
 			return this;
@@ -51,7 +51,7 @@ export class Complex implements ComplexLike {
 		return this;
 	}
 
-	mult(c: number | ComplexLike): this {
+	mult(c: number | ComplexLike) {
 		if (typeof c === "number") {
 			this.real *= c;
 			this.imaginary *= c;
@@ -75,26 +75,26 @@ export class Complex implements ComplexLike {
 		return this.mult(conjugate).div(c.mult(conjugate).real);
 	}
 
-	sq(): this {
+	sq() {
 		const { real, imaginary } = this;
 		this.real = real ** 2 - imaginary ** 2;
 		this.imaginary = 2 * real * imaginary;
 		return this;
 	}
 
-	mag(): number {
+	mag() {
 		return Math.sqrt(this.magSq());
 	}
 
-	magSq(): number {
+	magSq() {
 		return this.real ** 2 + this.imaginary ** 2;
 	}
 
-	angle(): number {
+	angle() {
 		return Math.atan2(this.imaginary, this.real);
 	}
 
-	pow(c: ComplexLike): this {
+	pow(c: ComplexLike) {
 		const { real, imaginary } = this;
 		const { real: re, imaginary: im } = c;
 		this.real = real ** re * imaginary ** im;
@@ -103,6 +103,6 @@ export class Complex implements ComplexLike {
 	}
 }
 
-export function complex(real?: number, imaginary?: number): Complex {
+export function complex(real?: number, imaginary?: number) {
 	return new Complex(real, imaginary);
 }

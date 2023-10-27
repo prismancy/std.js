@@ -47,7 +47,7 @@ export class RedBlackTree<T> extends BinarySearchTree<T> {
 		return super.insertNode(node) as RedBlackNode<T> | undefined;
 	}
 
-	override remove(value: T): boolean {
+	override remove(value: T) {
 		const node = this.findNode(value) as RedBlackNode<T> | undefined;
 		if (!node) return false;
 

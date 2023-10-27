@@ -1,10 +1,10 @@
 import { avg, minmax } from "../stats";
 
-export function norm(x: number, min: number, max: number): number {
+export function norm(x: number, min: number, max: number) {
 	return (x - min) / (max - min);
 }
 
-export function lerp(min: number, max: number, norm: number): number {
+export function lerp(min: number, max: number, norm: number) {
 	return min + (max - min) * norm;
 }
 
@@ -14,16 +14,25 @@ export function map(
 	fromMax: number,
 	toMin: number,
 	toMax: number,
-): number {
+) {
 	return lerp(toMin, toMax, norm(x, fromMin, fromMax));
 }
 
-export function smoothstep(x: number, min: number, max: number): number {
-	const n = norm(x, min, max);
-	return n * n * (3 - 2 * n);
+export function step(x: number, edge = 0) {
+	return x < edge ? 0 : 1;
 }
 
-export function clamp(n: number, min: number, max: number): number {
+export function smoothstep(x: number, min: number, max: number) {
+	x = clamp(norm(x, min, max), 0, 1);
+	return x * x * (3 - 2 * x);
+}
+
+export function smootherstep(x: number, min: number, max: number) {
+	x = clamp(norm(x, min, max), 0, 1);
+	return x * x * x * (x * (x * 6 - 15) + 10);
+}
+
+export function clamp(n: number, min: number, max: number) {
 	return Math.min(Math.max(n, min), max);
 }
 
@@ -32,7 +41,7 @@ export function overlap(
 	max1: number,
 	min2: number,
 	max2: number,
-): number {
+) {
 	[min1, max1] = minmax([min1, max1]);
 	[min2, max2] = minmax([min2, max2]);
 	const range1 = max1 - min1;
@@ -42,39 +51,35 @@ export function overlap(
 }
 
 /** Returns which number (a or b) is closer to x */
-export function closer(
-	x: number,
-	a: [number, number],
-	b: [number, number],
-): number {
+export function closer(x: number, a: [number, number], b: [number, number]) {
 	return Math.abs(x - a[0]) < Math.abs(x - b[0]) ? a[1] : b[1];
 }
 
-export function round(n: number, precision = 0): number {
+export function round(n: number, precision = 0) {
 	const factor = 10 ** precision;
 	return Math.round(n * factor) / factor;
 }
 
-export function floor(n: number, precision = 0): number {
+export function floor(n: number, precision = 0) {
 	const factor = 10 ** precision;
 	return Math.floor(n * factor) / factor;
 }
 
-export function ceil(n: number, precision = 0): number {
+export function ceil(n: number, precision = 0) {
 	const factor = 10 ** precision;
 	return Math.ceil(n * factor) / factor;
 }
 
-export function trunc(n: number, precision = 0): number {
+export function trunc(n: number, precision = 0) {
 	const factor = 10 ** precision;
 	return Math.trunc(n * factor) / factor;
 }
 
-export function closeTo(n: number, target: number, precision = 5): boolean {
+export function closeTo(n: number, target: number, precision = 5) {
 	return Math.abs(n - target) < 10 ** -precision;
 }
 
-export function factorial(n: number): number {
+export function factorial(n: number) {
 	let total = 1;
 	for (let i = n; i > 1; i--) {
 		total *= i;
@@ -83,7 +88,7 @@ export function factorial(n: number): number {
 	return total;
 }
 
-export function log(base: number, x: number): number {
+export function log(base: number, x: number) {
 	return Math.log(x) / Math.log(base);
 }
 
@@ -95,7 +100,7 @@ export const ln = Math.log;
  * @param a a number
  * @param b a number
  */
-export function gcd(a: number, b: number): number {
+export function gcd(a: number, b: number) {
 	while (b !== 0) {
 		const temp = b;
 		b = a % b;
@@ -105,19 +110,20 @@ export function gcd(a: number, b: number): number {
 	return a;
 }
 
-export function fibonacci(n: number): number {
+export function fibonacci(n: number) {
 	let a = 0;
 	let b = 1;
 	for (let i = 0; i < n; i++) {
-		[a, b] = [b, b + a];
+		const temp = a;
+		a = b;
+		b += temp;
 	}
 
 	return a;
 }
 
-export const celsius = (fahrenheit: number): number =>
-	(fahrenheit - 32) * (5 / 9);
-export const fahrenheit = (celsius: number): number => celsius * (9 / 5) + 32;
+export const celsius = (fahrenheit: number) => (fahrenheit - 32) * (5 / 9);
+export const fahrenheit = (celsius: number) => celsius * (9 / 5) + 32;
 
 /**
  * @param points a list of (x,y) points

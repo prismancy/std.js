@@ -9,7 +9,7 @@ export const hasOwn = <T, K extends PropertyKey>(
 ): obj is T & { [key in K]: unknown } =>
 	Object.prototype.hasOwnProperty.call(obj, key);
 
-export function shallowEquals<A, B>(a: A, b: B): boolean {
+export function shallowEquals<A, B>(a: A, b: B) {
 	// @ts-expect-error
 	if (a === b) return true;
 	for (const key in a) {
@@ -23,7 +23,7 @@ export function shallowEquals<A, B>(a: A, b: B): boolean {
 	return true;
 }
 
-export function deepEquals<A, B>(a: A, b: B): boolean {
+export function deepEquals<A, B>(a: A, b: B) {
 	// @ts-expect-error
 	if (a === b) return true;
 	if (a == null || b == null) return false;
@@ -50,25 +50,34 @@ export function deepEquals<A, B>(a: A, b: B): boolean {
 }
 
 export function value2Keys<K extends string, T extends string>(
-	obj: Record<K, T[]>,
+	obj: Record<K, Iterable<T>>,
 ): Record<T, K[]> {
 	// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 	const result = {} as Record<T, K[]>;
-	for (const [key, arr] of Object.entries(obj))
-		for (const v of arr as T[]) {
+	for (const [key, iter] of objectEntries(obj))
+		for (const v of iter) {
 			if (!result[v]) result[v] = [];
-			result[v].push(key as K);
+			result[v].push(key);
 		}
 
 	return result;
 }
 
 export const objectKeys = Object.keys as <T>(obj: T) => Array<keyof T>;
-type Entries<T> = Array<[key: keyof T, value: T[keyof T]]>;
+type Entry<T> = [key: keyof T, value: T[keyof T]];
+type Entries<T> = Array<Entry<T>>;
 export const objectEntries = Object.entries as <T>(obj: T) => Entries<T>;
+type ReadonlyEntry<T> = [key: keyof T, value: T[keyof T]];
 export const objectFromEntries = Object.fromEntries as <T>(
-	entries: Entries<T>,
+	entries: Iterable<ReadonlyEntry<T>>,
 ) => T;
+
+export function objectMap<T, U>(obj: T, fn: (value: Entry<T>) => U) {
+	return objectFromEntries(
+		// @ts-expect-error
+		objectEntries(obj).map(([key, value]) => [key, fn([key, value])]),
+	) as { [K in keyof T]: U };
+}
 
 export function deepCopy<T>(object: T): T {
 	if (object == null) return object;
@@ -87,11 +96,11 @@ export function deepCopy<T>(object: T): T {
 export function pickByKeys<T, K extends keyof T>(object: T, key: K): T[K];
 export function pickByKeys<T, K extends keyof T>(
 	object: T,
-	keys: readonly K[],
+	keys: Iterable<K>,
 ): Pick<T, K>;
 export function pickByKeys<T, K extends keyof T>(
 	object: T,
-	keys: K | readonly K[],
+	keys: K | Iterable<K>,
 ) {
 	if (Array.isArray(keys)) {
 		// eslint-disable-next-line @typescript-eslint/consistent-type-assertions

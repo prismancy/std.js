@@ -18,7 +18,7 @@ export class Matrix3 {
 		else this.identity();
 	}
 
-	toString(): string {
+	toString() {
 		const [a, b, c, d, e, f, g, h, i] = this;
 		return `mat3 [
   ${a} ${b} ${c}
@@ -27,22 +27,22 @@ export class Matrix3 {
 ]`;
 	}
 
-	log(): this {
+	log() {
 		console.log(this.toString());
 		return this;
 	}
 
-	*[Symbol.iterator](): Iterator<number> {
+	*[Symbol.iterator]() {
 		for (let i = 0; i < 9; i++) {
 			yield this[i]!;
 		}
 	}
 
-	copy(): Matrix3 {
+	copy() {
 		return mat3([...this] as Mat3);
 	}
 
-	set(m: Matrix3 | Mat3): this {
+	set(m: Matrix3 | Mat3) {
 		for (let i = 0; i < 9; i++) {
 			this[i] = m[i]!;
 		}
@@ -50,11 +50,11 @@ export class Matrix3 {
 		return this;
 	}
 
-	identity(): this {
+	identity() {
 		return this.set([1, 0, 0, 0, 1, 0, 0, 0, 1]);
 	}
 
-	equals(m: Matrix3 | Mat3): boolean {
+	equals(m: Matrix3 | Mat3) {
 		for (let i = 0; i < 9; i++) {
 			const a = this[i]!;
 			const b = m[i]!;
@@ -64,7 +64,7 @@ export class Matrix3 {
 		return true;
 	}
 
-	add(m: Matrix3 | Mat3): this {
+	add(m: Matrix3 | Mat3) {
 		for (let i = 0; i < 9; i++) {
 			this[i] += m[i]!;
 		}
@@ -72,11 +72,11 @@ export class Matrix3 {
 		return this;
 	}
 
-	static add(m1: Matrix3, m2: Matrix3 | Mat3): Matrix3 {
+	static add(m1: Matrix3, m2: Matrix3 | Mat3) {
 		return m1.copy().add(m2);
 	}
 
-	sub(m: Matrix3 | Mat3): this {
+	sub(m: Matrix3 | Mat3) {
 		for (let i = 0; i < 9; i++) {
 			this[i] -= m[i]!;
 		}
@@ -84,15 +84,15 @@ export class Matrix3 {
 		return this;
 	}
 
-	static sub(m1: Matrix3, m2: Matrix3 | Mat3): Matrix3 {
+	static sub(m1: Matrix3, m2: Matrix3 | Mat3) {
 		return m1.copy().sub(m2);
 	}
 
-	mult(m: Matrix3 | Mat3 | number): this {
+	mult(m: Matrix3 | Mat3 | number) {
 		return this.set(Matrix3.mult(this, m));
 	}
 
-	static mult(m1: Matrix3 | Mat3, m2: Matrix3 | Mat3 | number): Matrix3 {
+	static mult(m1: Matrix3 | Mat3, m2: Matrix3 | Mat3 | number) {
 		if (typeof m2 === "number") {
 			const ans = mat3(m1);
 			console.log({ ans });
@@ -121,11 +121,11 @@ export class Matrix3 {
 		]);
 	}
 
-	div(m: number): this {
+	div(m: number) {
 		return this.mult(1 / m);
 	}
 
-	transpose(): this {
+	transpose() {
 		const [, b, c, d, , f, g, h] = this;
 		[this[3], this[1]] = [b, d];
 		[this[6], this[2]] = [c, g];
@@ -133,12 +133,12 @@ export class Matrix3 {
 		return this;
 	}
 
-	det(): number {
+	det() {
 		const [a, b, c, d, e, f, g, h, i] = this;
 		return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
 	}
 
-	adj(): Matrix3 {
+	adj() {
 		const [a, b, c, d, e, f, g, h, i] = this;
 		return mat3([
 			e * i - f * h,
@@ -155,13 +155,13 @@ export class Matrix3 {
 		]).transpose();
 	}
 
-	inv(): Matrix3 {
+	inv() {
 		console.log(this.adj());
 		console.log(this.det());
 		return this.adj().div(this.det());
 	}
 }
 
-export function mat3(matrix?: Matrix3 | Mat3): Matrix3 {
+export function mat3(matrix?: Matrix3 | Mat3) {
 	return new Matrix3(matrix);
 }

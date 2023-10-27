@@ -3,7 +3,7 @@
  * @param buffer
  * @returns hex string
  */
-export function hex(buffer: Iterable<number>): string {
+export function hex(buffer: Iterable<number>) {
 	const hexCodes: string[] = [];
 	for (const element of buffer) {
 		hexCodes.push(element.toString(16).padStart(2, "0"));
@@ -17,7 +17,7 @@ export function hex(buffer: Iterable<number>): string {
  * @param hex
  * @returns uint8 buffer
  */
-export function unhex(hex: string): Uint8Array {
+export function unhex(hex: string) {
 	const bytes = new Uint8Array(hex.length / 2);
 	for (let i = 0; i < bytes.length; i++) {
 		bytes[i] = Number.parseInt(hex.slice(i * 2, i * 2 + 2), 16);

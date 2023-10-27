@@ -197,7 +197,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses in-order (LNR) tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*lnrValues(): IterableIterator<T> {
+	*lnrValues() {
 		const nodes: Array<BinaryNode<T>> = [];
 		let node = this.root;
 		while (nodes.length || node) {
@@ -216,7 +216,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses reverse in-order (RNL) tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*rnlValues(): IterableIterator<T> {
+	*rnlValues() {
 		const nodes: Array<BinaryNode<T>> = [];
 		let node = this.root;
 		while (nodes.length || node) {
@@ -235,7 +235,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses pre-order (NLR) tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*nlrValues(): IterableIterator<T> {
+	*nlrValues() {
 		const nodes: Array<BinaryNode<T>> = [];
 		if (this.root) nodes.push(this.root);
 		while (nodes.length) {
@@ -250,7 +250,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses post-order (LRN) tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*lrnValues(): IterableIterator<T> {
+	*lrnValues() {
 		const nodes: Array<BinaryNode<T>> = [];
 		let node = this.root;
 		let lastNodeVisited: BinaryNode<T> | undefined;
@@ -274,7 +274,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses level order tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*lvlValues(): IterableIterator<T> {
+	*lvlValues() {
 		const children: Array<BinaryNode<T>> = [];
 		let cursor = this.root;
 		while (cursor) {
@@ -289,7 +289,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses in-order (LNR) tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*[Symbol.iterator](): IterableIterator<T> {
+	*[Symbol.iterator]() {
 		yield* this.lnrValues();
 	}
 }

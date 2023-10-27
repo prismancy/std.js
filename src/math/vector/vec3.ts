@@ -1,9 +1,11 @@
 import { random } from "../../random";
 import { clamp, lerp } from "../funcs";
+import { type Vector } from "./vec";
 
+export type Vector3Like = { x: number; y: number; z: number };
 type First = number | [x: number, y: number, z: number] | Vector3;
 
-export class Vector3 {
+export class Vector3 implements Vector, Vector3Like {
 	x!: number;
 	y!: number;
 	z!: number;
@@ -12,37 +14,42 @@ export class Vector3 {
 		this.set(x, y, z);
 	}
 
-	toString(): string {
+	toString() {
 		const { x, y, z } = this;
 		return `vec3 <${x}, ${y}, ${z}>`;
 	}
 
-	log(): this {
-		console.log(this.toString());
-		return this;
+	toJSON() {
+		const { x, y, z } = this;
+		return { x, y, z };
 	}
 
 	toArray(): [x: number, y: number, z: number] {
 		return [this.x, this.y, this.z];
 	}
 
-	copy(): Vector3 {
-		return vec3(+this.x, +this.y, +this.z);
+	copy() {
+		return vec3(this.x, this.y, this.z);
 	}
 
-	bool(): boolean {
+	log() {
+		console.log(this.toString());
+		return this;
+	}
+
+	bool() {
 		return this.x !== 0 || this.y !== 0 || this.z !== 0;
 	}
 
-	min(): number {
+	min() {
 		return Math.min(this.x, this.y, this.z);
 	}
 
-	max(): number {
+	max() {
 		return Math.max(this.x, this.y, this.z);
 	}
 
-	set(x: First, y?: number, z?: number): this {
+	set(x: First, y?: number, z?: number) {
 		if (x instanceof Vector3) {
 			this.x = x.x;
 			this.y = x.y;
@@ -62,14 +69,14 @@ export class Vector3 {
 		return this;
 	}
 
-	static random(mag = 1): Vector3 {
+	static random(mag = 1) {
 		return vec3(0, 0, 1)
 			.rotateX(random(Math.PI * 2))
 			.rotateY(random(Math.PI * 2))
 			.setMag(mag);
 	}
 
-	equals(x: First, y = 0, z = 0): boolean {
+	equals(x: First, y = 0, z = 0) {
 		if (x instanceof Vector3)
 			return this.x === x.x && this.y === x.y && this.z === x.z;
 		if (Array.isArray(x))
@@ -78,11 +85,11 @@ export class Vector3 {
 		return this.x === x && this.y === y && this.z === z;
 	}
 
-	neg(): Vector3 {
+	neg() {
 		return vec3(-this.x, -this.y, -this.z);
 	}
 
-	add(x: First, y?: number, z?: number): this {
+	add(x: First, y?: number, z?: number) {
 		if (x instanceof Vector3) {
 			this.x += x.x;
 			this.y += x.y;
@@ -104,11 +111,11 @@ export class Vector3 {
 		return this;
 	}
 
-	static add(v1: Vector3, x: First, y?: number, z?: number): Vector3 {
+	static add(v1: Vector3, x: First, y?: number, z?: number) {
 		return v1.copy().add(x, y, z);
 	}
 
-	sub(x: First, y?: number, z?: number): this {
+	sub(x: First, y?: number, z?: number) {
 		if (x instanceof Vector3) {
 			this.x -= x.x;
 			this.y -= x.y;
@@ -130,11 +137,11 @@ export class Vector3 {
 		return this;
 	}
 
-	static sub(v1: Vector3, x: First, y?: number, z?: number): Vector3 {
+	static sub(v1: Vector3, x: First, y?: number, z?: number) {
 		return v1.copy().sub(x, y, z);
 	}
 
-	mult(x: First, y?: number, z?: number): this {
+	mult(x: First, y?: number, z?: number) {
 		if (x instanceof Vector3) {
 			this.x *= x.x;
 			this.y *= x.y;
@@ -156,11 +163,11 @@ export class Vector3 {
 		return this;
 	}
 
-	static mult(v1: Vector3, x: First, y?: number, z?: number): Vector3 {
+	static mult(v1: Vector3, x: First, y?: number, z?: number) {
 		return v1.copy().mult(x, y, z);
 	}
 
-	div(x: First, y?: number, z?: number): this {
+	div(x: First, y?: number, z?: number) {
 		if (x instanceof Vector3) {
 			this.x /= x.x;
 			this.y /= x.y;
@@ -182,59 +189,95 @@ export class Vector3 {
 		return this;
 	}
 
-	static div(v1: Vector3, x: First, y?: number, z?: number): Vector3 {
+	static div(v1: Vector3, x: First, y?: number, z?: number) {
 		return v1.copy().div(x, y, z);
 	}
 
-	limit(max: number): this {
+	static fma(a: Vector3Like, b: Vector3Like, c: Vector3Like) {
+		return vec3(a.x * b.x + c.x, a.y * b.y + c.y, a.z * b.z + c.z);
+	}
+
+	lt(x: Vector3Like) {
+		return vec3(
+			this.x < x.x ? 1 : 0,
+			this.y < x.y ? 1 : 0,
+			this.z < x.z ? 1 : 0,
+		);
+	}
+
+	lte(x: Vector3Like) {
+		return vec3(
+			this.x <= x.x ? 1 : 0,
+			this.y <= x.y ? 1 : 0,
+			this.z <= x.z ? 1 : 0,
+		);
+	}
+
+	gt(x: Vector3Like) {
+		return vec3(
+			this.x > x.x ? 1 : 0,
+			this.y > x.y ? 1 : 0,
+			this.z > x.z ? 1 : 0,
+		);
+	}
+
+	gte(x: Vector3Like) {
+		return vec3(
+			this.x >= x.x ? 1 : 0,
+			this.y >= x.y ? 1 : 0,
+			this.z >= x.z ? 1 : 0,
+		);
+	}
+
+	limit(max: number) {
 		const maxSq = max * max;
 		const magSq = this.magSq();
 		if (magSq > maxSq) this.setMag(max);
 		return this;
 	}
 
-	normalize(): this {
+	normalize() {
 		const mag = this.mag();
 		if (mag !== 0) this.div(mag);
 		return this;
 	}
 
-	static normalize(v: Vector3): Vector3 {
+	static normalize(v: Vector3) {
 		return v.copy().normalize();
 	}
 
-	mag(): number {
+	mag() {
 		return Math.sqrt(this.magSq());
 	}
 
-	setMag(n: number): this {
+	setMag(n: number) {
 		return this.normalize().mult(n);
 	}
 
-	magSq(): number {
+	magSq() {
 		const { x, y, z } = this;
 		return x ** 2 + y ** 2 + z ** 2;
 	}
 
-	dist(v: this): number {
+	dist(v: Vector3) {
 		return Math.sqrt(this.distSq(v));
 	}
 
-	distSq(v: Vector3): number {
+	distSq(v: Vector3) {
 		return Vector3.sub(v, this).magSq();
 	}
 
-	dot(v: Vector3): number {
+	dot(v: Vector3Like) {
 		const { x, y, z } = this;
 		return x * v.x + y * v.y + z * v.z;
 	}
 
-	cross(v: Vector3): Vector3 {
+	cross(v: Vector3Like) {
 		const { x, y, z } = this;
 		return vec3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 	}
 
-	lerp(v: Vector3, norm: number): this {
+	lerp(v: Vector3Like, norm: number) {
 		const { x, y, z } = this;
 		this.x = lerp(x, v.x, norm);
 		this.y = lerp(y, v.y, norm);
@@ -242,11 +285,11 @@ export class Vector3 {
 		return this;
 	}
 
-	static lerp(v1: Vector3, v2: Vector3, norm: number): Vector3 {
+	static lerp(v1: Vector3, v2: Vector3Like, norm: number) {
 		return v1.copy().lerp(v2, norm);
 	}
 
-	clamp(min: Vector3, max: Vector3): this {
+	clamp(min: Vector3Like, max: Vector3Like) {
 		const { x, y, z } = this;
 		this.x = clamp(x, min.x, max.x);
 		this.y = clamp(y, min.y, max.y);
@@ -254,11 +297,11 @@ export class Vector3 {
 		return this;
 	}
 
-	static clamp(v: Vector3, min: Vector3, max: Vector3): Vector3 {
+	static clamp(v: Vector3, min: Vector3Like, max: Vector3Like) {
 		return v.copy().clamp(min, max);
 	}
 
-	rotateX(angle: number): this {
+	rotateX(angle: number) {
 		const { y, z } = this;
 		const cos = Math.cos(angle);
 		const sin = Math.sin(angle);
@@ -267,7 +310,7 @@ export class Vector3 {
 		return this;
 	}
 
-	rotateY(angle: number): this {
+	rotateY(angle: number) {
 		const { x, z } = this;
 		const cos = Math.cos(angle);
 		const sin = Math.sin(angle);
@@ -276,7 +319,7 @@ export class Vector3 {
 		return this;
 	}
 
-	rotateZ(angle: number): this {
+	rotateZ(angle: number) {
 		const { x, y } = this;
 		const cos = Math.cos(angle);
 		const sin = Math.sin(angle);
@@ -285,15 +328,15 @@ export class Vector3 {
 		return this;
 	}
 
-	reflect(normal: Vector3): this {
+	reflect(normal: Vector3) {
 		return this.sub(Vector3.mult(normal, 2 * this.dot(normal)));
 	}
 
-	static reflect(v: Vector3, normal: Vector3): Vector3 {
+	static reflect(v: Vector3, normal: Vector3) {
 		return v.copy().reflect(normal);
 	}
 
-	refract(normal: Vector3, eta: number): this {
+	refract(normal: Vector3, eta: number) {
 		const nDot = this.dot(normal);
 		const k = 1 - eta * eta * (1 - nDot * nDot);
 		if (k < 0) return this;
@@ -301,6 +344,6 @@ export class Vector3 {
 	}
 }
 
-export function vec3(x?: First, y?: number, z?: number): Vector3 {
+export function vec3(x?: First, y?: number, z?: number) {
 	return new Vector3(x, y, z);
 }

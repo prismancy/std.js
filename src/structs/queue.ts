@@ -24,7 +24,7 @@ export class Queue<T> implements Iterable<T> {
 		return this.items.shift();
 	}
 
-	*[Symbol.iterator](): IterableIterator<T> {
+	*[Symbol.iterator]() {
 		let item: T | undefined;
 		while ((item = this.dequeue())) {
 			yield item;

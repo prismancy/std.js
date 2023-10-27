@@ -56,7 +56,7 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 		return oldValue;
 	}
 
-	push(value: T): number {
+	push(value: T) {
 		const node: Node<T> = { value };
 
 		if (this.tail) {
@@ -83,7 +83,7 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 		return value;
 	}
 
-	unshift(value: T): number {
+	unshift(value: T) {
 		const node: Node<T> = { value };
 
 		if (this.head) {
@@ -110,7 +110,7 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 		return value;
 	}
 
-	reverse(): this {
+	reverse() {
 		let current = this.head;
 		let previous: Node<T> | undefined;
 		let next: Node<T> | undefined;

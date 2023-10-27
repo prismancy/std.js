@@ -101,7 +101,7 @@ export function includesAll<T, U>(a: readonly T[], b: readonly U[]) {
 }
 
 export function dedupe<T extends { [K in keyof T]: T[K] }>(
-	array: readonly T[],
+	array: Iterable<T>,
 	key: keyof T,
 ) {
 	const result: T[] = [];
@@ -122,7 +122,7 @@ export function filterByKey<T>(array: readonly T[], key: keyof T) {
 }
 
 export function sortByKeys<T, K extends keyof T>(
-	array: readonly T[],
+	array: Iterable<T>,
 	key: MaybeArray<K>,
 	compare: Compare<T[K]> = ascend,
 ) {

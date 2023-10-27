@@ -30,31 +30,30 @@ export class Matrix {
 		}
 	}
 
-	toString(): string {
+	toString() {
 		const [...rows] = this;
 		return `mat [
   ${rows.map(row => row.join(" ")).join("\n  ")}
 ]`;
 	}
 
-	log(): this {
+	log() {
 		console.log(this.toString());
 		return this;
 	}
 
-	*[Symbol.iterator](): Iterator<Float64Array> {
+	*[Symbol.iterator]() {
 		const { rows } = this;
 		for (let i = 0; i < rows; i++) {
 			yield this[i]!;
 		}
 	}
 
-	copy(): Matrix {
-		const { rows, cols } = this;
-		return mat(rows, cols).set(this);
+	copy() {
+		return mat(this.rows, this.cols).set(this);
 	}
 
-	static fromArray(array: number[]): Matrix {
+	static fromArray(array: number[]) {
 		const { length } = array;
 		const m = mat(length, 1);
 		for (let i = 0; i < length; i++) {
@@ -64,11 +63,11 @@ export class Matrix {
 		return m;
 	}
 
-	toArray(): number[] {
+	toArray() {
 		return [...this].flatMap(row => [...row]);
 	}
 
-	static random(rows: number, cols: number): Matrix {
+	static random(rows: number, cols: number) {
 		const m = mat(rows, cols);
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -79,7 +78,7 @@ export class Matrix {
 		return m;
 	}
 
-	set(m: Matrix | Mat): this {
+	set(m: Matrix | Mat) {
 		const { rows, cols } = this;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -90,7 +89,7 @@ export class Matrix {
 		return this;
 	}
 
-	equals(m: Matrix | Mat): boolean {
+	equals(m: Matrix | Mat) {
 		const { rows, cols } = this;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -103,7 +102,7 @@ export class Matrix {
 		return true;
 	}
 
-	add(m: Matrix | Mat): this {
+	add(m: Matrix | Mat) {
 		const { rows, cols } = this;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -114,11 +113,11 @@ export class Matrix {
 		return this;
 	}
 
-	static add(m1: Matrix, m2: Matrix | Mat): Matrix {
+	static add(m1: Matrix, m2: Matrix | Mat) {
 		return m1.copy().add(m2);
 	}
 
-	sub(m: Matrix | Mat): this {
+	sub(m: Matrix | Mat) {
 		const { rows, cols } = this;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -129,15 +128,15 @@ export class Matrix {
 		return this;
 	}
 
-	static sub(m1: Matrix, m2: Matrix | Mat): Matrix {
+	static sub(m1: Matrix, m2: Matrix | Mat) {
 		return m1.copy().sub(m2);
 	}
 
-	mult(m: Matrix | number): this {
+	mult(m: Matrix | number) {
 		return this.set(Matrix.mult(this, m));
 	}
 
-	static mult(m1: Matrix, m2: Matrix | number): Matrix {
+	static mult(m1: Matrix, m2: Matrix | number) {
 		if (typeof m2 === "number") {
 			const { rows, cols } = m1;
 			const ans = mat(rows, cols);
@@ -166,11 +165,11 @@ export class Matrix {
 		return ans;
 	}
 
-	div(m: number): this {
+	div(m: number) {
 		return this.mult(1 / m);
 	}
 
-	static transpose(m: Matrix): Matrix {
+	static transpose(m: Matrix) {
 		const { rows, cols } = m;
 		const ans = mat(cols, rows);
 		for (let i = 0; i < rows; i++) {
@@ -182,7 +181,7 @@ export class Matrix {
 		return ans;
 	}
 
-	map(func: (value: number, i: number, j: number) => number): this {
+	map(func: (value: number, i: number, j: number) => number) {
 		const { rows, cols } = this;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -193,17 +192,14 @@ export class Matrix {
 		return this;
 	}
 
-	static map(
-		m: Matrix,
-		func: (value: number, i: number, j: number) => number,
-	): Matrix {
+	static map(m: Matrix, func: (value: number, i: number, j: number) => number) {
 		return m.copy().map(func);
 	}
 }
 
 export function mat(rows: number, cols: number): Matrix;
 export function mat(mat: Mat): Matrix;
-export function mat(rowsOrMat: number | Mat, cols?: number): Matrix {
+export function mat(rowsOrMat: number | Mat, cols?: number) {
 	if (typeof rowsOrMat === "number") return new Matrix(rowsOrMat, cols || 0);
 	return new Matrix(rowsOrMat);
 }

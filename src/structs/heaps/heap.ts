@@ -81,13 +81,13 @@ export class Heap<T> implements Iterable<T> {
 		return data.length;
 	}
 
-	*drain(): IterableIterator<T> {
+	*drain() {
 		while (this.length) {
 			yield this.pop() as T;
 		}
 	}
 
-	[Symbol.iterator](): IterableIterator<T> {
+	[Symbol.iterator]() {
 		return this.data.values();
 	}
 

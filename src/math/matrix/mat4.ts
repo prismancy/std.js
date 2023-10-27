@@ -27,7 +27,7 @@ export class Matrix4 {
 		else this.identity();
 	}
 
-	toString(): string {
+	toString() {
 		const [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = this;
 		return `mat4 [
   ${a} ${b} ${c} ${d}
@@ -37,22 +37,22 @@ export class Matrix4 {
 ]`;
 	}
 
-	log(): this {
+	log() {
 		console.log(this.toString());
 		return this;
 	}
 
-	*[Symbol.iterator](): Iterator<number> {
+	*[Symbol.iterator]() {
 		for (let i = 0; i < 16; i++) {
 			yield this[i]!;
 		}
 	}
 
-	copy(): Matrix4 {
+	copy() {
 		return mat4([...this] as Mat4);
 	}
 
-	set(m: Matrix4 | Mat4): this {
+	set(m: Matrix4 | Mat4) {
 		for (let i = 0; i < 16; i++) {
 			this[i] = m[i]!;
 		}
@@ -60,11 +60,11 @@ export class Matrix4 {
 		return this;
 	}
 
-	identity(): this {
+	identity() {
 		return this.set([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
 	}
 
-	equals(m: Matrix4 | Mat4): boolean {
+	equals(m: Matrix4 | Mat4) {
 		for (let i = 0; i < 16; i++) {
 			const a = this[i]!;
 			const b = m[i]!;
@@ -74,7 +74,7 @@ export class Matrix4 {
 		return true;
 	}
 
-	add(m: Matrix4 | Mat4): this {
+	add(m: Matrix4 | Mat4) {
 		for (let i = 0; i < 16; i++) {
 			this[i] += m[i]!;
 		}
@@ -82,11 +82,11 @@ export class Matrix4 {
 		return this;
 	}
 
-	static add(m1: Matrix4, m2: Matrix4 | Mat4): Matrix4 {
+	static add(m1: Matrix4, m2: Matrix4 | Mat4) {
 		return m1.copy().add(m2);
 	}
 
-	sub(m: Matrix4 | Mat4): this {
+	sub(m: Matrix4 | Mat4) {
 		for (let i = 0; i < 16; i++) {
 			this[i] -= m[i]!;
 		}
@@ -94,15 +94,15 @@ export class Matrix4 {
 		return this;
 	}
 
-	static sub(m1: Matrix4, m2: Matrix4 | Mat4): Matrix4 {
+	static sub(m1: Matrix4, m2: Matrix4 | Mat4) {
 		return m1.copy().sub(m2);
 	}
 
-	mult(m: Matrix4 | Mat4 | number): this {
+	mult(m: Matrix4 | Mat4 | number) {
 		return this.set(Matrix4.mult(this, m));
 	}
 
-	static mult(m1: Matrix4 | Mat4, m2: Matrix4 | Mat4 | number): Matrix4 {
+	static mult(m1: Matrix4 | Mat4, m2: Matrix4 | Mat4 | number) {
 		if (typeof m2 === "number") {
 			const ans = mat4();
 			for (let i = 0; i < 16; i++) {
@@ -171,11 +171,11 @@ export class Matrix4 {
 		]);
 	}
 
-	div(m: number): this {
+	div(m: number) {
 		return this.mult(1 / m);
 	}
 
-	transpose(): this {
+	transpose() {
 		const [, b, c, d, e, , g, h, i, j, , l, m, n, o] = this;
 		[this[4], this[1]] = [b, e];
 		[this[8], this[2]] = [c, i];
@@ -186,7 +186,7 @@ export class Matrix4 {
 		return this;
 	}
 
-	det(): number {
+	det() {
 		const [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = this;
 		return (
 			a * mat3([f, g, h, j, k, l, n, o, p]).det() -
@@ -196,7 +196,7 @@ export class Matrix4 {
 		);
 	}
 
-	adj(): Matrix4 {
+	adj() {
 		const [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = this;
 		return mat4([
 			mat3([f, g, h, j, k, l, n, o, p]).det(),
@@ -218,11 +218,11 @@ export class Matrix4 {
 		]).transpose();
 	}
 
-	inv(): Matrix4 {
+	inv() {
 		return this.adj().div(this.det());
 	}
 }
 
-export function mat4(matrix?: Matrix4 | Mat4): Matrix4 {
+export function mat4(matrix?: Matrix4 | Mat4) {
 	return new Matrix4(matrix);
 }
