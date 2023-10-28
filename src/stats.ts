@@ -85,7 +85,12 @@ export function mode(iter: Iterable<number>) {
 export function variance(iter: Iterable<number>) {
 	const [a, b] = tee(iter);
 	const m = avg(a);
-	return avg(map(b, n => (n - m) ** 2));
+	return avg(
+		map(b, n => {
+			const d = n - m;
+			return d * d;
+		}),
+	);
 }
 
 export function stddev(iter: Iterable<number>) {

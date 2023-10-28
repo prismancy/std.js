@@ -19,7 +19,7 @@ test("subtract", () => {
 });
 
 test("multiply", () => {
-	const ans = Matrix4.mult(a, b);
+	const ans = Matrix4.mul(a, b);
 	assert(
 		ans.equals([
 			210, 267, 236, 271, 93, 149, 104, 149, 171, 146, 172, 268, 105, 169, 128,

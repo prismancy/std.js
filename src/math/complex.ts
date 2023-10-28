@@ -1,84 +1,86 @@
 export interface ComplexLike {
-	readonly real: number;
-	readonly imaginary: number;
+	readonly r: number;
+	readonly i: number;
 }
 
 export class Complex implements ComplexLike {
 	constructor(
-		public real = 0,
-		public imaginary = 0,
+		public r = 0,
+		public i = 0,
 	) {}
 
 	toString() {
-		return `${this.real} + ${this.imaginary}i`;
+		return `${this.r} + ${this.i}i`;
 	}
 
 	valueOf() {
-		return this.toString();
+		return this.mag();
 	}
 
 	copy() {
-		return complex(this.real, this.imaginary);
+		return complex(this.r, this.i);
 	}
 
-	get conjugate() {
-		return complex(+this.real, -this.imaginary);
+	get conj() {
+		return complex(+this.r, -this.i);
 	}
 
 	static fromAngle(angle: number, mag = 1) {
-		return complex(Math.cos(angle), Math.sin(angle)).mult(mag);
+		return complex(Math.cos(angle), Math.sin(angle)).mul(mag);
 	}
 
 	add(c: number | ComplexLike) {
 		if (typeof c === "number") {
-			this.real += c;
-			return this;
+			this.r += c;
+		} else {
+			this.r += c.r;
+			this.i += c.i;
 		}
 
-		this.real += c.real;
-		this.imaginary += c.imaginary;
 		return this;
 	}
 
 	sub(c: number | ComplexLike) {
 		if (typeof c === "number") {
-			this.real -= c;
-			return this;
+			this.r -= c;
+		} else {
+			this.r -= c.r;
+			this.i -= c.i;
 		}
 
-		this.real -= c.real;
-		this.imaginary -= c.imaginary;
 		return this;
 	}
 
-	mult(c: number | ComplexLike) {
+	mul(c: number | ComplexLike) {
 		if (typeof c === "number") {
-			this.real *= c;
-			this.imaginary *= c;
-			return this;
+			this.r *= c;
+			this.i *= c;
+		} else {
+			const { r, i } = this;
+			this.r = r * c.r - i * c.i;
+			this.i = r * c.i + i * c.r;
 		}
 
-		const { real, imaginary } = this;
-		this.real = real * c.real - imaginary * c.imaginary;
-		this.imaginary = real * c.imaginary + imaginary * c.real;
 		return this;
 	}
 
-	div(c: number | Complex): this {
+	div(c: number | Complex) {
 		if (typeof c === "number") {
-			this.real /= c;
-			this.imaginary /= c;
-			return this;
+			this.r /= c;
+			this.i /= c;
+		} else {
+			const { conj: conjugate } = c;
+			this.mul(conjugate).div(c.mul(conjugate).r);
 		}
 
-		const { conjugate } = c;
-		return this.mult(conjugate).div(c.mult(conjugate).real);
+		return this;
 	}
 
 	sq() {
-		const { real, imaginary } = this;
-		this.real = real ** 2 - imaginary ** 2;
-		this.imaginary = 2 * real * imaginary;
+		const { r, i } = this;
+		this.r = r * r - i * i;
+		const i2 = r * i;
+		this.i = i2 + i2;
 		return this;
 	}
 
@@ -87,18 +89,19 @@ export class Complex implements ComplexLike {
 	}
 
 	magSq() {
-		return this.real ** 2 + this.imaginary ** 2;
+		const { r, i } = this;
+		return r * r + i * i;
 	}
 
 	angle() {
-		return Math.atan2(this.imaginary, this.real);
+		return Math.atan2(this.i, this.r);
 	}
 
 	pow(c: ComplexLike) {
-		const { real, imaginary } = this;
-		const { real: re, imaginary: im } = c;
-		this.real = real ** re * imaginary ** im;
-		this.imaginary = real ** im * imaginary ** re;
+		const { r, i } = this;
+		const { r: r2, i: i2 } = c;
+		this.r = r ** r2 * i ** i2;
+		this.i = r ** i2 * i ** r2;
 		return this;
 	}
 }

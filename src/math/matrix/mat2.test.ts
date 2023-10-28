@@ -15,7 +15,7 @@ test("subtract", () => {
 });
 
 test("multiply", () => {
-	const ans = Matrix2.mult(a, b);
+	const ans = Matrix2.mul(a, b);
 	assert(ans.equals([79, 112, 73, 96]));
 });
 

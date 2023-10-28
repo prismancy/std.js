@@ -37,11 +37,6 @@ export class Matrix {
 ]`;
 	}
 
-	log() {
-		console.log(this.toString());
-		return this;
-	}
-
 	*[Symbol.iterator]() {
 		const { rows } = this;
 		for (let i = 0; i < rows; i++) {
@@ -132,11 +127,11 @@ export class Matrix {
 		return m1.copy().sub(m2);
 	}
 
-	mult(m: Matrix | number) {
-		return this.set(Matrix.mult(this, m));
+	mul(m: Matrix | number) {
+		return this.set(Matrix.mul(this, m));
 	}
 
-	static mult(m1: Matrix, m2: Matrix | number) {
+	static mul(m1: Matrix, m2: Matrix | number) {
 		if (typeof m2 === "number") {
 			const { rows, cols } = m1;
 			const ans = mat(rows, cols);
@@ -166,7 +161,7 @@ export class Matrix {
 	}
 
 	div(m: number) {
-		return this.mult(1 / m);
+		return this.mul(1 / m);
 	}
 
 	static transpose(m: Matrix) {

@@ -1,13 +1,7 @@
-import { type Dict } from "../../types";
-
-export interface Vector {
+export interface Vec extends Float32Array {
 	toString(): string;
-	toJSON(): Dict<number>;
-	toArray(): number[];
 
-	copy(): Vector;
-
-	log(): this;
+	copy(): Vec;
 
 	mag(): number;
 

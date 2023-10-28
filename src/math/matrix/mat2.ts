@@ -21,11 +21,6 @@ export class Matrix2 {
 ]`;
 	}
 
-	log() {
-		console.log(this.toString());
-		return this;
-	}
-
 	*[Symbol.iterator]() {
 		for (let i = 0; i < 4; i++) {
 			yield this[i]!;
@@ -82,11 +77,11 @@ export class Matrix2 {
 		return m1.copy().sub(m2);
 	}
 
-	mult(m: Matrix2 | Mat2 | number) {
-		return this.set(Matrix2.mult(this, m));
+	mul(m: Matrix2 | Mat2 | number) {
+		return this.set(Matrix2.mul(this, m));
 	}
 
-	static mult(m1: Matrix2 | Mat2, m2: Matrix2 | Mat2 | number) {
+	static mul(m1: Matrix2 | Mat2, m2: Matrix2 | Mat2 | number) {
 		if (typeof m2 === "number") {
 			const ans = mat2();
 			for (let i = 0; i < 4; i++) {
@@ -108,7 +103,7 @@ export class Matrix2 {
 	}
 
 	div(m: number) {
-		return this.mult(1 / m);
+		return this.mul(1 / m);
 	}
 
 	transpose() {

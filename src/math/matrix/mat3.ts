@@ -27,11 +27,6 @@ export class Matrix3 {
 ]`;
 	}
 
-	log() {
-		console.log(this.toString());
-		return this;
-	}
-
 	*[Symbol.iterator]() {
 		for (let i = 0; i < 9; i++) {
 			yield this[i]!;
@@ -88,19 +83,17 @@ export class Matrix3 {
 		return m1.copy().sub(m2);
 	}
 
-	mult(m: Matrix3 | Mat3 | number) {
-		return this.set(Matrix3.mult(this, m));
+	mul(m: Matrix3 | Mat3 | number) {
+		return this.set(Matrix3.mul(this, m));
 	}
 
-	static mult(m1: Matrix3 | Mat3, m2: Matrix3 | Mat3 | number) {
+	static mul(m1: Matrix3 | Mat3, m2: Matrix3 | Mat3 | number) {
 		if (typeof m2 === "number") {
 			const ans = mat3(m1);
-			console.log({ ans });
 			for (let i = 0; i < 9; i++) {
 				ans[i] *= m2;
 			}
 
-			console.log({ ans });
 			return ans;
 		}
 
@@ -122,7 +115,7 @@ export class Matrix3 {
 	}
 
 	div(m: number) {
-		return this.mult(1 / m);
+		return this.mul(1 / m);
 	}
 
 	transpose() {
@@ -156,8 +149,6 @@ export class Matrix3 {
 	}
 
 	inv() {
-		console.log(this.adj());
-		console.log(this.det());
 		return this.adj().div(this.det());
 	}
 }

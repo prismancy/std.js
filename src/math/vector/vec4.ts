@@ -1,240 +1,190 @@
+/* eslint-disable max-params */
 import { clamp, lerp } from "../funcs";
-import { type Vector } from "./vec";
+import { type Vec } from "./vec";
 
-export type Vector4Like = { x: number; y: number; z: number; w: number };
-type First = number | [x: number, y: number, z: number, w: number] | Vector4;
+export type Vec4Like =
+	| [x: number, y: number, z: number, w: number]
+	| Float32Array;
+export type ReadonlyVec4Like = Readonly<Vec4Like>;
+type First = ReadonlyVec4Like | number;
 
-export class Vector4 implements Vector, Vector4Like {
-	x!: number;
-	y!: number;
-	z!: number;
-	w!: number;
+export class Vec4 extends Float32Array implements Vec {
+	static readonly BYTE_LENGTH = 4 * Float32Array.BYTES_PER_ELEMENT;
 
 	constructor(x: First = 0, y?: number, z?: number, w?: number) {
-		this.set(x, y, z, w);
+		super();
+		if (typeof x === "number") {
+			this.x = x;
+			this.y = y ?? x;
+			this.z = z ?? (y === undefined ? x : 0);
+			this.w = w ?? (z === undefined ? x : 0);
+		} else {
+			[this[0] = 0, this[1] = 0, this[2] = 0, this[3] = 0] = x;
+		}
 	}
 
-	toString() {
-		const { x, y, z, w } = this;
+	/* prettier-ignore */ get x() { return this[0] || 0; }
+	/* prettier-ignore */ set x(value: number) { this[0] = value; }
+	/* prettier-ignore */ get y() { return this[1] || 0; }
+	/* prettier-ignore */ set y(value: number) { this[1] = value; }
+	/* prettier-ignore */ get z() { return this[2] || 0; }
+	/* prettier-ignore */ set z(value: number) { this[2] = value; }
+	/* prettier-ignore */ get w() { return this[2] || 0; }
+	/* prettier-ignore */ set w(value: number) { this[2] = value; }
+
+	/* prettier-ignore */ get r() { return this[0] || 0; }
+	/* prettier-ignore */ set r(value: number) { this[0] = value; }
+	/* prettier-ignore */ get g() { return this[1] || 0; }
+	/* prettier-ignore */ set g(value: number) { this[1] = value; }
+	/* prettier-ignore */ get b() { return this[2] || 0; }
+	/* prettier-ignore */ set b(value: number) { this[2] = value; }
+	/* prettier-ignore */ get a() { return this[2] || 0; }
+	/* prettier-ignore */ set a(value: number) { this[2] = value; }
+
+	override toString() {
+		const [x, y, z, w] = this;
 		return `vec4 <${x}, ${y}, ${z}, ${w}>`;
 	}
 
-	toJSON() {
-		const { x, y, z, w } = this;
-		return { x, y, z, w };
-	}
-
-	toArray(): [x: number, y: number, z: number, w: number] {
-		return [this.x, this.y, this.z, this.w];
-	}
-
 	copy() {
-		return vec4(this.x, this.y, this.z, this.w);
+		return vec4(...this);
 	}
 
-	log() {
-		console.log(this.toString());
-		return this;
-	}
-
-	set(x: First, y?: number, z?: number, w?: number) {
-		if (x instanceof Vector4) {
-			this.x = x.x;
-			this.y = x.y;
-			this.z = x.z;
-			this.w = x.w;
-		} else if (Array.isArray(x)) {
-			[this.x, this.y, this.z, this.w] = x;
-		} else if (y === undefined) {
-			this.x = x;
-			this.y = x;
-			this.z = x;
-			this.w = x;
-		} else {
-			this.x = x;
-			this.y = y || 0;
-			this.z = z || 0;
-			this.w = w || 0;
-		}
-
-		return this;
-	}
-
-	equals(x: First, y = 0, z = 0, w = 0) {
-		if (x instanceof Vector4)
+	equals(x: First, y?: number, z?: number, w?: number) {
+		if (typeof x === "number")
 			return (
-				this.x === x.x && this.y === x.y && this.z === x.z && this.w === x.w
+				this.x === x &&
+				this.y === (y ?? x) &&
+				this.z === (z ?? (y === undefined ? x : 0)) &&
+				this.w === (w ?? (z === undefined ? x : 0))
 			);
-		if (Array.isArray(x))
-			return (
-				this.x === x[0] && this.y === x[1] && this.z === x[2] && this.w === x[3]
-			);
-
-		return this.x === x && this.y === y && this.z === z && this.w === w;
+		return (
+			this.x === x[0] && this.y === x[1] && this.z === x[2] && this.w === x[3]
+		);
 	}
 
 	add(x: First, y?: number, z?: number, w?: number) {
-		if (x instanceof Vector4) {
-			this.x += x.x;
-			this.y += x.y;
-			this.z += x.z;
-			this.w += x.w;
-		} else if (Array.isArray(x)) {
+		if (typeof x === "number") {
+			this.x += x;
+			this.y += y ?? x;
+			this.z += z ?? (y === undefined ? x : 0);
+			this.w += w ?? (z === undefined ? x : 0);
+		} else {
 			this.x += x[0];
 			this.y += x[1];
 			this.z += x[2];
 			this.w += x[3];
-		} else if (y === undefined) {
-			this.x += x;
-			this.y += x;
-			this.z += x;
-			this.w += x;
-		} else {
-			this.x += x;
-			this.y += y || 0;
-			this.z += z || 0;
-			this.w += w || 0;
 		}
 
 		return this;
 	}
 
-	static add(v1: Vector4, x: First, y?: number, z?: number, w?: number) {
+	static add(v1: Vec4, x: First, y?: number, z?: number, w?: number) {
 		return v1.copy().add(x, y, z, w);
 	}
 
 	sub(x: First, y?: number, z?: number, w?: number) {
-		if (x instanceof Vector4) {
-			this.x -= x.x;
-			this.y -= x.y;
-			this.z -= x.z;
-			this.w -= x.w;
-		} else if (Array.isArray(x)) {
+		if (typeof x === "number") {
+			this.x -= x;
+			this.y -= y ?? x;
+			this.z -= z ?? (y === undefined ? x : 0);
+			this.w -= w ?? (z === undefined ? x : 0);
+		} else {
 			this.x -= x[0];
 			this.y -= x[1];
 			this.z -= x[2];
 			this.w -= x[3];
-		} else if (y === undefined) {
-			this.x -= x;
-			this.y -= x;
-			this.z -= x;
-			this.w -= x;
-		} else {
-			this.x -= x;
-			this.y -= y || 0;
-			this.z -= z || 0;
-			this.w -= w || 0;
 		}
 
 		return this;
 	}
 
-	static sub(v1: Vector4, x: First, y?: number, z?: number, w?: number) {
+	static sub(v1: Vec4, x: First, y?: number, z?: number, w?: number) {
 		return v1.copy().sub(x, y, z, w);
 	}
 
-	mult(x: First, y?: number, z?: number, w?: number) {
-		if (x instanceof Vector4) {
-			this.x *= x.x;
-			this.y *= x.y;
-			this.z *= x.z;
-			this.w *= x.w;
-		} else if (Array.isArray(x)) {
+	mul(x: First, y?: number, z?: number, w?: number) {
+		if (typeof x === "number") {
+			this.x *= x;
+			this.y *= y ?? x;
+			this.z *= z ?? (y === undefined ? x : 1);
+			this.w *= w ?? (z === undefined ? x : 1);
+		} else {
 			this.x *= x[0];
 			this.y *= x[1];
 			this.z *= x[2];
 			this.w *= x[3];
-		} else if (y === undefined) {
-			this.x *= x;
-			this.y *= x;
-			this.z *= x;
-			this.w *= x;
-		} else {
-			this.x *= x;
-			this.y *= y ?? 1;
-			this.z *= z ?? 1;
-			this.w *= w ?? 1;
 		}
 
 		return this;
 	}
 
-	static mult(v1: Vector4, x: First, y?: number, z?: number, w?: number) {
-		return v1.copy().mult(x, y, z, w);
+	static mul(v1: Vec4, x: First, y?: number, z?: number, w?: number) {
+		return v1.copy().mul(x, y, z, w);
 	}
 
 	div(x: First, y?: number, z?: number, w?: number) {
-		if (x instanceof Vector4) {
-			this.x /= x.x;
-			this.y /= x.y;
-			this.z /= x.z;
-			this.w /= x.w;
-		} else if (Array.isArray(x)) {
+		if (typeof x === "number") {
+			this.x /= x;
+			this.y /= y ?? x;
+			this.z /= z ?? (y === undefined ? x : 1);
+			this.w /= w ?? (z === undefined ? x : 1);
+		} else {
 			this.x /= x[0];
 			this.y /= x[1];
 			this.z /= x[2];
 			this.w /= x[3];
-		} else if (y === undefined) {
-			this.x /= x;
-			this.y /= x;
-			this.z /= x;
-			this.w /= x;
-		} else {
-			this.x /= x;
-			this.y /= y ?? 1;
-			this.z /= z ?? 1;
-			this.w /= w ?? 1;
 		}
 
 		return this;
 	}
 
-	static div(v1: Vector4, x: First, y?: number, z?: number, w?: number) {
+	static div(v1: Vec4, x: First, y?: number, z?: number, w?: number) {
 		return v1.copy().div(x, y, z, w);
 	}
 
-	static fma(a: Vector4Like, b: Vector4Like, c: Vector4Like) {
+	static fma(a: ReadonlyVec4Like, b: ReadonlyVec4Like, c: ReadonlyVec4Like) {
 		return vec4(
-			a.x * b.x + c.x,
-			a.y * b.y + c.y,
-			a.z * b.z + c.z,
-			a.w * b.w + c.w,
+			a[0] * b[0] + c[0],
+			a[1] * b[1] + c[1],
+			a[2] * b[2] + c[2],
+			a[3] * b[3] + c[3],
 		);
 	}
 
-	lt(x: Vector4Like) {
+	lt(x: ReadonlyVec4Like) {
 		return vec4(
-			this.x < x.x ? 1 : 0,
-			this.y < x.y ? 1 : 0,
-			this.z < x.z ? 1 : 0,
-			this.w < x.w ? 1 : 0,
+			this.x < x[0] ? 1 : 0,
+			this.y < x[1] ? 1 : 0,
+			this.z < x[2] ? 1 : 0,
+			this.w < x[3] ? 1 : 0,
 		);
 	}
 
-	lte(x: Vector4Like) {
+	lte(x: ReadonlyVec4Like) {
 		return vec4(
-			this.x <= x.x ? 1 : 0,
-			this.y <= x.y ? 1 : 0,
-			this.z <= x.z ? 1 : 0,
-			this.w <= x.w ? 1 : 0,
+			this.x <= x[0] ? 1 : 0,
+			this.y <= x[1] ? 1 : 0,
+			this.z <= x[2] ? 1 : 0,
+			this.w <= x[3] ? 1 : 0,
 		);
 	}
 
-	gt(x: Vector4Like) {
+	gt(x: ReadonlyVec4Like) {
 		return vec4(
-			this.x > x.x ? 1 : 0,
-			this.y > x.y ? 1 : 0,
-			this.z > x.z ? 1 : 0,
-			this.w > x.w ? 1 : 0,
+			this.x > x[0] ? 1 : 0,
+			this.y > x[1] ? 1 : 0,
+			this.z > x[2] ? 1 : 0,
+			this.w > x[3] ? 1 : 0,
 		);
 	}
 
-	gte(x: Vector4Like) {
+	gte(x: ReadonlyVec4Like) {
 		return vec4(
-			this.x >= x.x ? 1 : 0,
-			this.y >= x.y ? 1 : 0,
-			this.z >= x.z ? 1 : 0,
-			this.w >= x.w ? 1 : 0,
+			this.x >= x[0] ? 1 : 0,
+			this.y >= x[1] ? 1 : 0,
+			this.z >= x[2] ? 1 : 0,
+			this.w >= x[3] ? 1 : 0,
 		);
 	}
 
@@ -251,7 +201,7 @@ export class Vector4 implements Vector, Vector4Like {
 		return this;
 	}
 
-	static normalize(v: Vector4) {
+	static normalize(v: Vec4) {
 		return v.copy().normalize();
 	}
 
@@ -260,69 +210,73 @@ export class Vector4 implements Vector, Vector4Like {
 	}
 
 	setMag(n: number) {
-		return this.normalize().mult(n);
+		return this.normalize().mul(n);
 	}
 
 	magSq() {
 		const { x, y, z, w } = this;
-		return x ** 2 + y ** 2 + z ** 2 + w ** 2;
+		return x * x + y * y + z * z + w * w;
 	}
 
-	dist(v: Vector4) {
+	dist(v: Vec4) {
 		return Math.sqrt(this.distSq(v));
 	}
 
-	distSq(v: Vector4) {
-		return Vector4.sub(v, this).magSq();
+	distSq(v: Vec4) {
+		return Vec4.sub(v, this).magSq();
 	}
 
-	dot(v: Vector4Like) {
+	dot(v: ReadonlyVec4Like) {
 		const { x, y, z, w } = this;
-		return x * v.x + y * v.y + z * v.z + w * v.w;
+		return x * v[0] + y * v[1] + z * v[2] + w * v[3];
 	}
 
-	lerp(v: Vector4Like, norm: number) {
+	lerp(v: ReadonlyVec4Like, norm: number) {
 		const { x, y, z, w } = this;
-		this.x = lerp(x, v.x, norm);
-		this.y = lerp(y, v.y, norm);
-		this.z = lerp(z, v.z, norm);
-		this.w = lerp(w, v.w, norm);
+		this.x = lerp(x, v[0], norm);
+		this.y = lerp(y, v[1], norm);
+		this.z = lerp(z, v[2], norm);
+		this.w = lerp(w, v[3], norm);
 		return this;
 	}
 
-	static lerp(v1: Vector4, v2: Vector4Like, norm: number) {
+	static lerp(v1: Vec4, v2: ReadonlyVec4Like, norm: number) {
 		return v1.copy().lerp(v2, norm);
 	}
 
-	clamp(min: Vector4Like, max: Vector4Like) {
+	clamp(min: ReadonlyVec4Like, max: ReadonlyVec4Like) {
 		const { x, y, z, w } = this;
-		this.x = clamp(x, min.x, max.x);
-		this.y = clamp(y, min.y, max.y);
-		this.z = clamp(z, min.z, max.z);
-		this.w = clamp(w, min.w, max.w);
+		this.x = clamp(x, min[0], max[0]);
+		this.y = clamp(y, min[1], max[1]);
+		this.z = clamp(z, min[2], max[2]);
+		this.w = clamp(w, min[3], max[3]);
 		return this;
 	}
 
-	static clamp(v: Vector4, min: Vector4Like, max: Vector4Like) {
+	static clamp(v: Vec4, min: ReadonlyVec4Like, max: ReadonlyVec4Like) {
 		return v.copy().clamp(min, max);
 	}
 
-	reflect(normal: Vector4) {
-		return this.sub(Vector4.mult(normal, 2 * this.dot(normal)));
+	reflect(normal: Vec4) {
+		return this.sub(Vec4.mul(normal, 2 * this.dot(normal)));
 	}
 
-	static reflect(v: Vector4, normal: Vector4) {
+	static reflect(v: Vec4, normal: Vec4) {
 		return v.copy().reflect(normal);
 	}
 
-	refract(normal: Vector4, eta: number) {
+	refract(normal: Vec4, eta: number) {
 		const nDot = this.dot(normal);
 		const k = 1 - eta * eta * (1 - nDot * nDot);
-		if (k < 0) return this;
-		return this.sub(Vector4.mult(normal, eta * nDot + Math.sqrt(k)));
+		if (k < 0) {
+			this.x = this.y = this.z = this.w = 0;
+			return this;
+		}
+
+		return this.sub(Vec4.mul(normal, eta * nDot + Math.sqrt(k)));
 	}
 }
 
 export function vec4(x?: First, y?: number, z?: number, w?: number) {
-	return new Vector4(x, y, z, w);
+	return new Vec4(x, y, z, w);
 }
