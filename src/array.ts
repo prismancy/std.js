@@ -48,14 +48,19 @@ export function intersection<T>(...arrays: ReadonlyArray<readonly T[]>): T[] {
 	return first.filter(item => rest.every(array => array.includes(item)));
 }
 
+export function added<T, U>(oldArray: readonly T[], newArray: readonly U[]) {
+	return newArray.filter(value => !oldArray.includes(value as unknown as T));
+}
+
+export function removed<T, U>(oldArray: readonly T[], newArray: readonly U[]) {
+	return oldArray.filter(value => !newArray.includes(value as unknown as U));
+}
+
 export function changes<T, U>(
 	oldArray: readonly T[],
 	newArray: readonly U[],
 ): [added: U[], removed: T[]] {
-	return [
-		newArray.filter(value => !oldArray.includes(value as unknown as T)),
-		oldArray.filter(value => !newArray.includes(value as unknown as U)),
-	];
+	return [added(oldArray, newArray), removed(oldArray, newArray)];
 }
 
 export function difference<T>(array1: readonly T[], array2: readonly T[]) {
