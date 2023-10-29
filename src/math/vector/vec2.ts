@@ -39,7 +39,7 @@ export class Vec2 extends Float32Array implements Vec {
 			.setMag(mag);
 	}
 
-	equals(x: First, y?: number) {
+	eq(x: First, y?: number) {
 		if (typeof x === "number") return this.x === x && this.y === (y ?? x);
 		return this.x === x[0] && this.y === x[1];
 	}

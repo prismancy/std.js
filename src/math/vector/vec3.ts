@@ -50,7 +50,7 @@ export class Vec3 extends Float32Array implements Vec {
 			.setMag(mag);
 	}
 
-	equals(x: First, y?: number, z?: number) {
+	eq(x: First, y?: number, z?: number) {
 		if (typeof x === "number")
 			return (
 				this.x === x &&

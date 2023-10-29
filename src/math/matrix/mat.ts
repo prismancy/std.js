@@ -1,4 +1,5 @@
 import { random } from "../../random";
+import { closeTo } from "../funcs";
 
 type Mat = number[][];
 
@@ -84,13 +85,13 @@ export class Matrix {
 		return this;
 	}
 
-	equals(m: Matrix | Mat) {
+	eq(m: Matrix | Mat, precision?: number) {
 		const { rows, cols } = this;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
 				const a = this[i]![j]!;
 				const b = m[i]![j]!;
-				if (Math.abs(a - b) > Number.EPSILON) return false;
+				if (!closeTo(a, b, precision)) return false;
 			}
 		}
 

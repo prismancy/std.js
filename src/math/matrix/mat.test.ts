@@ -16,7 +16,7 @@ const b = mat([
 test("multiply", () => {
 	const ans = Matrix.mul(a, b);
 	assert(
-		ans.equals([
+		ans.eq([
 			[16, 49],
 			[8, 48],
 			[18, 88],

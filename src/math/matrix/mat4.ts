@@ -1,33 +1,36 @@
+import { closeTo } from "../funcs";
 import { mat3 } from "./mat3";
 
-type Vec4 = [number, number, number, number];
-type Mat4 = [...Vec4, ...Vec4, ...Vec4, ...Vec4];
+export type Mat4Like =
+	| [
+			m00: number,
+			m01: number,
+			m02: number,
+			m03: number,
+			m10: number,
+			m11: number,
+			m12: number,
+			m13: number,
+			m20: number,
+			m21: number,
+			m22: number,
+			m23: number,
+			m30: number,
+			m31: number,
+			m32: number,
+			m33: number,
+	  ]
+	| Float32Array;
+export type ReadonlyMat4Like = Readonly<Mat4Like>;
 
-export class Matrix4 {
-	0: number;
-	1: number;
-	2: number;
-	3: number;
-	4: number;
-	5: number;
-	6: number;
-	7: number;
-	8: number;
-	9: number;
-	10: number;
-	11: number;
-	12: number;
-	13: number;
-	14: number;
-	15: number;
-	[i: number]: number;
-
-	constructor(matrix?: Matrix4 | Mat4) {
-		if (matrix) this.set(matrix);
-		else this.identity();
+export class Mat4 extends Float32Array {
+	constructor(
+		matrix: ReadonlyMat4Like = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+	) {
+		super(matrix);
 	}
 
-	toString() {
+	override toString() {
 		const [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = this;
 		return `mat4 [
   ${a} ${b} ${c} ${d}
@@ -37,39 +40,21 @@ export class Matrix4 {
 ]`;
 	}
 
-	*[Symbol.iterator]() {
-		for (let i = 0; i < 16; i++) {
-			yield this[i]!;
-		}
-	}
-
 	copy() {
-		return mat4([...this] as Mat4);
+		return mat4(this);
 	}
 
-	set(m: Matrix4 | Mat4) {
-		for (let i = 0; i < 16; i++) {
-			this[i] = m[i]!;
-		}
-
-		return this;
-	}
-
-	identity() {
-		return this.set([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
-	}
-
-	equals(m: Matrix4 | Mat4) {
+	eq(m: ReadonlyMat4Like, precision?: number) {
 		for (let i = 0; i < 16; i++) {
 			const a = this[i]!;
 			const b = m[i]!;
-			if (Math.abs(a - b) > Number.EPSILON) return false;
+			if (!closeTo(a, b, precision)) return false;
 		}
 
 		return true;
 	}
 
-	add(m: Matrix4 | Mat4) {
+	add(m: ReadonlyMat4Like) {
 		for (let i = 0; i < 16; i++) {
 			this[i] += m[i]!;
 		}
@@ -77,11 +62,11 @@ export class Matrix4 {
 		return this;
 	}
 
-	static add(m1: Matrix4, m2: Matrix4 | Mat4) {
+	static add(m1: Mat4, m2: ReadonlyMat4Like) {
 		return m1.copy().add(m2);
 	}
 
-	sub(m: Matrix4 | Mat4) {
+	sub(m: ReadonlyMat4Like) {
 		for (let i = 0; i < 16; i++) {
 			this[i] -= m[i]!;
 		}
@@ -89,15 +74,16 @@ export class Matrix4 {
 		return this;
 	}
 
-	static sub(m1: Matrix4, m2: Matrix4 | Mat4) {
+	static sub(m1: Mat4, m2: ReadonlyMat4Like) {
 		return m1.copy().sub(m2);
 	}
 
-	mul(m: Matrix4 | Mat4 | number) {
-		return this.set(Matrix4.mul(this, m));
+	mul(m: number | ReadonlyMat4Like) {
+		this.set(Mat4.mul(this, m));
+		return this;
 	}
 
-	static mul(m1: Matrix4 | Mat4, m2: Matrix4 | Mat4 | number) {
+	static mul(m1: ReadonlyMat4Like, m2: number | ReadonlyMat4Like) {
 		if (typeof m2 === "number") {
 			const ans = mat4();
 			for (let i = 0; i < 16; i++) {
@@ -108,40 +94,40 @@ export class Matrix4 {
 		}
 
 		const [
-			a0,
-			a1,
-			a2,
-			a3,
-			a4,
-			a5,
-			a6,
-			a7,
-			a8,
-			a9,
-			a10,
-			a11,
-			a12,
-			a13,
-			a14,
-			a15,
+			a0 = 0,
+			a1 = 0,
+			a2 = 0,
+			a3 = 0,
+			a4 = 0,
+			a5 = 0,
+			a6 = 0,
+			a7 = 0,
+			a8 = 0,
+			a9 = 0,
+			a10 = 0,
+			a11 = 0,
+			a12 = 0,
+			a13 = 0,
+			a14 = 0,
+			a15 = 0,
 		] = m1;
 		const [
-			b0,
-			b1,
-			b2,
-			b3,
-			b4,
-			b5,
-			b6,
-			b7,
-			b8,
-			b9,
-			b10,
-			b11,
-			b12,
-			b13,
-			b14,
-			b15,
+			b0 = 0,
+			b1 = 0,
+			b2 = 0,
+			b3 = 0,
+			b4 = 0,
+			b5 = 0,
+			b6 = 0,
+			b7 = 0,
+			b8 = 0,
+			b9 = 0,
+			b10 = 0,
+			b11 = 0,
+			b12 = 0,
+			b13 = 0,
+			b14 = 0,
+			b15 = 0,
 		] = m2;
 		return mat4([
 			a0 * b0 + a1 * b4 + a2 * b8 + a3 * b12,
@@ -171,7 +157,23 @@ export class Matrix4 {
 	}
 
 	transpose() {
-		const [, b, c, d, e, , g, h, i, j, , l, m, n, o] = this;
+		const [
+			,
+			b = 0,
+			c = 0,
+			d = 0,
+			e = 0,
+			,
+			g = 0,
+			h = 0,
+			i = 0,
+			j = 0,
+			,
+			l = 0,
+			m = 0,
+			n = 0,
+			o = 0,
+		] = this;
 		[this[4], this[1]] = [b, e];
 		[this[8], this[2]] = [c, i];
 		[this[12], this[3]] = [d, m];
@@ -182,7 +184,24 @@ export class Matrix4 {
 	}
 
 	det() {
-		const [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = this;
+		const [
+			a = 0,
+			b = 0,
+			c = 0,
+			d = 0,
+			e = 0,
+			f = 0,
+			g = 0,
+			h = 0,
+			i = 0,
+			j = 0,
+			k = 0,
+			l = 0,
+			m = 0,
+			n = 0,
+			o = 0,
+			p = 0,
+		] = this;
 		return (
 			a * mat3([f, g, h, j, k, l, n, o, p]).det() -
 			b * mat3([e, g, h, i, k, l, m, o, p]).det() +
@@ -192,7 +211,24 @@ export class Matrix4 {
 	}
 
 	adj() {
-		const [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = this;
+		const [
+			a = 0,
+			b = 0,
+			c = 0,
+			d = 0,
+			e = 0,
+			f = 0,
+			g = 0,
+			h = 0,
+			i = 0,
+			j = 0,
+			k = 0,
+			l = 0,
+			m = 0,
+			n = 0,
+			o = 0,
+			p = 0,
+		] = this;
 		return mat4([
 			mat3([f, g, h, j, k, l, n, o, p]).det(),
 			-mat3([e, g, h, i, k, l, m, o, p]).det(),
@@ -218,6 +254,6 @@ export class Matrix4 {
 	}
 }
 
-export function mat4(matrix?: Matrix4 | Mat4) {
-	return new Matrix4(matrix);
+export function mat4(matrix?: ReadonlyMat4Like) {
+	return new Mat4(matrix);
 }

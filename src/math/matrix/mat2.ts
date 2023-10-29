@@ -1,19 +1,18 @@
-type Vec2 = [number, number];
-type Mat2 = [...Vec2, ...Vec2];
+import { closeTo } from "../funcs";
 
-export class Matrix2 {
-	0: number;
-	1: number;
-	2: number;
-	3: number;
-	[i: number]: number;
+export type Mat2Like =
+	| [m00: number, m01: number, m10: number, m11: number]
+	| Float32Array;
+export type ReadonlyMat2Like = Readonly<Mat2Like>;
 
-	constructor(matrix?: Matrix2 | Mat2) {
-		if (matrix) this.set(matrix);
-		else this.identity();
+export class Mat2 extends Float32Array {
+	static readonly BYTE_LENGTH = 4 * Float32Array.BYTES_PER_ELEMENT;
+
+	constructor(matrix: ReadonlyMat2Like = [1, 0, 0, 1]) {
+		super(matrix);
 	}
 
-	toString() {
+	override toString() {
 		const [a, b, c, d] = this;
 		return `mat2 [
   ${a} ${b}
@@ -21,39 +20,26 @@ export class Matrix2 {
 ]`;
 	}
 
-	*[Symbol.iterator]() {
-		for (let i = 0; i < 4; i++) {
-			yield this[i]!;
-		}
-	}
-
 	copy() {
-		return mat2([...this] as Mat2);
-	}
-
-	set(m: Matrix2 | Mat2) {
-		for (let i = 0; i < 4; i++) {
-			this[i] = m[i]!;
-		}
-
-		return this;
+		return mat2(this);
 	}
 
 	identity() {
-		return this.set([1, 0, 0, 1]);
+		this.set([1, 0, 0, 1]);
+		return this;
 	}
 
-	equals(m: Matrix2 | Mat2) {
+	eq(m: ReadonlyMat2Like, precision?: number) {
 		for (let i = 0; i < 4; i++) {
 			const a = this[i]!;
 			const b = m[i]!;
-			if (Math.abs(a - b) > Number.EPSILON) return false;
+			if (!closeTo(a, b, precision)) return false;
 		}
 
 		return true;
 	}
 
-	add(m: Matrix2 | Mat2) {
+	add(m: ReadonlyMat2Like) {
 		for (let i = 0; i < 4; i++) {
 			this[i] += m[i]!;
 		}
@@ -61,11 +47,11 @@ export class Matrix2 {
 		return this;
 	}
 
-	static add(m1: Matrix2, m2: Matrix2 | Mat2) {
+	static add(m1: Mat2, m2: ReadonlyMat2Like) {
 		return m1.copy().add(m2);
 	}
 
-	sub(m: Matrix2 | Mat2) {
+	sub(m: ReadonlyMat2Like) {
 		for (let i = 0; i < 4; i++) {
 			this[i] -= m[i]!;
 		}
@@ -73,15 +59,16 @@ export class Matrix2 {
 		return this;
 	}
 
-	static sub(m1: Matrix2, m2: Matrix2 | Mat2) {
+	static sub(m1: Mat2, m2: ReadonlyMat2Like) {
 		return m1.copy().sub(m2);
 	}
 
-	mul(m: Matrix2 | Mat2 | number) {
-		return this.set(Matrix2.mul(this, m));
+	mul(m: number | ReadonlyMat2Like) {
+		this.set(Mat2.mul(this, m));
+		return this;
 	}
 
-	static mul(m1: Matrix2 | Mat2, m2: Matrix2 | Mat2 | number) {
+	static mul(m1: ReadonlyMat2Like, m2: number | ReadonlyMat2Like) {
 		if (typeof m2 === "number") {
 			const ans = mat2();
 			for (let i = 0; i < 4; i++) {
@@ -91,8 +78,8 @@ export class Matrix2 {
 			return ans;
 		}
 
-		const [a0, a1, a2, a3] = m1;
-		const [b0, b1, b2, b3] = m2;
+		const [a0 = 0, a1 = 0, a2 = 0, a3 = 0] = m1;
+		const [b0 = 0, b1 = 0, b2 = 0, b3 = 0] = m2;
 		return mat2([
 			a0 * b0 + a1 * b2,
 			a0 * b1 + a1 * b3,
@@ -103,22 +90,23 @@ export class Matrix2 {
 	}
 
 	div(m: number) {
-		return this.mul(1 / m);
+		this.mul(1 / m);
+		return this;
 	}
 
 	transpose() {
-		const [, b, c] = this;
+		const [, b = 0, c = 0] = this;
 		[this[2], this[1]] = [b, c];
 		return this;
 	}
 
 	det() {
-		const [a, b, c, d] = this;
+		const [a = 0, b = 0, c = 0, d = 0] = this;
 		return a * d - b * c;
 	}
 
 	adj() {
-		const [a, b, c, d] = this;
+		const [a = 0, b = 0, c = 0, d = 0] = this;
 		return mat2([d, -b, -c, a]);
 	}
 
@@ -127,6 +115,6 @@ export class Matrix2 {
 	}
 }
 
-export function mat2(matrix?: Matrix2 | Mat2) {
-	return new Matrix2(matrix);
+export function mat2(matrix?: ReadonlyMat2Like) {
+	return new Mat2(matrix);
 }

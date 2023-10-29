@@ -1,24 +1,28 @@
-type Vec3 = [number, number, number];
-type Mat3 = [...Vec3, ...Vec3, ...Vec3];
+import { closeTo } from "../funcs";
 
-export class Matrix3 {
-	0: number;
-	1: number;
-	2: number;
-	3: number;
-	4: number;
-	5: number;
-	6: number;
-	7: number;
-	8: number;
-	[i: number]: number;
+export type Mat3Like =
+	| [
+			m00: number,
+			m01: number,
+			m02: number,
+			m10: number,
+			m11: number,
+			m12: number,
+			m20: number,
+			m21: number,
+			m22: number,
+	  ]
+	| Float32Array;
+export type ReadonlyMat3Like = Readonly<Mat3Like>;
 
-	constructor(matrix?: Matrix3 | Mat3) {
-		if (matrix) this.set(matrix);
-		else this.identity();
+export class Mat3 extends Float32Array {
+	static readonly BYTE_LENGTH = 9 * Float32Array.BYTES_PER_ELEMENT;
+
+	constructor(matrix: ReadonlyMat3Like = [1, 0, 0, 0, 1, 0, 0, 0, 1]) {
+		super(matrix);
 	}
 
-	toString() {
+	override toString() {
 		const [a, b, c, d, e, f, g, h, i] = this;
 		return `mat3 [
   ${a} ${b} ${c}
@@ -27,39 +31,26 @@ export class Matrix3 {
 ]`;
 	}
 
-	*[Symbol.iterator]() {
-		for (let i = 0; i < 9; i++) {
-			yield this[i]!;
-		}
-	}
-
 	copy() {
-		return mat3([...this] as Mat3);
-	}
-
-	set(m: Matrix3 | Mat3) {
-		for (let i = 0; i < 9; i++) {
-			this[i] = m[i]!;
-		}
-
-		return this;
+		return mat3(this);
 	}
 
 	identity() {
-		return this.set([1, 0, 0, 0, 1, 0, 0, 0, 1]);
+		this.set([1, 0, 0, 0, 1, 0, 0, 0, 1]);
+		return this;
 	}
 
-	equals(m: Matrix3 | Mat3) {
+	eq(m: ReadonlyMat3Like, precision?: number) {
 		for (let i = 0; i < 9; i++) {
 			const a = this[i]!;
 			const b = m[i]!;
-			if (Math.abs(a - b) > Number.EPSILON) return false;
+			if (!closeTo(a, b, precision)) return false;
 		}
 
 		return true;
 	}
 
-	add(m: Matrix3 | Mat3) {
+	add(m: ReadonlyMat3Like) {
 		for (let i = 0; i < 9; i++) {
 			this[i] += m[i]!;
 		}
@@ -67,11 +58,11 @@ export class Matrix3 {
 		return this;
 	}
 
-	static add(m1: Matrix3, m2: Matrix3 | Mat3) {
+	static add(m1: Mat3, m2: ReadonlyMat3Like) {
 		return m1.copy().add(m2);
 	}
 
-	sub(m: Matrix3 | Mat3) {
+	sub(m: ReadonlyMat3Like) {
 		for (let i = 0; i < 9; i++) {
 			this[i] -= m[i]!;
 		}
@@ -79,15 +70,16 @@ export class Matrix3 {
 		return this;
 	}
 
-	static sub(m1: Matrix3, m2: Matrix3 | Mat3) {
+	static sub(m1: Mat3, m2: ReadonlyMat3Like) {
 		return m1.copy().sub(m2);
 	}
 
-	mul(m: Matrix3 | Mat3 | number) {
-		return this.set(Matrix3.mul(this, m));
+	mul(m: number | ReadonlyMat3Like) {
+		this.set(Mat3.mul(this, m));
+		return this;
 	}
 
-	static mul(m1: Matrix3 | Mat3, m2: Matrix3 | Mat3 | number) {
+	static mul(m1: ReadonlyMat3Like, m2: number | ReadonlyMat3Like) {
 		if (typeof m2 === "number") {
 			const ans = mat3(m1);
 			for (let i = 0; i < 9; i++) {
@@ -97,8 +89,28 @@ export class Matrix3 {
 			return ans;
 		}
 
-		const [a0, a1, a2, a3, a4, a5, a6, a7, a8] = m1;
-		const [b0, b1, b2, b3, b4, b5, b6, b7, b8] = m2;
+		const [
+			a0 = 0,
+			a1 = 0,
+			a2 = 0,
+			a3 = 0,
+			a4 = 0,
+			a5 = 0,
+			a6 = 0,
+			a7 = 0,
+			a8 = 0,
+		] = m1;
+		const [
+			b0 = 0,
+			b1 = 0,
+			b2 = 0,
+			b3 = 0,
+			b4 = 0,
+			b5 = 0,
+			b6 = 0,
+			b7 = 0,
+			b8 = 0,
+		] = m2;
 		return mat3([
 			a0 * b0 + a1 * b3 + a2 * b6,
 			a0 * b1 + a1 * b4 + a2 * b7,
@@ -119,7 +131,7 @@ export class Matrix3 {
 	}
 
 	transpose() {
-		const [, b, c, d, , f, g, h] = this;
+		const [, b = 0, c = 0, d = 0, , f = 0, g = 0, h = 0] = this;
 		[this[3], this[1]] = [b, d];
 		[this[6], this[2]] = [c, g];
 		[this[7], this[5]] = [f, h];
@@ -127,12 +139,14 @@ export class Matrix3 {
 	}
 
 	det() {
-		const [a, b, c, d, e, f, g, h, i] = this;
+		const [a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0, i = 0] =
+			this;
 		return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
 	}
 
 	adj() {
-		const [a, b, c, d, e, f, g, h, i] = this;
+		const [a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0, i = 0] =
+			this;
 		return mat3([
 			e * i - f * h,
 			-(d * i - f * g),
@@ -153,6 +167,6 @@ export class Matrix3 {
 	}
 }
 
-export function mat3(matrix?: Matrix3 | Mat3) {
-	return new Matrix3(matrix);
+export function mat3(matrix?: ReadonlyMat3Like) {
+	return new Mat3(matrix);
 }

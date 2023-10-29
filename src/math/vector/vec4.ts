@@ -50,7 +50,7 @@ export class Vec4 extends Float32Array implements Vec {
 		return vec4(...this);
 	}
 
-	equals(x: First, y?: number, z?: number, w?: number) {
+	eq(x: First, y?: number, z?: number, w?: number) {
 		if (typeof x === "number")
 			return (
 				this.x === x &&
