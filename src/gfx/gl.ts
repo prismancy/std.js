@@ -2,6 +2,9 @@ import {
 	type ReadonlyMat2Like,
 	type ReadonlyMat3Like,
 	type ReadonlyMat4Like,
+	type ReadonlyVec2Like,
+	type ReadonlyVec3Like,
+	type ReadonlyVec4Like,
 } from "../math";
 import { screenIndexData, screenVertexData } from "./screen";
 import Shader from "./shader";
@@ -39,16 +42,16 @@ interface UniformData {
 	"float[]": number[];
 	ivec2: Vec2;
 	"ivec2[]": Vec2[];
-	vec2: Vec2;
-	"vec2[]": Vec2[];
+	vec2: ReadonlyVec2Like;
+	"vec2[]": ReadonlyVec2Like[];
 	ivec3: Vec3;
 	"ivec3[]": Vec3[];
-	vec3: Vec3;
-	"vec3[]": Vec3[];
+	vec3: ReadonlyVec3Like;
+	"vec3[]": ReadonlyVec3Like[];
 	ivec4: Vec4;
 	"ivec4[]": Vec4[];
-	vec4: Vec4;
-	"vec4[]": Vec4[];
+	vec4: ReadonlyVec4Like;
+	"vec4[]": ReadonlyVec4Like[];
 	mat2: ReadonlyMat2Like;
 	mat3: ReadonlyMat3Like;
 	mat4: ReadonlyMat4Like;
@@ -146,7 +149,7 @@ export class GL {
 		return [program, undefined];
 	}
 
-	createProgramFromSource(vertexSource: string, fragmentSource: string) {
+	createProgramFromSources(vertexSource: string, fragmentSource: string) {
 		const [vertexShader, vertexShaderError] =
 			this.createVertexShader(vertexSource);
 		if (vertexShaderError) return vertexShaderError;
@@ -161,6 +164,7 @@ export class GL {
 	screen() {
 		this.createVertexBuffer(screenVertexData);
 		this.createIndexBuffer(screenIndexData);
+		return this;
 	}
 
 	/**
@@ -237,6 +241,8 @@ export class GL {
 			this.createAttribute(name, [size, gl.FLOAT, false, stride, offset]);
 			offset += size * Float32Array.BYTES_PER_ELEMENT;
 		}
+
+		return this;
 	}
 
 	// eslint-disable-next-line complexity
@@ -282,7 +288,8 @@ export class GL {
 			}
 
 			case "vec2": {
-				gl.uniform2f(location, ...(data as UniformData["vec2"]));
+				const [x = 0, y = 0] = data as UniformData["vec2"];
+				gl.uniform2f(location, x, y);
 				break;
 			}
 
@@ -304,7 +311,8 @@ export class GL {
 			}
 
 			case "vec3": {
-				gl.uniform3f(location, ...(data as UniformData["vec3"]));
+				const [x = 0, y = 0, z = 0] = data as UniformData["vec3"];
+				gl.uniform3f(location, x, y, z);
 				break;
 			}
 
@@ -326,7 +334,8 @@ export class GL {
 			}
 
 			case "vec4": {
-				gl.uniform4f(location, ...(data as UniformData["vec4"]));
+				const [x = 0, y = 0, z = 0, w = 0] = data as UniformData["vec4"];
+				gl.uniform4f(location, x, y, z, w);
 				break;
 			}
 
@@ -378,6 +387,8 @@ export class GL {
 					this.uniform(`${name}[${i}]`, "struct", value);
 			}
 		}
+
+		return this;
 	}
 
 	/**
