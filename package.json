@@ -1,6 +1,6 @@
 {
   "name": "@in5net/std",
-  "version": "0.12.2",
+  "version": "0.13.0",
   "devDependencies": {
     "@in5net/prettier-config": "^1.1.0",
     "@in5net/xo-config": "^1.5.0",
@@ -19,6 +19,11 @@
       "import": "./dist/fn/index.mjs",
       "require": "./dist/fn/index.cjs",
       "types": "./dist/fn/index.d.ts"
+    },
+    "./gfx": {
+      "import": "./dist/gfx/index.mjs",
+      "require": "./dist/gfx/index.cjs",
+      "types": "./dist/gfx/index.d.ts"
     },
     "./iter": {
       "import": "./dist/iter/index.mjs",
