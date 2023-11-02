@@ -60,7 +60,7 @@ interface StructType<T extends keyof UniformData> {
 	data: UniformData[T];
 }
 
-export default class GL {
+export class GL {
 	program!: WebGLProgram;
 
 	vertexShader!: Shader;
