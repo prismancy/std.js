@@ -10,7 +10,7 @@ export class Vec3 extends Float32Array implements Vec {
 	static readonly BYTE_LENGTH = 3 * Float32Array.BYTES_PER_ELEMENT;
 
 	constructor(x: First = 0, y?: number, z?: number) {
-		super();
+		super([0, 0, 0]);
 		if (typeof x === "number") {
 			this.x = x;
 			this.y = y ?? x;
