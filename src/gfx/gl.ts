@@ -89,10 +89,19 @@ export class GL {
 		const { gl } = this;
 		const { canvas } = gl;
 
-		canvas.width = w;
-		canvas.height = h;
 		const dpr = window.devicePixelRatio;
-		gl.viewport(0, 0, w * dpr, h * dpr);
+		const width = w * dpr;
+		const height = h * dpr;
+
+		canvas.width = width;
+		canvas.height = height;
+
+		if (canvas instanceof HTMLCanvasElement) {
+			canvas.style.width = `${w}px`;
+			canvas.style.height = `${h}px`;
+		}
+
+		gl.viewport(0, 0, width, height);
 
 		return this;
 	}

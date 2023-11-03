@@ -75,6 +75,10 @@ export function trunc(n: number, precision = 0) {
 	return Math.trunc(n * factor) / factor;
 }
 
+export function fract(x: number) {
+	return x - Math.floor(x);
+}
+
 export function closeTo(n: number, target: number, precision = 5) {
 	return Math.abs(n - target) < 10 ** -precision;
 }

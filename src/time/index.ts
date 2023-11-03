@@ -64,7 +64,7 @@ export function since(a: Date, b: Date) {
 
 /**
  * Calculates the duration from `a` until `b`
- * The duration will be negative if `b` is after `a`
+ * The duration will be negative if `a` is after `b`
  * @param a
  * @param b
  */

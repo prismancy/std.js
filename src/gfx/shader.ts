@@ -25,11 +25,13 @@ export default class Shader {
 
 		// Check for shader errors
 		gl.compileShader(shader.shader);
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+		if (!gl.getShaderParameter(shader.shader, gl.COMPILE_STATUS))
 			return [
 				undefined,
 				new Error(
-					`Error compiling ${type} shader: ${gl.getShaderInfoLog(shader)}`,
+					`Error compiling ${type} shader: ${gl.getShaderInfoLog(
+						shader.shader,
+					)}`,
 				),
 			];
 
