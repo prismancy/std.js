@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { Queue } from "../structs";
-import { type AnyFunction } from "../types";
+import { type AnyFunction, type Result } from "../types";
 
 export * from "./queue";
 
@@ -75,14 +75,14 @@ export async function concurrently<T>(
 export async function retry<T>(
 	fn: () => Promise<T>,
 	{ maxAttempts = 5, delay = 0 }: { maxAttempts?: number; delay?: number } = {},
-) {
+): Promise<Result<T, unknown>> {
 	let attempts = 0;
 	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		try {
-			return await fn();
+			return [await fn(), undefined];
 		} catch (error) {
-			if (++attempts >= maxAttempts) throw error;
+			if (++attempts >= maxAttempts) return [undefined, error];
 			await sleep(delay);
 		}
 	}
@@ -99,15 +99,15 @@ export async function retryWithExponentialBackoff<T>(
 		startDelay?: number;
 		multiplier?: number;
 	} = {},
-) {
+): Promise<Result<T, unknown>> {
 	let attempts = 0;
 	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		try {
-			return await fn();
+			return [await fn(), undefined];
 		} catch (error) {
 			const delay = startDelay * multiplier ** attempts;
-			if (++attempts >= maxAttempts) throw error;
+			if (++attempts >= maxAttempts) return [undefined, error];
 			await sleep(delay);
 		}
 	}

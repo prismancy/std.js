@@ -6,6 +6,7 @@ import {
 	type ReadonlyVec3Like,
 	type ReadonlyVec4Like,
 } from "../math";
+import { type Result } from "../types";
 import { screenIndexData, screenVertexData } from "./screen";
 import Shader from "./shader";
 
@@ -130,7 +131,7 @@ export class GL {
 	createProgram(
 		vertexShader: Shader,
 		fragmentShader: Shader,
-	): [WebGLProgram, undefined] | [undefined, Error] {
+	): Result<WebGLProgram> {
 		const { gl } = this;
 		const program = gl.createProgram();
 		if (!program) return [undefined, new Error("Error creating program")];

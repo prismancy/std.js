@@ -75,6 +75,11 @@
       "require": "./dist/easing.cjs",
       "types": "./dist/easing.d.ts"
     },
+    "./events": {
+      "import": "./dist/events.mjs",
+      "require": "./dist/events.cjs",
+      "types": "./dist/events.d.ts"
+    },
     "./object": {
       "import": "./dist/object.mjs",
       "require": "./dist/object.cjs",

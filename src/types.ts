@@ -13,6 +13,8 @@ export type Dict<T> = Record<string, T>;
 
 export type Indexable<T> = Record<number, T>;
 
+export type Result<T, E = Error> = [T, undefined] | [undefined, E];
+
 export type Awaitable<T> = T | Promise<T>;
 
 // https://github.com/total-typescript/ts-reset/blob/main/src/entrypoints/utils.d.ts

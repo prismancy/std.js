@@ -11,7 +11,8 @@ export function easeOutQuad(t: number) {
 }
 
 export function easeInOutQuad(t: number) {
-	return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+	const t2 = 2 * t;
+	return t < 0.5 ? t2 * t : -1 + (4 - t2) * t;
 }
 
 export function easeInCubic(t: number) {
@@ -23,31 +24,42 @@ export function easeOutCubic(t: number) {
 }
 
 export function easeInOutCubic(t: number) {
-	return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+	const a = 2 * t - 2;
+	return t < 0.5 ? 4 * t * t * t : (t - 1) * a * a + 1;
 }
 
 export function easeInQuart(t: number) {
-	return t * t * t * t;
+	const tt = t * t;
+	return tt * tt;
 }
 
 export function easeOutQuart(t: number) {
-	return 1 - --t * t * t * t;
+	const tt = --t * t;
+	return 1 - tt * tt;
 }
 
 export function easeInOutQuart(t: number) {
-	return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t;
+	const firstHalf = t < 0.5;
+	const tt = t * t;
+	const a = --t * t;
+	return firstHalf ? 8 * tt * tt : 1 - 8 * a * a;
 }
 
 export function easeInQuint(t: number) {
-	return t * t * t * t * t;
+	const tt = t * t;
+	return tt * tt * t;
 }
 
 export function easeOutQuint(t: number) {
-	return 1 + --t * t * t * t * t;
+	const tt = --t * t;
+	return 1 + tt * tt * t;
 }
 
 export function easeInOutQuint(t: number) {
-	return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t;
+	const firstHalf = t < 0.5;
+	const tt = t * t;
+	const a = --t * t;
+	return firstHalf ? 16 * tt * tt * t : 1 + 16 * a * a * t;
 }
 
 export function easeInSine(t: number) {
@@ -59,7 +71,7 @@ export function easeOutSine(t: number) {
 }
 
 export function easeInOutSine(t: number) {
-	return -0.5 * (Math.cos(Math.PI * t) - 1);
+	return -(Math.cos(t * Math.PI) - 1) / 2;
 }
 
 export function easeInExpo(t: number) {
@@ -71,8 +83,7 @@ export function easeOutExpo(t: number) {
 }
 
 export function easeInOutExpo(t: number) {
-	if (t === 0) return 0;
-	if (t === 1) return 1;
+	if (t === 0 || t === 1) return t;
 	return t < 0.5 ? 2 ** (20 * (t - 1)) / 2 : -(2 ** (-20 * t)) / 2 + 1;
 }
 
@@ -91,20 +102,17 @@ export function easeInOutCirc(t: number) {
 }
 
 export function easeInElastic(t: number) {
-	if (t === 0) return 0;
-	if (t === 1) return 1;
+	if (t === 0 || t === 1) return t;
 	return -(2 ** (10 * (t - 1))) * Math.sin((t - 1.1) * 5 * Math.PI);
 }
 
 export function easeOutElastic(t: number) {
-	if (t === 0) return 0;
-	if (t === 1) return 1;
+	if (t === 0 || t === 1) return t;
 	return 2 ** (-10 * t) * Math.sin((t - 0.1) * 5 * Math.PI) + 1;
 }
 
 export function easeInOutElastic(t: number) {
-	if (t === 0) return 0;
-	if (t === 1) return 1;
+	if (t === 0 || t === 1) return t;
 	return t < 0.5
 		? -(2 ** (20 * (t - 1)) * Math.sin((t - 1.1) * 5 * Math.PI)) / 2
 		: (2 ** (-20 * t) * Math.sin((t - 1.1) * 5 * Math.PI)) / 2 + 1;

@@ -1,3 +1,5 @@
+import { type Result } from "../types";
+
 export type ShaderType = "vertex" | "fragment";
 
 export default class Shader {
@@ -20,7 +22,7 @@ export default class Shader {
 		gl: WebGLRenderingContext,
 		type: ShaderType,
 		source: string,
-	): [Shader, undefined] | [undefined, Error] {
+	): Result<Shader> {
 		const shader = new Shader(gl, type, source);
 
 		// Check for shader errors
