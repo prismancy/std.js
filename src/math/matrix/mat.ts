@@ -1,146 +1,103 @@
+import { pipe } from "../../fn";
+import { chunk, collect } from "../../iter";
+import { repeat } from "../../iter/repeat";
 import { random } from "../../random";
 import { type uint } from "../../types";
 import { closeTo } from "../funcs";
 
-type Mat = number[][];
-
-export class Matrix {
-	[i: number]: Float64Array;
-
+export class Mat extends Float32Array {
 	rows: uint;
-	cols: uint;
 
 	constructor(rows: uint, cols: uint);
-	constructor(mat: Mat);
-	constructor(rowsOrMat: uint | Mat, cols?: uint) {
-		if (typeof rowsOrMat === "number") {
-			cols = cols || 0;
-			for (let i = 0; i < rowsOrMat; i++) {
-				this[i] = new Float64Array(cols).fill(0);
-			}
-
-			this.rows = rowsOrMat;
-			this.cols = cols;
+	constructor(mat: number[][]);
+	constructor(rows: uint | number[][], cols = 0) {
+		super();
+		if (typeof rows === "number") {
+			this.set([...repeat([0], rows * cols)]);
+			this.rows = rows;
 		} else {
-			for (const [i, element] of rowsOrMat.entries()) {
-				const row = element;
-				this[i] = new Float64Array(row);
-			}
-
-			this.rows = rowsOrMat.length;
-			this.cols = rowsOrMat[0]!.length;
+			this.set(rows.flat());
+			this.rows = rows.length;
 		}
 	}
 
-	toString() {
-		const [...rows] = this;
+	get cols() {
+		return this.length / this.rows;
+	}
+
+	override toString() {
 		return `mat [
-  ${rows.map(row => row.join(" ")).join("\n  ")}
+  ${pipe(this, chunk(this.cols), collect)
+		.map(row => row.join(" "))
+		.join("\n  ")}
 ]`;
 	}
 
-	*[Symbol.iterator]() {
-		const { rows } = this;
-		for (let i = 0; i < rows; i++) {
-			yield this[i]!;
-		}
-	}
-
 	copy() {
-		return mat(this.rows, this.cols).set(this);
-	}
-
-	static fromArray(array: number[]) {
-		const { length } = array;
-		const m = mat(length, 1);
-		for (let i = 0; i < length; i++) {
-			m[i]![0] = array[i]!;
-		}
-
+		const m = mat(this.rows, this.cols);
+		m.set(this);
 		return m;
-	}
-
-	toArray() {
-		return [...this].flatMap(row => [...row]);
 	}
 
 	static random(rows: uint, cols: uint) {
 		const m = mat(rows, cols);
-		for (let i = 0; i < rows; i++) {
-			for (let j = 0; j < cols; j++) {
-				m[i]![j] = random(-1, 1);
-			}
+		for (let i = 0, { length } = this; i < length; i++) {
+			m[i] = random(-1, 1);
 		}
 
 		return m;
 	}
 
-	set(m: Matrix | Mat) {
-		const { rows, cols } = this;
-		for (let i = 0; i < rows; i++) {
-			for (let j = 0; j < cols; j++) {
-				this[i]![j] = m[i]![j]!;
-			}
-		}
+	eq(m: Mat, precision?: uint) {
+		if (this.rows !== m.rows || this.cols !== m.cols) return false;
 
-		return this;
-	}
-
-	eq(m: Matrix | Mat, precision?: uint) {
-		const { rows, cols } = this;
-		for (let i = 0; i < rows; i++) {
-			for (let j = 0; j < cols; j++) {
-				const a = this[i]![j]!;
-				const b = m[i]![j]!;
-				if (!closeTo(a, b, precision)) return false;
-			}
+		for (let i = 0, { length } = this; i < length; i++) {
+			const a = this[i]!;
+			const b = m[i]!;
+			if (!closeTo(a, b, precision)) return false;
 		}
 
 		return true;
 	}
 
-	add(m: Matrix | Mat) {
-		const { rows, cols } = this;
-		for (let i = 0; i < rows; i++) {
-			for (let j = 0; j < cols; j++) {
-				this[i]![j] += m[i]![j]!;
-			}
+	add(m: Mat) {
+		if (this.rows !== m.rows || this.cols !== m.cols) return this;
+
+		for (let i = 0, { length } = this; i < length; i++) {
+			this[i] += m[i] || 0;
 		}
 
 		return this;
 	}
 
-	static add(m1: Matrix, m2: Matrix | Mat) {
+	static add(m1: Mat, m2: Mat) {
 		return m1.copy().add(m2);
 	}
 
-	sub(m: Matrix | Mat) {
-		const { rows, cols } = this;
-		for (let i = 0; i < rows; i++) {
-			for (let j = 0; j < cols; j++) {
-				this[i]![j] -= m[i]![j]!;
-			}
+	sub(m: Mat) {
+		if (this.rows !== m.rows || this.cols !== m.cols) return this;
+
+		for (let i = 0, { length } = this; i < length; i++) {
+			this[i] -= m[i] || 0;
 		}
 
 		return this;
 	}
 
-	static sub(m1: Matrix, m2: Matrix | Mat) {
+	static sub(m1: Mat, m2: Mat) {
 		return m1.copy().sub(m2);
 	}
 
-	mul(m: Matrix | number) {
-		return this.set(Matrix.mul(this, m));
+	mul(m: Mat | number) {
+		this.set(Mat.mul(this, m));
 	}
 
-	static mul(m1: Matrix, m2: Matrix | number) {
+	static mul(m1: Mat, m2: Mat | number) {
 		if (typeof m2 === "number") {
 			const { rows, cols } = m1;
 			const ans = mat(rows, cols);
-			for (let i = 0; i < rows; i++) {
-				for (let j = 0; j < cols; j++) {
-					ans[i]![j] = m1[i]![j]! * m2;
-				}
+			for (let i = 0, { length } = m1; i < length; i++) {
+				ans[i] = (m1[i] ?? 1) * m2;
 			}
 
 			return ans;
@@ -152,10 +109,10 @@ export class Matrix {
 			for (let j = 0; j < cols; j++) {
 				let sum = 0;
 				for (let k = 0; k < m1.cols; k++) {
-					sum += m1[i]![k]! * m2[k]![j]!;
+					sum += (m1[i * m1.cols + k] ?? 1) * (m2[k * m2.cols + j] ?? 1);
 				}
 
-				ans[i]![j] = sum;
+				ans[i * cols + j] = sum;
 			}
 		}
 
@@ -163,40 +120,25 @@ export class Matrix {
 	}
 
 	div(m: number) {
-		return this.mul(1 / m);
+		this.mul(1 / m);
 	}
 
-	static transpose(m: Matrix) {
+	static transpose(m: Mat) {
 		const { rows, cols } = m;
 		const ans = mat(cols, rows);
-		for (let i = 0; i < rows; i++) {
+		for (let i = 0, { length } = this; i < length; i++) {
 			for (let j = 0; j < cols; j++) {
-				ans[j]![i] = m[i]![j]!;
+				ans[j * cols + i] = m[i * cols + j] || 0;
 			}
 		}
 
 		return ans;
 	}
-
-	map(func: (value: number, i: uint, j: uint) => number) {
-		const { rows, cols } = this;
-		for (let i = 0; i < rows; i++) {
-			for (let j = 0; j < cols; j++) {
-				this[i]![j] = func(this[i]![j]!, i, j);
-			}
-		}
-
-		return this;
-	}
-
-	static map(m: Matrix, func: (value: number, i: uint, j: uint) => number) {
-		return m.copy().map(func);
-	}
 }
 
-export function mat(rows: uint, cols: uint): Matrix;
-export function mat(mat: Mat): Matrix;
-export function mat(rowsOrMat: uint | Mat, cols?: uint) {
-	if (typeof rowsOrMat === "number") return new Matrix(rowsOrMat, cols || 0);
-	return new Matrix(rowsOrMat);
+export function mat(rows: uint, cols: uint): Mat;
+export function mat(mat: number[][]): Mat;
+export function mat(rows: uint | number[][], cols = 1) {
+	if (typeof rows === "number") return new Mat(rows, cols);
+	return new Mat(rows);
 }

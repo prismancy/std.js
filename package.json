@@ -15,6 +15,11 @@
       "require": "./dist/async/index.cjs",
       "types": "./dist/async/index.d.ts"
     },
+    "./cmath": {
+      "import": "./dist/cmath/index.mjs",
+      "require": "./dist/cmath/index.cjs",
+      "types": "./dist/cmath/index.d.ts"
+    },
     "./fn": {
       "import": "./dist/fn/index.mjs",
       "require": "./dist/fn/index.cjs",

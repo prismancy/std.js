@@ -40,6 +40,10 @@ export class Complex implements ComplexLike {
 		return this;
 	}
 
+	static add(c1: Complex, c2: number | ComplexLike) {
+		return c1.copy().add(c2);
+	}
+
 	sub(c: number | ComplexLike) {
 		if (typeof c === "number") {
 			this.r -= c;
@@ -49,6 +53,10 @@ export class Complex implements ComplexLike {
 		}
 
 		return this;
+	}
+
+	static sub(c1: Complex, c2: number | ComplexLike) {
+		return c1.copy().sub(c2);
 	}
 
 	mul(c: number | ComplexLike) {
@@ -64,6 +72,10 @@ export class Complex implements ComplexLike {
 		return this;
 	}
 
+	static mul(c1: Complex, c2: number | ComplexLike) {
+		return c1.copy().mul(c2);
+	}
+
 	div(c: number | Complex) {
 		if (typeof c === "number") {
 			this.r /= c;
@@ -74,6 +86,10 @@ export class Complex implements ComplexLike {
 		}
 
 		return this;
+	}
+
+	static div(c1: Complex, c2: number | Complex) {
+		return c1.copy().div(c2);
 	}
 
 	sq() {
@@ -102,6 +118,16 @@ export class Complex implements ComplexLike {
 		const { r: r2, i: i2 } = c;
 		this.r = r ** r2 * i ** i2;
 		this.i = r ** i2 * i ** r2;
+		return this;
+	}
+
+	sqrt() {
+		const { r, i } = this;
+		const mag = this.mag();
+		const r2 = Math.sqrt(0.5 * (mag + r));
+		const i2 = Math.sign(i) * Math.sqrt(0.5 * (mag - r));
+		this.r = r2;
+		this.i = i2;
 		return this;
 	}
 }

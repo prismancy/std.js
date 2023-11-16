@@ -106,7 +106,7 @@ export const ln = Math.log;
  * @param b a number
  */
 export function gcd(a: uint, b: uint) {
-	while (b !== 0) {
+	while (b) {
 		const temp = b;
 		b = a % b;
 		a = temp;
