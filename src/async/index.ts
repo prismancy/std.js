@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { Queue } from "../structs";
-import { type AnyFunction, type Result } from "../types";
+import { type AnyFunction, type Result, type uint } from "../types";
 
 export * from "./queue";
 
@@ -74,7 +74,7 @@ export async function concurrently<T>(
 
 export async function retry<T>(
 	fn: () => Promise<T>,
-	{ maxAttempts = 5, delay = 0 }: { maxAttempts?: number; delay?: number } = {},
+	{ maxAttempts = 5, delay = 0 }: { maxAttempts?: uint; delay?: number } = {},
 ): Promise<Result<T, unknown>> {
 	let attempts = 0;
 	// eslint-disable-next-line no-constant-condition
@@ -95,7 +95,7 @@ export async function retryWithExponentialBackoff<T>(
 		startDelay = 1000,
 		multiplier = 2,
 	}: {
-		maxAttempts?: number;
+		maxAttempts?: uint;
 		startDelay?: number;
 		multiplier?: number;
 	} = {},

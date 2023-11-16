@@ -1,3 +1,4 @@
+import { type int } from "../../types";
 import { closeTo } from "../funcs";
 
 export type Mat3Like =
@@ -40,7 +41,7 @@ export class Mat3 extends Float32Array {
 		return this;
 	}
 
-	eq(m: ReadonlyMat3Like, precision?: number) {
+	eq(m: ReadonlyMat3Like, precision?: int) {
 		for (let i = 0; i < 9; i++) {
 			const a = this[i]!;
 			const b = m[i]!;

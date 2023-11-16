@@ -6,7 +6,7 @@ import {
 	type ReadonlyVec3Like,
 	type ReadonlyVec4Like,
 } from "../math";
-import { type Result } from "../types";
+import { type uint, type Result, type int } from "../types";
 import { screenIndexData, screenVertexData } from "./screen";
 import Shader from "./shader";
 
@@ -37,8 +37,8 @@ type Vec2 = readonly [x: number, y: number];
 type Vec3 = readonly [x: number, y: number, z: number];
 type Vec4 = readonly [x: number, y: number, z: number, w: number];
 interface UniformData {
-	int: number;
-	"int[]": number[];
+	int: int;
+	"int[]": int[];
 	float: number;
 	"float[]": number[];
 	ivec2: Vec2;
@@ -86,7 +86,7 @@ export class GL {
 	 * @param w the width
 	 * @param h the height
 	 */
-	resize(w: number, h: number) {
+	resize(w: uint, h: uint) {
 		const { gl } = this;
 		const { canvas } = gl;
 
@@ -196,7 +196,7 @@ export class GL {
 	 * Creates an index buffer
 	 * @param data the data for the buffer
 	 */
-	createIndexBuffer(data: number[][][]) {
+	createIndexBuffer(data: uint[][][]) {
 		const { gl } = this;
 		const buffer = gl.createBuffer()!;
 		const flatData = data.flat(2);

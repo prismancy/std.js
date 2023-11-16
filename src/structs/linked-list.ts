@@ -1,3 +1,5 @@
+import { type uint } from "../types";
+
 interface Node<T> {
 	value: T;
 	next?: Node<T>;
@@ -47,7 +49,7 @@ export class LinkedList<T> implements Iterable<T> {
 		return node;
 	}
 
-	getNode(index: number): Node<T> | void {
+	getNode(index: uint): Node<T> | void {
 		let current = this.node;
 		let i = 0;
 		while (current) {
@@ -57,11 +59,11 @@ export class LinkedList<T> implements Iterable<T> {
 		}
 	}
 
-	get(index: number) {
+	get(index: uint) {
 		return this.getNode(index)?.value;
 	}
 
-	set(index: number, value: T) {
+	set(index: uint, value: T) {
 		const node = this.getNode(index);
 		if (!node) return;
 

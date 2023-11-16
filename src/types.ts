@@ -1,5 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-types */
 
+export type Primitive =
+	| string
+	| number
+	| boolean
+	| bigint
+	| symbol
+	| undefined
+	| null;
+
+export type int = number;
+export type uint = number;
+
 export type Maybe<T> = T | undefined;
 export type Nullish<T> = Maybe<T> | null;
 

@@ -1,4 +1,5 @@
 import { swap } from "../array";
+import { type uint } from "../types";
 
 /**
  * ## Unordered Array
@@ -13,7 +14,7 @@ export class UnorderedArray<T> extends Array<T> {
 	 * Inserts new elements at the end of an unordered array, and returns the new length of the unordered array.
 	 * @param items Elements to insert at the end of the array.
 	 */
-	override unshift(...items: T[]): number {
+	override unshift(...items: T[]): uint {
 		return super.push(...items);
 	}
 
@@ -30,13 +31,13 @@ export class UnorderedArray<T> extends Array<T> {
 	 * @param index the index of the item to remove
 	 * @returns the removed item, if it exists
 	 */
-	removeIndex(index: number) {
+	removeIndex(index: uint) {
 		swap(this, index, this.length - 1);
 		return this.pop();
 	}
 
 	override splice(
-		start: number,
+		start: uint,
 		deleteCount = this.length - start,
 		...items: T[]
 	): T[] {
@@ -58,7 +59,7 @@ export class UnorderedArray<T> extends Array<T> {
 	}
 
 	override toSpliced(
-		start: number,
+		start: uint,
 		deleteCount = this.length - start,
 		...items: T[]
 	): T[] {

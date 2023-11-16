@@ -1,4 +1,5 @@
 import { type Compare } from "../../cmp";
+import { type int } from "../../types";
 import {
 	BinarySearchTree,
 	type BinaryNode,
@@ -9,7 +10,7 @@ export interface AvlNode<T> extends BinaryNode<T> {
 	parent?: AvlNode<T>;
 	left?: AvlNode<T>;
 	right?: AvlNode<T>;
-	bf: number;
+	bf: int;
 }
 
 /**

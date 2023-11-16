@@ -1,5 +1,5 @@
 import { dual } from "../fn";
-import { type Repeat } from "../types";
+import { type uint, type Repeat } from "../types";
 
 /**
  * Splits an iterable into equally-sized sub arrays
@@ -8,11 +8,9 @@ import { type Repeat } from "../types";
  * @returns the chunks
  */
 export const chunk: {
-	<T, N extends number>(first: Iterable<T>, size: N): Generator<Repeat<T, N>>;
-	<T, N extends number>(
-		size: N,
-	): (first: Iterable<T>) => Generator<Repeat<T, N>>;
-} = dual(function* <T, N extends number>(iter: Iterable<T>, size: N) {
+	<T, N extends uint>(first: Iterable<T>, size: N): Generator<Repeat<T, N>>;
+	<T, N extends uint>(size: N): (first: Iterable<T>) => Generator<Repeat<T, N>>;
+} = dual(function* <T, N extends uint>(iter: Iterable<T>, size: N) {
 	let result: T[] = [];
 	for (const value of iter) {
 		result.push(value);

@@ -1,4 +1,5 @@
-import { type Compare, ascend } from "../cmp";
+import { ascend, type Compare } from "../cmp";
+import { type uint } from "../types";
 
 /**
  * ## Sorted Array
@@ -45,7 +46,7 @@ export class SortedArray<T> implements Iterable<T> {
 		return this.data.length;
 	}
 
-	at(index: number) {
+	at(index: uint) {
 		return this.data[index];
 	}
 

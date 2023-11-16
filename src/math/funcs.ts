@@ -1,4 +1,5 @@
 import { avg, minmax } from "../stats";
+import { type int, type uint } from "../types";
 
 export function norm(x: number, min: number, max: number) {
 	return (x - min) / (max - min);
@@ -55,22 +56,22 @@ export function closer(x: number, a: [number, number], b: [number, number]) {
 	return Math.abs(x - a[0]) < Math.abs(x - b[0]) ? a[1] : b[1];
 }
 
-export function round(n: number, precision = 0) {
+export function round(n: number, precision: int = 0) {
 	const factor = 10 ** precision;
 	return Math.round(n * factor) / factor;
 }
 
-export function floor(n: number, precision = 0) {
+export function floor(n: number, precision: int = 0) {
 	const factor = 10 ** precision;
 	return Math.floor(n * factor) / factor;
 }
 
-export function ceil(n: number, precision = 0) {
+export function ceil(n: number, precision: int = 0) {
 	const factor = 10 ** precision;
 	return Math.ceil(n * factor) / factor;
 }
 
-export function trunc(n: number, precision = 0) {
+export function trunc(n: number, precision: int = 0) {
 	const factor = 10 ** precision;
 	return Math.trunc(n * factor) / factor;
 }
@@ -79,11 +80,11 @@ export function fract(x: number) {
 	return x - Math.floor(x);
 }
 
-export function closeTo(n: number, target: number, precision = 5) {
+export function closeTo(n: number, target: number, precision: int = 5) {
 	return Math.abs(n - target) < 10 ** -precision;
 }
 
-export function factorial(n: number) {
+export function factorial(n: uint) {
 	let total = 1;
 	for (let i = n; i > 1; i--) {
 		total *= i;
@@ -104,7 +105,7 @@ export const ln = Math.log;
  * @param a a number
  * @param b a number
  */
-export function gcd(a: number, b: number) {
+export function gcd(a: uint, b: uint) {
 	while (b !== 0) {
 		const temp = b;
 		b = a % b;
@@ -114,7 +115,7 @@ export function gcd(a: number, b: number) {
 	return a;
 }
 
-export function fibonacci(n: number) {
+export function fibonacci(n: uint) {
 	let a = 0;
 	let b = 1;
 	for (let i = 0; i < n; i++) {
@@ -165,7 +166,7 @@ export const leakyRelu = (x: number, a = 0.01) => (x > 0 ? x : a * x);
  * @param n the number of items
  * @param k the number of choices being made
  */
-export function permutations(n: number, k: number) {
+export function permutations(n: uint, k: uint) {
 	if (k > n) return 0;
 	return factorial(n) / factorial(n - k);
 }
@@ -175,7 +176,7 @@ export function permutations(n: number, k: number) {
  * @param n the number of items
  * @param k the number of choices being made
  */
-export function combinations(n: number, k: number) {
+export function combinations(n: uint, k: uint) {
 	if (k > n) return 0;
 	return permutations(n, k) / factorial(k);
 }

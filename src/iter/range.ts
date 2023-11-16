@@ -1,4 +1,6 @@
-export function range(max: number): Generator<number>;
+import { type int } from "../types";
+
+export function range(max: int): Generator<int>;
 export function range(
 	min: number,
 	max: number,

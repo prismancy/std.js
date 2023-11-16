@@ -1,20 +1,21 @@
 import { dual } from "../fn";
+import { type uint } from "../types";
 
 export const slidingWindow: {
 	<T>(
 		iter: Iterable<T>,
-		{ size, partial }: { size: number; partial?: boolean },
+		{ size, partial }: { size: uint; partial?: boolean },
 	): Generator<T[]>;
 	<T>({
 		size,
 		partial,
 	}: {
-		size: number;
+		size: uint;
 		partial?: boolean;
 	}): (iter: Iterable<T>) => Generator<T[]>;
 } = dual(function* <T>(
 	iter: Iterable<T>,
-	{ size, partial }: { size: number; partial?: boolean },
+	{ size, partial }: { size: uint; partial?: boolean },
 ): Generator<T[]> {
 	const window: T[] = [];
 	for (const value of iter) {

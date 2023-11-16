@@ -1,4 +1,5 @@
 import { swap, unorderedRemove } from "./array";
+import { type int, type uint } from "./types";
 
 /**
  * Returns a random number from 0 to a maximum non-inclusive
@@ -22,14 +23,14 @@ export function random(min?: number, max?: number) {
  * Returns a random number from 0 to a maximum inclusive
  * @param max default 1
  */
-export function randomInt(max?: number): number;
+export function randomInt(max?: int): int;
 /**
  * Returns a random number from a minimum inclusive to a maximum inclusive
  * @param min
  * @param max
  */
-export function randomInt(min: number, max: number): number;
-export function randomInt(min = 0, max?: number) {
+export function randomInt(min: int, max: int): int;
+export function randomInt(min = 0, max?: int) {
 	if (typeof max === "number") return Math.floor(random(min, max + 1));
 	return Math.floor(random(min + 1));
 }
@@ -68,15 +69,15 @@ export function choice<T>(array: ArrayLike<T>) {
  * @param n number of items to pick
  * @returns an array containing the random items
  */
-export function choices<T>(array: ArrayLike<T>, n: number): T[];
+export function choices<T>(array: ArrayLike<T>, n: uint): T[];
 /**
  * Get random characters from a string
  * @param string
  * @param n number of characters to pick
  * @returns a string of the random chars
  */
-export function choices<T>(string: string, n: number): string;
-export function choices<T>(array: ArrayLike<T>, n: number): T[] | string {
+export function choices<T>(string: string, n: uint): string;
+export function choices<T>(array: ArrayLike<T>, n: uint): T[] | string {
 	if (!array.length || !n) return [];
 	if (typeof array === "string") {
 		let result = "";
@@ -98,7 +99,7 @@ export function choices<T>(array: ArrayLike<T>, n: number): T[] | string {
  * @param n number of items to pick
  * @returns an array containing the random items
  */
-export function sample<T>(array: ArrayLike<T> & Iterable<T>, n: number) {
+export function sample<T>(array: ArrayLike<T> & Iterable<T>, n: uint) {
 	const copy = [...array];
 	const result = Array.from<T>({ length: n });
 	for (let i = 0; i < n; i++) {

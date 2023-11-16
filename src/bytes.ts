@@ -1,9 +1,11 @@
+import { type uint } from "./types";
+
 /**
  * Convert binary into its hex representation
  * @param buffer
  * @returns hex string
  */
-export function hex(buffer: Iterable<number>) {
+export function hex(buffer: Iterable<uint>) {
 	const hexCodes: string[] = [];
 	for (const element of buffer) {
 		hexCodes.push(element.toString(16).padStart(2, "0"));
@@ -24,4 +26,19 @@ export function unhex(hex: string) {
 	}
 
 	return bytes;
+}
+
+/**
+ * Counts the number of bits set to 1 in an integer
+ * @param n the integer to count the bits of
+ * @returns the number of bits set to 1
+ */
+export function popcnt(n: uint) {
+	let count = 0;
+	while (n) {
+		n &= n - 1;
+		count++;
+	}
+
+	return count;
 }

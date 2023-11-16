@@ -1,3 +1,5 @@
+import { type uint } from "../types";
+
 interface Node<T> {
 	value: T;
 	next?: Node<T>;
@@ -30,7 +32,7 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 		}
 	}
 
-	getNode(index: number): Node<T> | undefined {
+	getNode(index: uint): Node<T> | undefined {
 		let current = this.head;
 		let i = 0;
 		while (current) {
@@ -42,11 +44,11 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 		return undefined;
 	}
 
-	get(index: number): T | undefined {
+	get(index: uint): T | undefined {
 		return this.getNode(index)?.value;
 	}
 
-	set(index: number, value: T): T | undefined {
+	set(index: uint, value: T): T | undefined {
 		const node = this.getNode(index);
 		if (!node) return undefined;
 
@@ -129,7 +131,7 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 		return this;
 	}
 
-	remove(index: number): T | undefined {
+	remove(index: uint): T | undefined {
 		const node = this.getNode(index);
 		if (!node) return undefined;
 
@@ -144,7 +146,7 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 		return node.value;
 	}
 
-	splice(index: number, count: number, ...values: T[]): T[] {
+	splice(index: uint, count: uint, ...values: T[]): T[] {
 		const removed = [];
 		for (let i = 0; i < count; i++) {
 			const value = this.remove(index);

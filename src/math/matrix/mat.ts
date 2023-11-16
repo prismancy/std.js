@@ -1,4 +1,5 @@
 import { random } from "../../random";
+import { type uint } from "../../types";
 import { closeTo } from "../funcs";
 
 type Mat = number[][];
@@ -6,12 +7,12 @@ type Mat = number[][];
 export class Matrix {
 	[i: number]: Float64Array;
 
-	rows: number;
-	cols: number;
+	rows: uint;
+	cols: uint;
 
-	constructor(rows: number, cols: number);
+	constructor(rows: uint, cols: uint);
 	constructor(mat: Mat);
-	constructor(rowsOrMat: number | Mat, cols?: number) {
+	constructor(rowsOrMat: uint | Mat, cols?: uint) {
 		if (typeof rowsOrMat === "number") {
 			cols = cols || 0;
 			for (let i = 0; i < rowsOrMat; i++) {
@@ -63,7 +64,7 @@ export class Matrix {
 		return [...this].flatMap(row => [...row]);
 	}
 
-	static random(rows: number, cols: number) {
+	static random(rows: uint, cols: uint) {
 		const m = mat(rows, cols);
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -85,7 +86,7 @@ export class Matrix {
 		return this;
 	}
 
-	eq(m: Matrix | Mat, precision?: number) {
+	eq(m: Matrix | Mat, precision?: uint) {
 		const { rows, cols } = this;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -177,7 +178,7 @@ export class Matrix {
 		return ans;
 	}
 
-	map(func: (value: number, i: number, j: number) => number) {
+	map(func: (value: number, i: uint, j: uint) => number) {
 		const { rows, cols } = this;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -188,14 +189,14 @@ export class Matrix {
 		return this;
 	}
 
-	static map(m: Matrix, func: (value: number, i: number, j: number) => number) {
+	static map(m: Matrix, func: (value: number, i: uint, j: uint) => number) {
 		return m.copy().map(func);
 	}
 }
 
-export function mat(rows: number, cols: number): Matrix;
+export function mat(rows: uint, cols: uint): Matrix;
 export function mat(mat: Mat): Matrix;
-export function mat(rowsOrMat: number | Mat, cols?: number) {
+export function mat(rowsOrMat: uint | Mat, cols?: uint) {
 	if (typeof rowsOrMat === "number") return new Matrix(rowsOrMat, cols || 0);
 	return new Matrix(rowsOrMat);
 }

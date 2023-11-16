@@ -56,3 +56,14 @@ export function hsv2rgb(h: number, s: number, v: number) {
 
 	return vec3(Math.floor(r * 256), Math.floor(g * 256), Math.floor(b * 256));
 }
+
+/**
+ * Calculates the CIE luminance of a color
+ * @param r red
+ * @param g green
+ * @param b blue
+ * @returns the luminance of the color
+ */
+export function luminance(r: number, g: number, b: number) {
+	return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 256;
+}
