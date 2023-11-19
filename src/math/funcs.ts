@@ -1,6 +1,47 @@
 import { avg, minmax } from "../stats";
 import { type int, type uint } from "../types";
 
+/**
+ * Determines if a value is a number other than `NaN`
+ * @param x
+ */
+export function isNumber(x: unknown): x is number {
+	return typeof x === "number" && !Number.isNaN(x);
+}
+
+/**
+ * Determines if a value is a finite number other than `NaN`
+ * @param x
+ */
+export function isReal(x: unknown): x is number {
+	return isNumber(x) && Number.isFinite(x);
+}
+
+/**
+ * Determines if a value is an integer
+ * @param x
+ */
+export function isInteger(x: unknown): x is int {
+	return Number.isInteger(x);
+}
+
+/**
+ * Rounds `x` to the nearest multiple of `n`
+ * @param x the number to round
+ * @param n the multiple to round to
+ */
+export function roundToMultiple(x: number, n: number) {
+	return Math.floor(x / n) * n;
+}
+
+/**
+ * Rounds `x` to the nearest even number
+ * @param x
+ */
+export function roundToEven(x: number) {
+	return roundToMultiple(x, 2);
+}
+
 export function norm(x: number, min: number, max: number) {
 	return (x - min) / (max - min);
 }

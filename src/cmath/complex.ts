@@ -29,6 +29,10 @@ export class Complex implements ComplexLike {
 		return complex(Math.cos(angle), Math.sin(angle)).mul(mag);
 	}
 
+	isReal() {
+		return !this.i;
+	}
+
 	add(c: number | ComplexLike) {
 		if (typeof c === "number") {
 			this.r += c;
@@ -113,21 +117,11 @@ export class Complex implements ComplexLike {
 		return Math.atan2(this.i, this.r);
 	}
 
-	pow(c: ComplexLike) {
+	pow(z: ComplexLike) {
 		const { r, i } = this;
-		const { r: r2, i: i2 } = c;
+		const { r: r2, i: i2 } = z;
 		this.r = r ** r2 * i ** i2;
 		this.i = r ** i2 * i ** r2;
-		return this;
-	}
-
-	sqrt() {
-		const { r, i } = this;
-		const mag = this.mag();
-		const r2 = Math.sqrt(0.5 * (mag + r));
-		const i2 = Math.sign(i) * Math.sqrt(0.5 * (mag - r));
-		this.r = r2;
-		this.i = i2;
 		return this;
 	}
 }

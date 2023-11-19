@@ -29,7 +29,7 @@ export type Result<T, E = Error> = [T, undefined] | [undefined, E];
 
 export type Awaitable<T> = T | Promise<T>;
 
-// https://github.com/total-typescript/ts-reset/blob/main/src/entrypoints/utils.d.ts
+// https://github.com/total-typescript/ts-reset/blob/b2df073b6b0fcb9f9599408d88cf559344c10586/src/entrypoints/utils.d.ts#L2C70-L2C70
 export type NonFalsy<T> = T extends false | 0 | "" | null | undefined | 0n
 	? never
 	: T;
