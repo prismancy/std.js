@@ -1,4 +1,5 @@
 export * from "./constants";
+export * from "./list";
 export * from "./word";
 
 export function reverse(str: string) {
