@@ -1,18 +1,16 @@
-export const {
-	sin,
-	cos,
-	tan,
-	asin,
-	acos,
-	atan,
-	atan2,
-	sinh,
-	cosh,
-	tanh,
-	asinh,
-	acosh,
-	atanh,
-} = Math;
+export const sin = Math.sin;
+export const cos = Math.cos;
+export const tan = Math.tan;
+export const asin = Math.asin;
+export const acos = Math.acos;
+export const atan = Math.atan;
+export const atan2 = Math.atan2;
+export const sinh = Math.sinh;
+export const cosh = Math.cosh;
+export const tanh = Math.tanh;
+export const asinh = Math.asinh;
+export const acosh = Math.acosh;
+export const atanh = Math.atanh;
 
 export const sec = (x: number) => 1 / cos(x);
 export const csc = (x: number) => 1 / sin(x);
