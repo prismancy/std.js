@@ -1,120 +1,18 @@
 {
-  "name": "@in5net/std",
-  "version": "0.16.0",
-  "devDependencies": {
-    "@in5net/prettier-config": "^1.1.0",
-    "@in5net/xo-config": "^1.5.0",
-    "typescript": "^5.2.2",
-    "unbuild": "^2.0.0",
-    "vitest": "^0.34.5",
-    "xo": "^0.56.0"
-  },
-  "exports": {
-    "./async": {
-      "import": "./dist/async/index.mjs",
-      "require": "./dist/async/index.cjs",
-      "types": "./dist/async/index.d.ts"
-    },
-    "./cmath": {
-      "import": "./dist/cmath/index.mjs",
-      "require": "./dist/cmath/index.cjs",
-      "types": "./dist/cmath/index.d.ts"
-    },
-    "./fn": {
-      "import": "./dist/fn/index.mjs",
-      "require": "./dist/fn/index.cjs",
-      "types": "./dist/fn/index.d.ts"
-    },
-    "./gfx": {
-      "import": "./dist/gfx/index.mjs",
-      "require": "./dist/gfx/index.cjs",
-      "types": "./dist/gfx/index.d.ts"
-    },
-    "./iter": {
-      "import": "./dist/iter/index.mjs",
-      "require": "./dist/iter/index.cjs",
-      "types": "./dist/iter/index.d.ts"
-    },
-    "./math": {
-      "import": "./dist/math/index.mjs",
-      "require": "./dist/math/index.cjs",
-      "types": "./dist/math/index.d.ts"
-    },
-    "./string": {
-      "import": "./dist/string/index.mjs",
-      "require": "./dist/string/index.cjs",
-      "types": "./dist/string/index.d.ts"
-    },
-    "./structs": {
-      "import": "./dist/structs/index.mjs",
-      "require": "./dist/structs/index.cjs",
-      "types": "./dist/structs/index.d.ts"
-    },
-    "./time": {
-      "import": "./dist/time/index.mjs",
-      "require": "./dist/time/index.cjs",
-      "types": "./dist/time/index.d.ts"
-    },
-    "./array": {
-      "import": "./dist/array.mjs",
-      "require": "./dist/array.cjs",
-      "types": "./dist/array.d.ts"
-    },
-    "./bytes": {
-      "import": "./dist/bytes.mjs",
-      "require": "./dist/bytes.cjs",
-      "types": "./dist/bytes.d.ts"
-    },
-    "./cmp": {
-      "import": "./dist/cmp.mjs",
-      "require": "./dist/cmp.cjs",
-      "types": "./dist/cmp.d.ts"
-    },
-    "./easing": {
-      "import": "./dist/easing.mjs",
-      "require": "./dist/easing.cjs",
-      "types": "./dist/easing.d.ts"
-    },
-    "./events": {
-      "import": "./dist/events.mjs",
-      "require": "./dist/events.cjs",
-      "types": "./dist/events.d.ts"
-    },
-    "./object": {
-      "import": "./dist/object.mjs",
-      "require": "./dist/object.cjs",
-      "types": "./dist/object.d.ts"
-    },
-    "./random": {
-      "import": "./dist/random.mjs",
-      "require": "./dist/random.cjs",
-      "types": "./dist/random.d.ts"
-    },
-    "./stats": {
-      "import": "./dist/stats.mjs",
-      "require": "./dist/stats.cjs",
-      "types": "./dist/stats.d.ts"
-    },
-    "./types": {
-      "import": "./dist/types.mjs",
-      "require": "./dist/types.cjs",
-      "types": "./dist/types.d.ts"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "lint": "xo",
-    "test": "vitest",
-    "typecheck": "vitest typecheck",
-    "bench": "vitest bench",
-    "build": "unbuild",
-    "pub": "bun run build && npm publish",
-    "commit": "./commit.sh"
-  },
-  "type": "module"
+	"name": "@iz7n/std",
+	"type": "module",
+	"devDependencies": {
+		"@iz7n/eslint-config": "^0.5.4",
+		"@iz7n/prettier-config": "^1.2.0",
+		"typescript": "^5.4.2",
+		"unbuild": "^2.0.0",
+		"vitest": "^1.3.1",
+		"xo": "^0.58.0"
+	},
+	"scripts": {
+		"test": "vitest",
+		"typecheck": "vitest typecheck",
+		"bench": "vitest bench"
+	},
+	"prettier": "@iz7n/prettier-config"
 }
