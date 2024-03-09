@@ -1,0 +1,25 @@
+{
+  "$shema": "https://jsr.io/schema/config-file.v1.json",
+  "name": "@iz7n/std",
+  "version": "0.1.0",
+  "exports": {
+    "./async": "./src/async/index.ts",
+    "./cmath": "./src/cmath/index.ts",
+    "./fn": "./src/fn/index.ts",
+    "./gfx": "./src/gfx/index.ts",
+    "./iter": "./src/iter/index.ts",
+    "./math": "./src/math/index.ts",
+    "./string": "./src/string/index.ts",
+    "./structs": "./src/structs/index.ts",
+    "./time": "./src/time/index.ts",
+    "./array": "./src/array.ts",
+    "./bytes": "./src/bytes.ts",
+    "./cmp": "./src/cmp.ts",
+    "./easing": "./src/easing.ts",
+    "./events": "./src/events.ts",
+    "./object": "./src/object.ts",
+    "./random": "./src/random.ts",
+    "./stats": "./src/stats.ts",
+    "./types": "./src/types.ts"
+  }
+}
