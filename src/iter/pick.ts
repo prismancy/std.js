@@ -1,6 +1,6 @@
-import { dual } from "../fn";
-import { pickByKeys } from "../object";
-import { type AnyRecord } from "../types";
+import { dual } from "../fn/mod.ts";
+import { pickByKeys } from "../object.ts";
+import { type AnyRecord } from "../types.ts";
 
 /**
  * Using an iterable of objects, extract part of each object

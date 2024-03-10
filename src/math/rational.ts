@@ -8,23 +8,28 @@ function gcd(a: bigint, b: bigint) {
 	return a;
 }
 
+/** An object that represents a rational number. */
 export type RationalLike = { numerator: bigint; denominator: bigint };
 
+/**
+ * A number represented as a ratio of two integers.
+ * A numerator and a denominator.
+ */
 export class Rational {
 	constructor(
 		public numerator = 0n,
 		public denominator = 1n,
 	) {}
 
-	toString() {
+	toString(): string {
 		return `${this.numerator}/${this.denominator}`;
 	}
 
-	valueOf() {
+	valueOf(): number {
 		return Number(this.numerator) / Number(this.denominator);
 	}
 
-	simplify() {
+	simplify(): this {
 		const divisor = gcd(this.numerator, this.denominator);
 		this.numerator /= divisor;
 		this.denominator /= divisor;
@@ -36,28 +41,28 @@ export class Rational {
 		return this;
 	}
 
-	add(r: RationalLike) {
+	add(r: RationalLike): Rational {
 		return new Rational(
 			this.numerator * r.denominator + r.numerator * this.denominator,
 			this.denominator * r.denominator,
 		).simplify();
 	}
 
-	sub(r: RationalLike) {
+	sub(r: RationalLike): Rational {
 		return new Rational(
 			this.numerator * r.denominator - r.numerator * this.denominator,
 			this.denominator * r.denominator,
 		).simplify();
 	}
 
-	mul(r: RationalLike) {
+	mul(r: RationalLike): Rational {
 		return new Rational(
 			this.numerator * r.numerator,
 			this.denominator * r.denominator,
 		).simplify();
 	}
 
-	div(r: RationalLike) {
+	div(r: RationalLike): Rational {
 		return new Rational(
 			this.numerator * r.denominator,
 			this.denominator * r.numerator,

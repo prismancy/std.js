@@ -1,3 +1,5 @@
+import { uint } from "../types.ts";
+
 /**
  * ## Queue
  * A data structure that follows a first-in-first-out (FIFO) order
@@ -12,19 +14,19 @@
 export class Queue<T> implements Iterable<T> {
 	constructor(protected items: T[] = []) {}
 
-	get size() {
+	get size(): uint {
 		return this.items.length;
 	}
 
-	enqueue(item: T) {
-		this.items.push(item);
+	enqueue(item: T): uint {
+		return this.items.push(item);
 	}
 
-	dequeue() {
+	dequeue(): T | undefined {
 		return this.items.shift();
 	}
 
-	*[Symbol.iterator]() {
+	*[Symbol.iterator](): Iterator<T> {
 		let item: T | undefined;
 		while ((item = this.dequeue())) {
 			yield item;

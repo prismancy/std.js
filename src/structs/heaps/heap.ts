@@ -1,5 +1,6 @@
-import { swap } from "../../array";
-import { type Compare } from "../../cmp";
+import { swap } from "../../array.ts";
+import { type Compare } from "../../cmp.ts";
+import { uint } from "../../types.ts";
 
 /**
  * ## Binary Heap
@@ -27,33 +28,33 @@ export class Heap<T> implements Iterable<T> {
 		} else this.data = data;
 	}
 
-	get length() {
+	get length(): uint {
 		return this.data.length;
 	}
 
-	get height() {
+	get height(): uint {
 		return Math.floor(Math.log2(this.length)) + 1;
 	}
 
-	valueOf() {
+	valueOf(): T | undefined {
 		return this.peek();
 	}
 
-	copy() {
+	copy(): Heap<T> {
 		return new Heap(this.compare, [...this.data], false);
 	}
 
 	/**
 	 * Returns the first value in the heap
 	 */
-	peek() {
+	peek(): T | undefined {
 		return this.data[0];
 	}
 
 	/**
 	 * Removes the first value from the heap and returns it
 	 */
-	pop() {
+	pop(): T | undefined {
 		const first = this.data[0];
 		swap(this.data, 0, this.length - 1);
 		this.data.pop();
@@ -64,8 +65,9 @@ export class Heap<T> implements Iterable<T> {
 	/**
 	 * Inserts values into the heap and makes sure the first value is the min/max
 	 * @param value
+	 * @returns The new length of the heap
 	 */
-	push(...values: T[]) {
+	push(...values: T[]): uint {
 		const { data, compare } = this;
 		for (const value of values) {
 			data.push(value);
@@ -81,17 +83,17 @@ export class Heap<T> implements Iterable<T> {
 		return data.length;
 	}
 
-	*drain() {
+	*drain(): Generator<T> {
 		while (this.length) {
 			yield this.pop() as T;
 		}
 	}
 
-	[Symbol.iterator]() {
+	[Symbol.iterator](): Iterator<T> {
 		return this.data.values();
 	}
 
-	protected heapify(i = 0) {
+	protected heapify(i = 0): void {
 		const { length, compare, data } = this;
 		const left = 2 * i + 1;
 		const right = 2 * i + 2;

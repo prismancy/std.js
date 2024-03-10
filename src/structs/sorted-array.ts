@@ -1,5 +1,5 @@
-import { ascend, type Compare } from "../cmp";
-import { type uint } from "../types";
+import { ascend, type Compare } from "../cmp.ts";
+import { int, type uint } from "../types.ts";
 
 /**
  * ## Sorted Array
@@ -22,35 +22,35 @@ export class SortedArray<T> implements Iterable<T> {
 		if (sort) this.data.sort(compare);
 	}
 
-	valueOf() {
+	valueOf(): T | undefined {
 		return this.at(0);
 	}
 
-	keys() {
+	keys(): IterableIterator<uint> {
 		return this.data.keys();
 	}
 
-	values() {
+	values(): IterableIterator<T> {
 		return this.data.values();
 	}
 
-	entries() {
+	entries(): IterableIterator<[uint, T]> {
 		return this.data.entries();
 	}
 
-	[Symbol.iterator]() {
+	[Symbol.iterator](): IterableIterator<T> {
 		return this.values();
 	}
 
-	length() {
+	length(): uint {
 		return this.data.length;
 	}
 
-	at(index: uint) {
+	at(index: uint): T | undefined {
 		return this.data[index];
 	}
 
-	copy() {
+	copy(): SortedArray<T> {
 		return new SortedArray([...this.data], this.compare, false);
 	}
 
@@ -58,7 +58,7 @@ export class SortedArray<T> implements Iterable<T> {
 	 * Returns the index of the value if it exists, otherwise -1
 	 * @param value
 	 */
-	indexOf(value: T) {
+	indexOf(value: T): int {
 		const { data } = this;
 		let low = 0;
 		let high = data.length - 1;
@@ -77,8 +77,7 @@ export class SortedArray<T> implements Iterable<T> {
 	 * Returns if the array has the value
 	 * @param value
 	 */
-	has(value: T) {
-		// eslint-disable-next-line unicorn/prefer-includes
+	has(value: T): boolean {
 		return this.indexOf(value) !== -1;
 	}
 
@@ -87,7 +86,7 @@ export class SortedArray<T> implements Iterable<T> {
 	 * @param value
 	 * @returns the index of where the value was inserted
 	 */
-	push(value: T) {
+	push(value: T): uint {
 		const { data, compare } = this;
 		let low = 0;
 		let high = data.length - 1;

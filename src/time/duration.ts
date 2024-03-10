@@ -36,11 +36,11 @@ export class Duration {
 		}
 	}
 
-	valueOf() {
+	valueOf(): number {
 		return this.as("milliseconds");
 	}
 
-	toString() {
+	toString(): string {
 		const parts: string[] = [];
 		if (this.years) parts.push(`${this.years}y`);
 		if (this.days) parts.push(`${this.days}d`);
@@ -51,7 +51,7 @@ export class Duration {
 		return parts.join(" ") || "0ms";
 	}
 
-	static fromMillis(ms: number) {
+	static fromMillis(ms: number): Duration {
 		const milliseconds = ms % 1000;
 		const seconds = Math.floor(ms / SECONDS) % 60;
 		const minutes = Math.floor(ms / MINUTES) % 60;
@@ -69,7 +69,7 @@ export class Duration {
 		});
 	}
 
-	as(unit: DurationUnit) {
+	as(unit: DurationUnit): number {
 		const { years, days, hours, minutes, seconds, milliseconds } = this;
 		const denominator =
 			unit === "years"

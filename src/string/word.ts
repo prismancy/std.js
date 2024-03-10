@@ -39,7 +39,7 @@ export function quantify<S extends string, P extends string>(
 	}` as const;
 }
 
-export function titalize(str: string) {
+export function titalize(str: string): string {
 	return str
 		.split(" ")
 		.map(word => capitalize(word))

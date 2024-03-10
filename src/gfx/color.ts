@@ -1,6 +1,6 @@
-import { vec3 } from "../math";
+import { Vec3, vec3 } from "../math/mod.ts";
 
-export function hsv2rgb(h: number, s: number, v: number) {
+export function hsv2rgb(h: number, s: number, v: number): Vec3 {
 	let r = 0;
 	let g = 0;
 	let b = 0;
@@ -64,6 +64,6 @@ export function hsv2rgb(h: number, s: number, v: number) {
  * @param b blue
  * @returns the luminance of the color
  */
-export function luminance(r: number, g: number, b: number) {
+export function luminance(r: number, g: number, b: number): number {
 	return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 256;
 }

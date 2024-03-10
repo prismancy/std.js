@@ -1,4 +1,4 @@
-import { dual } from "../fn";
+import { dual } from "../fn/mod.ts";
 
 export const unzip: {
 	<T, U>(iterable: Iterable<readonly [T, U]>): [T[], U[]];

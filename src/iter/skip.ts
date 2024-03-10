@@ -1,5 +1,5 @@
-import { dual } from "../fn";
-import { type uint } from "../types";
+import { dual } from "../fn/mod.ts";
+import { type uint } from "../types.ts";
 
 /**
  * Skips over the first `n` values of an iterable

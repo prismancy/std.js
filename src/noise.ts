@@ -1,5 +1,5 @@
-import { lerp, type Vec2Like } from "./math";
-import { type int } from "./types";
+import { lerp, type Vec2Like } from "./math/mod.ts";
+import { type int } from "./types.ts";
 
 // Create pseudorandom direction vector
 function randomGradient(ix: int, iy: int): Vec2Like {
@@ -17,7 +17,7 @@ function randomGradient(ix: int, iy: int): Vec2Like {
 }
 
 // Computes the dot product of the distance and gradient vectors.
-function dotGridGradient(ix: int, iy: int, x: number, y: number) {
+function dotGridGradient(ix: int, iy: int, x: number, y: number): number {
 	const gradient = randomGradient(ix, iy);
 
 	const dx = x - ix;
@@ -27,7 +27,7 @@ function dotGridGradient(ix: int, iy: int, x: number, y: number) {
 }
 
 // Compute Perlin noise at coordinates x, y
-export function perlin(x: number, y = 0) {
+export function perlin(x: number, y = 0): number {
 	const x0 = Math.floor(x);
 	const x1 = x0 + 1;
 	const y0 = Math.floor(y);

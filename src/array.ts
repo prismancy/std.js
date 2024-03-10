@@ -1,6 +1,6 @@
-import { ascend, type Compare } from "./cmp";
-import { zip } from "./iter";
-import { type Indexable, type MaybeArray } from "./types";
+import { ascend, type Compare } from "./cmp.ts";
+import { zip } from "./iter/mod.ts";
+import { type Indexable, type MaybeArray } from "./types.ts";
 
 /**
  * Switches the positions of two values in an array in-place
@@ -8,7 +8,7 @@ import { type Indexable, type MaybeArray } from "./types";
  * @param i the first index
  * @param j the second index
  */
-export function swap<T>(array: Indexable<T>, i: number, j: number) {
+export function swap<T>(array: Indexable<T>, i: number, j: number): void {
 	const temp = array[i]!;
 	array[i] = array[j]!;
 	array[j] = temp;
@@ -20,7 +20,7 @@ export function swap<T>(array: Indexable<T>, i: number, j: number) {
  * @param item
  * @returns if the item was removed
  */
-export function remove<T>(array: T[], item: T) {
+export function remove<T>(array: T[], item: T): boolean {
 	const index = array.indexOf(item);
 	if (index === -1) return false;
 	array.splice(index, 1);
@@ -33,7 +33,7 @@ export function remove<T>(array: T[], item: T) {
  * @param index
  * @returns the removed item
  */
-export function unorderedRemove<T>(array: T[], index: number) {
+export function unorderedRemove<T>(array: T[], index: number): T | undefined {
 	swap(array, index, array.length - 1);
 	return array.pop();
 }
@@ -48,11 +48,17 @@ export function intersection<T>(...arrays: ReadonlyArray<readonly T[]>): T[] {
 	return first.filter(item => rest.every(array => array.includes(item)));
 }
 
-export function added<T, U>(oldArray: readonly T[], newArray: readonly U[]) {
+export function added<T, U>(
+	oldArray: readonly T[],
+	newArray: readonly U[],
+): U[] {
 	return newArray.filter(value => !oldArray.includes(value as unknown as T));
 }
 
-export function removed<T, U>(oldArray: readonly T[], newArray: readonly U[]) {
+export function removed<T, U>(
+	oldArray: readonly T[],
+	newArray: readonly U[],
+): T[] {
 	return oldArray.filter(value => !newArray.includes(value as unknown as U));
 }
 
@@ -63,7 +69,7 @@ export function changes<T, U>(
 	return [added(oldArray, newArray), removed(oldArray, newArray)];
 }
 
-export function difference<T>(array1: readonly T[], array2: readonly T[]) {
+export function difference<T>(array1: readonly T[], array2: readonly T[]): T[] {
 	const [added, removed] = changes(array1, array2);
 	return [...added, ...removed];
 }
@@ -72,11 +78,11 @@ export function difference<T>(array1: readonly T[], array2: readonly T[]) {
  * Returns an array containing items from all arrays deduplicated
  * @param arrays
  */
-export function union<T>(...arrays: ReadonlyArray<readonly T[]>) {
+export function union<T>(...arrays: ReadonlyArray<readonly T[]>): T[] {
 	return [...new Set(arrays.flat())];
 }
 
-export function arraysEqual<T>(a: readonly T[], b: readonly T[]) {
+export function arraysEqual<T>(a: readonly T[], b: readonly T[]): boolean {
 	if (a.length !== b.length) return false;
 	for (const [item1, item2] of zip(a, b)) {
 		if (item1 !== item2) return false;
@@ -91,7 +97,7 @@ export function arraysEqual<T>(a: readonly T[], b: readonly T[]) {
  * @param b items the array should include
  * @returns if the `a` has at least one of the items in `b`
  */
-export function includesAny<T, U>(a: readonly T[], b: readonly U[]) {
+export function includesAny<T, U>(a: readonly T[], b: readonly U[]): boolean {
 	return b.some(item => a.includes(item as unknown as T));
 }
 
@@ -101,14 +107,14 @@ export function includesAny<T, U>(a: readonly T[], b: readonly U[]) {
  * @param b items the array should include
  * @returns if the `a` has all of the items in `b`
  */
-export function includesAll<T, U>(a: readonly T[], b: readonly U[]) {
+export function includesAll<T, U>(a: readonly T[], b: readonly U[]): boolean {
 	return b.every(item => a.includes(item as unknown as T));
 }
 
 export function dedupe<T extends { [K in keyof T]: T[K] }>(
 	array: Iterable<T>,
 	key: keyof T,
-) {
+): T[] {
 	const result: T[] = [];
 	const values = new Set<PropertyKey>();
 	for (const item of array) {
@@ -122,7 +128,7 @@ export function dedupe<T extends { [K in keyof T]: T[K] }>(
 	return result;
 }
 
-export function filterByKey<T>(array: readonly T[], key: keyof T) {
+export function filterByKey<T>(array: readonly T[], key: keyof T): T[] {
 	return array.filter(item => item[key]);
 }
 
@@ -130,7 +136,7 @@ export function sortByKeys<T, K extends keyof T>(
 	array: Iterable<T>,
 	key: MaybeArray<K>,
 	compare: Compare<T[K]> = ascend,
-) {
+): T[] {
 	return [...array].sort((a, b) => {
 		const keys = Array.isArray(key) ? key : [key];
 		for (const key of keys) {

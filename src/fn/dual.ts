@@ -1,8 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/prefer-ts-expect-error */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
-import { type AnyFunction } from "../types";
+import { type AnyFunction } from "../types.ts";
 
 export type Dual<Fn extends AnyFunction, Args = Parameters<Fn>> = Args extends [
 	infer First,

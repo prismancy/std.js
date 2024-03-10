@@ -1,7 +1,7 @@
-import { pipe } from "./fn";
-import { pick } from "./iter";
-import { sum } from "./stats";
-import { type AnyRecord } from "./types";
+import { pipe } from "./fn/mod.ts";
+import { pick } from "./iter/mod.ts";
+import { sum } from "./stats.ts";
+import { uint, type AnyRecord } from "./types.ts";
 
 type Unsubscribe = () => void;
 
@@ -11,12 +11,12 @@ export class EventEmitter<Events extends AnyRecord = AnyRecord> {
 		Set<(data: Events[keyof Events]) => any>
 	>();
 
-	listenersCount(event?: keyof Events) {
+	listenersCount(event?: keyof Events): uint {
 		if (event) return this.events.get(event)?.size || 0;
 		return pipe(this.events.values(), pick("size"), sum);
 	}
 
-	listeners(event: keyof Events) {
+	listeners(event: keyof Events): Array<(data: Events[keyof Events]) => any> {
 		return [...(this.events.get(event) || [])];
 	}
 
@@ -48,7 +48,7 @@ export class EventEmitter<Events extends AnyRecord = AnyRecord> {
 	emit<EventName extends keyof Events>(
 		event: EventName,
 		data: Events[EventName],
-	) {
+	): this {
 		const listeners = this.events.get(event);
 		if (listeners) {
 			for (const listener of listeners) {
@@ -62,13 +62,13 @@ export class EventEmitter<Events extends AnyRecord = AnyRecord> {
 	off<EventName extends keyof Events>(
 		event: EventName,
 		listener: (data: Events[EventName]) => any,
-	) {
+	): boolean {
 		const listeners = this.events.get(event);
 		// @ts-expect-error TypeScript isn't smart enough here
 		return listeners?.delete(listener) || false;
 	}
 
-	removeAllListeners(event?: keyof Events) {
+	removeAllListeners(event?: keyof Events): this {
 		if (event) this.events.delete(event);
 		else this.events.clear();
 		return this;

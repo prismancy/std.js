@@ -2,17 +2,7 @@
 	"name": "@iz7n/std",
 	"type": "module",
 	"devDependencies": {
-		"@iz7n/eslint-config": "^0.5.4",
-		"@iz7n/prettier-config": "^1.2.0",
-		"typescript": "^5.4.2",
-		"unbuild": "^2.0.0",
-		"vitest": "^1.3.1",
-		"xo": "^0.58.0"
-	},
-	"scripts": {
-		"test": "vitest",
-		"typecheck": "vitest typecheck",
-		"bench": "vitest bench"
+		"@iz7n/prettier-config": "^1.2.0"
 	},
 	"prettier": "@iz7n/prettier-config"
 }

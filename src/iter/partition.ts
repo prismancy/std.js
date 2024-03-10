@@ -1,5 +1,5 @@
-import { dual } from "../fn";
-import { type NonFalsy } from "../types";
+import { dual } from "../fn/mod.ts";
+import { type NonFalsy } from "../types.ts";
 
 /**
  * Splits an iterable into two halves based on a condition
@@ -7,7 +7,6 @@ import { type NonFalsy } from "../types";
  * @param predicate a function to test each item
  * @returns a tuple with items that either pass or fail the `predicate`
  */
-// @ts-expect-error `dual` doesn't support generics
 export const partition: {
 	<T>(
 		iter: Iterable<T>,
@@ -45,6 +44,6 @@ export const partition: {
 			else fail.push(item);
 		}
 
-		return [pass, fail];
+		return [pass, fail] as [T[], T[]];
 	},
 );

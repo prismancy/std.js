@@ -1,5 +1,5 @@
-import { type int } from "../../types";
-import { closeTo } from "../funcs";
+import { type int } from "../../types.ts";
+import { closeTo } from "../funcs.ts";
 
 export type Mat2Like =
 	| [m00: number, m01: number, m10: number, m11: number]
@@ -13,7 +13,7 @@ export class Mat2 extends Float32Array {
 		super(matrix);
 	}
 
-	override toString() {
+	override toString(): string {
 		const [a, b, c, d] = this;
 		return `mat2 [
   ${a} ${b}
@@ -21,16 +21,16 @@ export class Mat2 extends Float32Array {
 ]`;
 	}
 
-	copy() {
+	copy(): Mat2 {
 		return mat2(this);
 	}
 
-	identity() {
+	identity(): Mat2 {
 		this.set([1, 0, 0, 1]);
 		return this;
 	}
 
-	eq(m: ReadonlyMat2Like, precision?: int) {
+	eq(m: ReadonlyMat2Like, precision?: int): boolean {
 		for (let i = 0; i < 4; i++) {
 			const a = this[i]!;
 			const b = m[i]!;
@@ -40,7 +40,7 @@ export class Mat2 extends Float32Array {
 		return true;
 	}
 
-	add(m: ReadonlyMat2Like) {
+	add(m: ReadonlyMat2Like): this {
 		for (let i = 0; i < 4; i++) {
 			this[i] += m[i]!;
 		}
@@ -48,11 +48,11 @@ export class Mat2 extends Float32Array {
 		return this;
 	}
 
-	static add(m1: Mat2, m2: ReadonlyMat2Like) {
+	static add(m1: Mat2, m2: ReadonlyMat2Like): Mat2 {
 		return m1.copy().add(m2);
 	}
 
-	sub(m: ReadonlyMat2Like) {
+	sub(m: ReadonlyMat2Like): this {
 		for (let i = 0; i < 4; i++) {
 			this[i] -= m[i]!;
 		}
@@ -60,16 +60,16 @@ export class Mat2 extends Float32Array {
 		return this;
 	}
 
-	static sub(m1: Mat2, m2: ReadonlyMat2Like) {
+	static sub(m1: Mat2, m2: ReadonlyMat2Like): Mat2 {
 		return m1.copy().sub(m2);
 	}
 
-	mul(m: number | ReadonlyMat2Like) {
+	mul(m: number | ReadonlyMat2Like): this {
 		this.set(Mat2.mul(this, m));
 		return this;
 	}
 
-	static mul(m1: ReadonlyMat2Like, m2: number | ReadonlyMat2Like) {
+	static mul(m1: ReadonlyMat2Like, m2: number | ReadonlyMat2Like): Mat2 {
 		if (typeof m2 === "number") {
 			const ans = mat2();
 			for (let i = 0; i < 4; i++) {
@@ -90,32 +90,31 @@ export class Mat2 extends Float32Array {
 		]);
 	}
 
-	div(m: number) {
-		this.mul(1 / m);
-		return this;
+	div(m: number): this {
+		return this.mul(1 / m);
 	}
 
-	transpose() {
+	transpose(): this {
 		const [, b = 0, c = 0] = this;
 		[this[2], this[1]] = [b, c];
 		return this;
 	}
 
-	det() {
+	det(): number {
 		const [a = 0, b = 0, c = 0, d = 0] = this;
 		return a * d - b * c;
 	}
 
-	adj() {
+	adj(): Mat2 {
 		const [a = 0, b = 0, c = 0, d = 0] = this;
 		return mat2([d, -b, -c, a]);
 	}
 
-	inv() {
+	inv(): Mat2 {
 		return this.adj().div(this.det());
 	}
 }
 
-export function mat2(matrix?: ReadonlyMat2Like) {
+export function mat2(matrix?: ReadonlyMat2Like): Mat2 {
 	return new Mat2(matrix);
 }

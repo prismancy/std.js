@@ -1,5 +1,5 @@
-import { dual } from "../fn";
-import { type uint, type Repeat } from "../types";
+import { dual } from "../fn/mod.ts";
+import { type uint, type Repeat } from "../types.ts";
 
 /**
  * Splits an iterable into equally-sized sub arrays

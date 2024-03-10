@@ -1,6 +1,5 @@
-/* eslint-disable max-params */
-import { clamp, lerp } from "../funcs";
-import { type Vec } from "./vec";
+import { clamp, lerp } from "../funcs.ts";
+import { type Vec } from "./vec.ts";
 
 export type Vec4Like =
 	| [x: number, y: number, z: number, w: number]
@@ -23,34 +22,34 @@ export class Vec4 extends Float32Array implements Vec {
 		}
 	}
 
-	/* prettier-ignore */ get x() { return this[0] || 0; }
+	/* prettier-ignore */ get x(): number { return this[0] || 0; }
 	/* prettier-ignore */ set x(value: number) { this[0] = value; }
-	/* prettier-ignore */ get y() { return this[1] || 0; }
+	/* prettier-ignore */ get y(): number { return this[1] || 0; }
 	/* prettier-ignore */ set y(value: number) { this[1] = value; }
-	/* prettier-ignore */ get z() { return this[2] || 0; }
+	/* prettier-ignore */ get z(): number { return this[2] || 0; }
 	/* prettier-ignore */ set z(value: number) { this[2] = value; }
-	/* prettier-ignore */ get w() { return this[2] || 0; }
+	/* prettier-ignore */ get w(): number { return this[2] || 0; }
 	/* prettier-ignore */ set w(value: number) { this[2] = value; }
 
-	/* prettier-ignore */ get r() { return this[0] || 0; }
+	/* prettier-ignore */ get r(): number { return this[0] || 0; }
 	/* prettier-ignore */ set r(value: number) { this[0] = value; }
-	/* prettier-ignore */ get g() { return this[1] || 0; }
+	/* prettier-ignore */ get g(): number { return this[1] || 0; }
 	/* prettier-ignore */ set g(value: number) { this[1] = value; }
-	/* prettier-ignore */ get b() { return this[2] || 0; }
+	/* prettier-ignore */ get b(): number { return this[2] || 0; }
 	/* prettier-ignore */ set b(value: number) { this[2] = value; }
-	/* prettier-ignore */ get a() { return this[2] || 0; }
+	/* prettier-ignore */ get a(): number { return this[2] || 0; }
 	/* prettier-ignore */ set a(value: number) { this[2] = value; }
 
-	override toString() {
+	override toString(): string {
 		const [x, y, z, w] = this;
 		return `vec4 <${x}, ${y}, ${z}, ${w}>`;
 	}
 
-	copy() {
+	copy(): Vec4 {
 		return vec4(...this);
 	}
 
-	eq(x: First, y?: number, z?: number, w?: number) {
+	eq(x: First, y?: number, z?: number, w?: number): boolean {
 		if (typeof x === "number")
 			return (
 				this.x === x &&
@@ -63,7 +62,7 @@ export class Vec4 extends Float32Array implements Vec {
 		);
 	}
 
-	add(x: First, y?: number, z?: number, w?: number) {
+	add(x: First, y?: number, z?: number, w?: number): this {
 		if (typeof x === "number") {
 			this.x += x;
 			this.y += y ?? x;
@@ -79,11 +78,11 @@ export class Vec4 extends Float32Array implements Vec {
 		return this;
 	}
 
-	static add(v1: Vec4, x: First, y?: number, z?: number, w?: number) {
+	static add(v1: Vec4, x: First, y?: number, z?: number, w?: number): Vec4 {
 		return v1.copy().add(x, y, z, w);
 	}
 
-	sub(x: First, y?: number, z?: number, w?: number) {
+	sub(x: First, y?: number, z?: number, w?: number): this {
 		if (typeof x === "number") {
 			this.x -= x;
 			this.y -= y ?? x;
@@ -99,11 +98,11 @@ export class Vec4 extends Float32Array implements Vec {
 		return this;
 	}
 
-	static sub(v1: Vec4, x: First, y?: number, z?: number, w?: number) {
+	static sub(v1: Vec4, x: First, y?: number, z?: number, w?: number): Vec4 {
 		return v1.copy().sub(x, y, z, w);
 	}
 
-	mul(x: First, y?: number, z?: number, w?: number) {
+	mul(x: First, y?: number, z?: number, w?: number): this {
 		if (typeof x === "number") {
 			this.x *= x;
 			this.y *= y ?? x;
@@ -119,11 +118,11 @@ export class Vec4 extends Float32Array implements Vec {
 		return this;
 	}
 
-	static mul(v1: Vec4, x: First, y?: number, z?: number, w?: number) {
+	static mul(v1: Vec4, x: First, y?: number, z?: number, w?: number): Vec4 {
 		return v1.copy().mul(x, y, z, w);
 	}
 
-	div(x: First, y?: number, z?: number, w?: number) {
+	div(x: First, y?: number, z?: number, w?: number): this {
 		if (typeof x === "number") {
 			this.x /= x;
 			this.y /= y ?? x;
@@ -139,11 +138,15 @@ export class Vec4 extends Float32Array implements Vec {
 		return this;
 	}
 
-	static div(v1: Vec4, x: First, y?: number, z?: number, w?: number) {
+	static div(v1: Vec4, x: First, y?: number, z?: number, w?: number): Vec4 {
 		return v1.copy().div(x, y, z, w);
 	}
 
-	static fma(a: ReadonlyVec4Like, b: ReadonlyVec4Like, c: ReadonlyVec4Like) {
+	static fma(
+		a: ReadonlyVec4Like,
+		b: ReadonlyVec4Like,
+		c: ReadonlyVec4Like,
+	): Vec4 {
 		return vec4(
 			a[0] * b[0] + c[0],
 			a[1] * b[1] + c[1],
@@ -152,7 +155,7 @@ export class Vec4 extends Float32Array implements Vec {
 		);
 	}
 
-	lt(x: ReadonlyVec4Like) {
+	lt(x: ReadonlyVec4Like): Vec4 {
 		return vec4(
 			this.x < x[0] ? 1 : 0,
 			this.y < x[1] ? 1 : 0,
@@ -161,7 +164,7 @@ export class Vec4 extends Float32Array implements Vec {
 		);
 	}
 
-	lte(x: ReadonlyVec4Like) {
+	lte(x: ReadonlyVec4Like): Vec4 {
 		return vec4(
 			this.x <= x[0] ? 1 : 0,
 			this.y <= x[1] ? 1 : 0,
@@ -170,7 +173,7 @@ export class Vec4 extends Float32Array implements Vec {
 		);
 	}
 
-	gt(x: ReadonlyVec4Like) {
+	gt(x: ReadonlyVec4Like): Vec4 {
 		return vec4(
 			this.x > x[0] ? 1 : 0,
 			this.y > x[1] ? 1 : 0,
@@ -179,7 +182,7 @@ export class Vec4 extends Float32Array implements Vec {
 		);
 	}
 
-	gte(x: ReadonlyVec4Like) {
+	gte(x: ReadonlyVec4Like): Vec4 {
 		return vec4(
 			this.x >= x[0] ? 1 : 0,
 			this.y >= x[1] ? 1 : 0,
@@ -188,50 +191,50 @@ export class Vec4 extends Float32Array implements Vec {
 		);
 	}
 
-	limit(max: number) {
+	limit(max: number): this {
 		const maxSq = max * max;
 		const magSq = this.magSq();
 		if (magSq > maxSq) this.setMag(max);
 		return this;
 	}
 
-	normalize() {
+	normalize(): this {
 		const mag = this.mag();
 		if (mag !== 0) this.div(mag);
 		return this;
 	}
 
-	static normalize(v: Vec4) {
+	static normalize(v: Vec4): Vec4 {
 		return v.copy().normalize();
 	}
 
-	mag() {
+	mag(): number {
 		return Math.sqrt(this.magSq());
 	}
 
-	setMag(n: number) {
+	setMag(n: number): this {
 		return this.normalize().mul(n);
 	}
 
-	magSq() {
+	magSq(): number {
 		const { x, y, z, w } = this;
 		return x * x + y * y + z * z + w * w;
 	}
 
-	dist(v: Vec4) {
+	dist(v: Vec4): number {
 		return Math.sqrt(this.distSq(v));
 	}
 
-	distSq(v: Vec4) {
+	distSq(v: Vec4): number {
 		return Vec4.sub(v, this).magSq();
 	}
 
-	dot(v: ReadonlyVec4Like) {
+	dot(v: ReadonlyVec4Like): number {
 		const { x, y, z, w } = this;
 		return x * v[0] + y * v[1] + z * v[2] + w * v[3];
 	}
 
-	lerp(v: ReadonlyVec4Like, norm: number) {
+	lerp(v: ReadonlyVec4Like, norm: number): this {
 		const { x, y, z, w } = this;
 		this.x = lerp(x, v[0], norm);
 		this.y = lerp(y, v[1], norm);
@@ -240,11 +243,11 @@ export class Vec4 extends Float32Array implements Vec {
 		return this;
 	}
 
-	static lerp(v1: Vec4, v2: ReadonlyVec4Like, norm: number) {
+	static lerp(v1: Vec4, v2: ReadonlyVec4Like, norm: number): Vec4 {
 		return v1.copy().lerp(v2, norm);
 	}
 
-	clamp(min: ReadonlyVec4Like, max: ReadonlyVec4Like) {
+	clamp(min: ReadonlyVec4Like, max: ReadonlyVec4Like): this {
 		const { x, y, z, w } = this;
 		this.x = clamp(x, min[0], max[0]);
 		this.y = clamp(y, min[1], max[1]);
@@ -253,19 +256,19 @@ export class Vec4 extends Float32Array implements Vec {
 		return this;
 	}
 
-	static clamp(v: Vec4, min: ReadonlyVec4Like, max: ReadonlyVec4Like) {
+	static clamp(v: Vec4, min: ReadonlyVec4Like, max: ReadonlyVec4Like): Vec4 {
 		return v.copy().clamp(min, max);
 	}
 
-	reflect(normal: Vec4) {
+	reflect(normal: Vec4): Vec4 {
 		return this.sub(Vec4.mul(normal, 2 * this.dot(normal)));
 	}
 
-	static reflect(v: Vec4, normal: Vec4) {
+	static reflect(v: Vec4, normal: Vec4): Vec4 {
 		return v.copy().reflect(normal);
 	}
 
-	refract(normal: Vec4, eta: number) {
+	refract(normal: Vec4, eta: number): this {
 		const nDot = this.dot(normal);
 		const k = 1 - eta * eta * (1 - nDot * nDot);
 		if (k < 0) {
@@ -277,6 +280,6 @@ export class Vec4 extends Float32Array implements Vec {
 	}
 }
 
-export function vec4(x?: First, y?: number, z?: number, w?: number) {
+export function vec4(x?: First, y?: number, z?: number, w?: number): Vec4 {
 	return new Vec4(x, y, z, w);
 }

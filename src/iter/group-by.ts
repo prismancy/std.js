@@ -1,5 +1,5 @@
-import { dual } from "../fn";
-import { type AnyRecord } from "../types";
+import { dual } from "../fn/mod.ts";
+import { type AnyRecord } from "../types.ts";
 
 export const groupBy: {
 	<T extends AnyRecord, K extends keyof T>(

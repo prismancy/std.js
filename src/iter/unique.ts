@@ -1,4 +1,4 @@
-import { dual } from "../fn";
+import { dual } from "../fn/mod.ts";
 
 export const unique: {
 	<T>(iter: Iterable<T>): Generator<T>;

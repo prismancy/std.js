@@ -1,4 +1,4 @@
-import { type int } from "../types";
+import { type int } from "../types.ts";
 
 export function range(max: int): Generator<int>;
 export function range(

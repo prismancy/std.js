@@ -1,10 +1,10 @@
-import { type Compare } from "../../cmp";
-import { type int } from "../../types";
+import { type Compare } from "../../cmp.ts";
+import { type int } from "../../types.ts";
 import {
 	BinarySearchTree,
 	type BinaryNode,
 	type BinaryNodeDirection,
-} from "./bst";
+} from "./bst.ts";
 
 export interface AvlNode<T> extends BinaryNode<T> {
 	parent?: AvlNode<T>;
@@ -29,13 +29,16 @@ export interface AvlNode<T> extends BinaryNode<T> {
 export class AvlTree<T> extends BinarySearchTree<T> {
 	protected declare root?: AvlNode<T>;
 
-	static override from<T>(values: Iterable<T>, compare?: Compare<T>) {
+	static override from<T>(
+		values: Iterable<T>,
+		compare?: Compare<T>,
+	): AvlTree<T> {
 		const tree = new AvlTree<T>(compare);
 		for (const value of values) tree.insert(value);
 		return tree;
 	}
 
-	override insert(value: T) {
+	override insert(value: T): boolean {
 		const node = this.insertNode({ value, bf: 0 });
 		if (!node) return false;
 		this.rebalance(node);
@@ -46,7 +49,7 @@ export class AvlTree<T> extends BinarySearchTree<T> {
 		return super.insertNode(node) as AvlNode<T> | undefined;
 	}
 
-	override remove(value: T) {
+	override remove(value: T): boolean {
 		const node = this.findNode(value) as AvlNode<T> | undefined;
 		if (!node) return false;
 
@@ -55,7 +58,7 @@ export class AvlTree<T> extends BinarySearchTree<T> {
 		return true;
 	}
 
-	protected rebalance(node: AvlNode<T>) {
+	protected rebalance(node: AvlNode<T>): void {
 		const { parent } = node;
 		if (!parent) return;
 		const parentDirection: BinaryNodeDirection =
@@ -75,9 +78,9 @@ export class AvlTree<T> extends BinarySearchTree<T> {
 	}
 
 	protected override rotate(
-		node: AvlNode<any>,
+		node: AvlNode<T>,
 		direction: BinaryNodeDirection,
-	) {
+	): boolean {
 		if (!super.rotate(node, direction)) return false;
 
 		const replacementDirection: BinaryNodeDirection =

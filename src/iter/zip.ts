@@ -1,4 +1,4 @@
-import { dual } from "../fn";
+import { dual } from "../fn/mod.ts";
 
 export const zip: {
 	<T, U>(iterable1: Iterable<T>, iterable2: Iterable<U>): Generator<[T, U]>;

@@ -1,5 +1,5 @@
-import { complex, Complex } from "./complex";
-import { csqrt } from "./funcs";
+import { complex, Complex } from "./complex.ts";
+import { csqrt } from "./funcs.ts";
 
 /**
  * Solves ax² + bx + c = 0 for x. In other words, finds the roots of a quadratic equation.
@@ -9,16 +9,16 @@ import { csqrt } from "./funcs";
  * @returns An array of roots for the quadratic equation. Any imaginary roots will be NaN.
  */
 export function cquadraticRoots(
-  a: number,
-  b: number,
-  c: number,
+	a: number,
+	b: number,
+	c: number,
 ): [Complex, Complex] {
-  const discriminant = b * b - 4 * a * c;
-  const d = csqrt(complex(discriminant));
-  return [
-    Complex.sub(d, b).div(2 * a),
-    Complex.sub(d, b)
-      .mul(-1)
-      .div(2 * a),
-  ];
+	const discriminant = b * b - 4 * a * c;
+	const d = csqrt(complex(discriminant));
+	return [
+		Complex.sub(d, b).div(2 * a),
+		Complex.sub(d, b)
+			.mul(-1)
+			.div(2 * a),
+	];
 }

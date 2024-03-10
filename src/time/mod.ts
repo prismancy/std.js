@@ -1,4 +1,4 @@
-import { Duration, type DurationLike } from "./duration";
+import { Duration, type DurationLike } from "./duration.ts";
 
 interface DurationLikeWithMonths extends DurationLike {
 	months?: number;
@@ -14,7 +14,7 @@ export function addDuration(
 		seconds,
 		milliseconds,
 	}: DurationLikeWithMonths,
-) {
+): Date {
 	const newDate = new Date(date);
 	if (years) newDate.setFullYear(newDate.getFullYear() + years);
 	if (months) newDate.setMonth(newDate.getMonth() + months);
@@ -38,7 +38,7 @@ export function subtractDuration(
 		seconds,
 		milliseconds,
 	}: DurationLikeWithMonths,
-) {
+): Date {
 	const newDate = new Date(date);
 	if (years) newDate.setFullYear(newDate.getFullYear() - years);
 	if (days) newDate.setDate(newDate.getDate() - days);
@@ -57,7 +57,7 @@ export function subtractDuration(
  * @param a
  * @param b
  */
-export function since(a: Date, b: Date) {
+export function since(a: Date, b: Date): Duration {
 	const millis = a.getTime() - b.getTime();
 	return Duration.fromMillis(millis);
 }
@@ -68,24 +68,25 @@ export function since(a: Date, b: Date) {
  * @param a
  * @param b
  */
-export function until(a: Date, b: Date) {
+export function until(a: Date, b: Date): Duration {
 	const millis = b.getTime() - a.getTime();
 	return Duration.fromMillis(millis);
 }
 
-export const stripTime = (date: Date) =>
+export const stripTime = (date: Date): Date =>
 	new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-export const getToday = () => stripTime(new Date());
-export const getTomorrow = () => addDuration(getToday(), { days: 1 });
-export const getYesterday = () => subtractDuration(getToday(), { days: 1 });
+export const getToday = (): Date => stripTime(new Date());
+export const getTomorrow = (): Date => addDuration(getToday(), { days: 1 });
+export const getYesterday = (): Date =>
+	subtractDuration(getToday(), { days: 1 });
 
 /**
  * Determines if two dates are the same day, ignoring time
  * @param a
  * @param b
  */
-export function sameDay(a: Date, b: Date) {
+export function sameDay(a: Date, b: Date): boolean {
 	return (
 		a.getDate() === b.getDate() &&
 		a.getMonth() === b.getMonth() &&
@@ -97,7 +98,7 @@ export function sameDay(a: Date, b: Date) {
  * Checks if a date is valid
  * @param date
  */
-export function validDate(date: Date) {
+export function validDate(date: Date): boolean {
 	const millis = date.getTime();
 	return !Number.isNaN(millis);
 }

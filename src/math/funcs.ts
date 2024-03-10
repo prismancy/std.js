@@ -1,5 +1,5 @@
-import { avg, minmax } from "../stats";
-import { type int, type uint } from "../types";
+import { avg, minmax } from "../stats.ts";
+import { type int, type uint } from "../types.ts";
 
 /**
  * Determines if a value is a number other than `NaN`
@@ -30,7 +30,7 @@ export function isInteger(x: unknown): x is int {
  * @param x the number to round
  * @param n the multiple to round to
  */
-export function roundToMultiple(x: number, n: number) {
+export function roundToMultiple(x: number, n: number): number {
 	return Math.floor(x / n) * n;
 }
 
@@ -38,15 +38,15 @@ export function roundToMultiple(x: number, n: number) {
  * Rounds `x` to the nearest even number
  * @param x
  */
-export function roundToEven(x: number) {
+export function roundToEven(x: number): number {
 	return roundToMultiple(x, 2);
 }
 
-export function norm(x: number, min: number, max: number) {
+export function norm(x: number, min: number, max: number): number {
 	return (x - min) / (max - min);
 }
 
-export function lerp(min: number, max: number, norm: number) {
+export function lerp(min: number, max: number, norm: number): number {
 	return min + (max - min) * norm;
 }
 
@@ -56,25 +56,25 @@ export function map(
 	fromMax: number,
 	toMin: number,
 	toMax: number,
-) {
+): number {
 	return lerp(toMin, toMax, norm(x, fromMin, fromMax));
 }
 
-export function step(x: number, edge = 0) {
+export function step(x: number, edge = 0): number {
 	return x < edge ? 0 : 1;
 }
 
-export function smoothstep(x: number, min: number, max: number) {
+export function smoothstep(x: number, min: number, max: number): number {
 	x = clamp(norm(x, min, max), 0, 1);
 	return x * x * (3 - 2 * x);
 }
 
-export function smootherstep(x: number, min: number, max: number) {
+export function smootherstep(x: number, min: number, max: number): number {
 	x = clamp(norm(x, min, max), 0, 1);
 	return x * x * x * (x * (x * 6 - 15) + 10);
 }
 
-export function clamp(n: number, min: number, max: number) {
+export function clamp(n: number, min: number, max: number): number {
 	return Math.min(Math.max(n, min), max);
 }
 
@@ -83,7 +83,7 @@ export function overlap(
 	max1: number,
 	min2: number,
 	max2: number,
-) {
+): number {
 	[min1, max1] = minmax([min1, max1]);
 	[min2, max2] = minmax([min2, max2]);
 	const range1 = max1 - min1;
@@ -93,39 +93,47 @@ export function overlap(
 }
 
 /** Returns which number (a or b) is closer to x */
-export function closer(x: number, a: [number, number], b: [number, number]) {
+export function closer(
+	x: number,
+	a: [number, number],
+	b: [number, number],
+): number {
 	return Math.abs(x - a[0]) < Math.abs(x - b[0]) ? a[1] : b[1];
 }
 
-export function round(n: number, precision: int = 0) {
+export function round(n: number, precision: int = 0): number {
 	const factor = 10 ** precision;
 	return Math.round(n * factor) / factor;
 }
 
-export function floor(n: number, precision: int = 0) {
+export function floor(n: number, precision: int = 0): number {
 	const factor = 10 ** precision;
 	return Math.floor(n * factor) / factor;
 }
 
-export function ceil(n: number, precision: int = 0) {
+export function ceil(n: number, precision: int = 0): number {
 	const factor = 10 ** precision;
 	return Math.ceil(n * factor) / factor;
 }
 
-export function trunc(n: number, precision: int = 0) {
+export function trunc(n: number, precision: int = 0): number {
 	const factor = 10 ** precision;
 	return Math.trunc(n * factor) / factor;
 }
 
-export function fract(x: number) {
+export function fract(x: number): number {
 	return x - Math.floor(x);
 }
 
-export function closeTo(n: number, target: number, precision: int = 5) {
+export function closeTo(
+	n: number,
+	target: number,
+	precision: int = 5,
+): boolean {
 	return Math.abs(n - target) < 10 ** -precision;
 }
 
-export function factorial(n: uint) {
+export function factorial(n: uint): number {
 	let total = 1;
 	for (let i = n; i > 1; i--) {
 		total *= i;
@@ -134,7 +142,7 @@ export function factorial(n: uint) {
 	return total;
 }
 
-export function log(base: number, x: number) {
+export function log(base: number, x: number): number {
 	return Math.log(x) / Math.log(base);
 }
 
@@ -146,7 +154,7 @@ export const ln = Math.log;
  * @param a a number
  * @param b a number
  */
-export function gcd(a: uint, b: uint) {
+export function gcd(a: uint, b: uint): number {
 	while (b) {
 		const temp = b;
 		b = a % b;
@@ -156,7 +164,7 @@ export function gcd(a: uint, b: uint) {
 	return a;
 }
 
-export function fibonacci(n: uint) {
+export function fibonacci(n: uint): number {
 	let a = 0;
 	let b = 1;
 	for (let i = 0; i < n; i++) {
@@ -168,7 +176,10 @@ export function fibonacci(n: uint) {
 	return a;
 }
 
+/** Convert farhenheit to celsius */
 export const celsius = (fahrenheit: number) => (fahrenheit - 32) * (5 / 9);
+
+/** Convert celsius to farhenheit */
 export const fahrenheit = (celsius: number) => celsius * (9 / 5) + 32;
 
 /**
@@ -198,16 +209,16 @@ export function lineOfBestFit(
 	return [m, b];
 }
 
-export const sigmoid = (x: number) => 1 / (1 + Math.exp(-x));
-export const relu = (x: number) => (x > 0 ? x : 0);
-export const leakyRelu = (x: number, a = 0.01) => (x > 0 ? x : a * x);
+export const sigmoid = (x: number): number => 1 / (1 + Math.exp(-x));
+export const relu = (x: number): number => (x > 0 ? x : 0);
+export const leakyRelu = (x: number, a = 0.01): number => (x > 0 ? x : a * x);
 
 /**
  * Calculates the number of ways to choose `k` items from `n` items without repeating and with ordering
  * @param n the number of items
  * @param k the number of choices being made
  */
-export function permutations(n: uint, k: uint) {
+export function permutations(n: uint, k: uint): number {
 	if (k > n) return 0;
 	return factorial(n) / factorial(n - k);
 }
@@ -217,17 +228,16 @@ export function permutations(n: uint, k: uint) {
  * @param n the number of items
  * @param k the number of choices being made
  */
-export function combinations(n: uint, k: uint) {
+export function combinations(n: uint, k: uint): number {
 	if (k > n) return 0;
 	return permutations(n, k) / factorial(k);
 }
 
-export function dot(a: Iterable<number>, b: Iterable<number>) {
+export function dot(a: Iterable<number>, b: Iterable<number>): number {
 	const iter1 = a[Symbol.iterator]();
 	const iter2 = b[Symbol.iterator]();
 
 	let total = 0;
-	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		const result1 = iter1.next();
 		const result2 = iter2.next();

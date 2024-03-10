@@ -1,4 +1,4 @@
-import { type uint } from "../types";
+import { type uint } from "../types.ts";
 
 interface Node<T> {
 	value: T;
@@ -21,7 +21,7 @@ export class LinkedList<T> implements Iterable<T> {
 		return list;
 	}
 
-	get length() {
+	get length(): uint {
 		let { node } = this;
 		let length = 0;
 		while (node) {
@@ -32,7 +32,7 @@ export class LinkedList<T> implements Iterable<T> {
 		return length;
 	}
 
-	*[Symbol.iterator]() {
+	*[Symbol.iterator](): Iterator<T> {
 		let { node } = this;
 		while (node) {
 			yield node.value;
@@ -49,7 +49,7 @@ export class LinkedList<T> implements Iterable<T> {
 		return node;
 	}
 
-	getNode(index: uint): Node<T> | void {
+	getNode(index: uint): Node<T> | undefined {
 		let current = this.node;
 		let i = 0;
 		while (current) {
@@ -59,11 +59,11 @@ export class LinkedList<T> implements Iterable<T> {
 		}
 	}
 
-	get(index: uint) {
+	get(index: uint): T | undefined {
 		return this.getNode(index)?.value;
 	}
 
-	set(index: uint, value: T) {
+	set(index: uint, value: T): T | undefined {
 		const node = this.getNode(index);
 		if (!node) return;
 
@@ -73,14 +73,14 @@ export class LinkedList<T> implements Iterable<T> {
 		return oldValue;
 	}
 
-	push(value: T) {
+	push(value: T): void {
 		const { tail } = this;
 		const node: Node<T> = { value };
 		if (tail) tail.next = node;
 		else this.node = node;
 	}
 
-	pop(): Node<T> | void {
+	pop(): Node<T> | undefined {
 		let current = this.node;
 		let parent: Node<T> | undefined;
 		while (current) {
@@ -94,7 +94,7 @@ export class LinkedList<T> implements Iterable<T> {
 		}
 	}
 
-	unshift(value: T) {
+	unshift(value: T): void {
 		const node: Node<T> = { value };
 		if (this.node) {
 			node.next = this.node;
@@ -104,7 +104,7 @@ export class LinkedList<T> implements Iterable<T> {
 		this.node = node;
 	}
 
-	shift() {
+	shift(): Node<T> | undefined {
 		const { node } = this;
 		this.node = node?.next;
 		return node;

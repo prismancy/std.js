@@ -1,4 +1,4 @@
-import { type Awaitable } from "../types";
+import { type Awaitable } from "../types.ts";
 
 export type Pipe = {
 	<T>(x: T): T;

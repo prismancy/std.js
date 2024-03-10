@@ -1,16 +1,15 @@
-import { type Maybe } from "../types";
+import { type Maybe } from "../types.ts";
 
-export * from "./curry";
-export * from "./dual";
-export * from "./pipe";
+export * from "./curry.ts";
+export * from "./dual.ts";
+export * from "./pipe.ts";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-export const noop = () => {};
+export const noop: () => void = () => {};
 
-export const identity = <T>(x: T) => x;
+export const identity = <T>(x: T): T => x;
 
 export const constant =
-	<T>(x: T) =>
+	<T>(x: T): (() => T) =>
 	() =>
 		x;
 
@@ -41,7 +40,7 @@ export function memoize<P, R>(func: (arg: P) => R): (arg: P) => R {
 	};
 }
 
-export function memo<T>(fn: () => T) {
+export function memo<T>(fn: () => T): () => T {
 	let cache: T;
 	let called = false;
 	return () => {
@@ -52,7 +51,7 @@ export function memo<T>(fn: () => T) {
 	};
 }
 
-export function ttlCache<T>(fn: () => T, ttl: number) {
+export function ttlCache<T>(fn: () => T, ttl: number): () => T {
 	let cache: T;
 	let called = false;
 	let lastCalled = performance.now();

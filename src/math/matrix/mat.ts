@@ -1,9 +1,9 @@
-import { pipe } from "../../fn";
-import { chunk, collect } from "../../iter";
-import { repeat } from "../../iter/repeat";
-import { random } from "../../random";
-import { type uint } from "../../types";
-import { closeTo } from "../funcs";
+import { pipe } from "../../fn/mod.ts";
+import { chunk, collect } from "../../iter/mod.ts";
+import { repeat } from "../../iter/repeat.ts";
+import { random } from "../../random.ts";
+import { type uint } from "../../types.ts";
+import { closeTo } from "../funcs.ts";
 
 export class Mat extends Float32Array {
 	rows: uint;
@@ -21,11 +21,11 @@ export class Mat extends Float32Array {
 		}
 	}
 
-	get cols() {
+	get cols(): number {
 		return this.length / this.rows;
 	}
 
-	override toString() {
+	override toString(): string {
 		return `mat [
   ${pipe(this, chunk(this.cols), collect)
 		.map(row => row.join(" "))
@@ -33,13 +33,13 @@ export class Mat extends Float32Array {
 ]`;
 	}
 
-	copy() {
+	copy(): Mat {
 		const m = mat(this.rows, this.cols);
 		m.set(this);
 		return m;
 	}
 
-	static random(rows: uint, cols: uint) {
+	static random(rows: uint, cols: uint): Mat {
 		const m = mat(rows, cols);
 		for (let i = 0, { length } = this; i < length; i++) {
 			m[i] = random(-1, 1);
@@ -48,7 +48,7 @@ export class Mat extends Float32Array {
 		return m;
 	}
 
-	eq(m: Mat, precision?: uint) {
+	eq(m: Mat, precision?: uint): boolean {
 		if (this.rows !== m.rows || this.cols !== m.cols) return false;
 
 		for (let i = 0, { length } = this; i < length; i++) {
@@ -60,7 +60,7 @@ export class Mat extends Float32Array {
 		return true;
 	}
 
-	add(m: Mat) {
+	add(m: Mat): this {
 		if (this.rows !== m.rows || this.cols !== m.cols) return this;
 
 		for (let i = 0, { length } = this; i < length; i++) {
@@ -70,11 +70,11 @@ export class Mat extends Float32Array {
 		return this;
 	}
 
-	static add(m1: Mat, m2: Mat) {
+	static add(m1: Mat, m2: Mat): Mat {
 		return m1.copy().add(m2);
 	}
 
-	sub(m: Mat) {
+	sub(m: Mat): this {
 		if (this.rows !== m.rows || this.cols !== m.cols) return this;
 
 		for (let i = 0, { length } = this; i < length; i++) {
@@ -84,15 +84,16 @@ export class Mat extends Float32Array {
 		return this;
 	}
 
-	static sub(m1: Mat, m2: Mat) {
+	static sub(m1: Mat, m2: Mat): Mat {
 		return m1.copy().sub(m2);
 	}
 
-	mul(m: Mat | number) {
+	mul(m: Mat | number): this {
 		this.set(Mat.mul(this, m));
+		return this;
 	}
 
-	static mul(m1: Mat, m2: Mat | number) {
+	static mul(m1: Mat, m2: Mat | number): Mat {
 		if (typeof m2 === "number") {
 			const { rows, cols } = m1;
 			const ans = mat(rows, cols);
@@ -119,11 +120,11 @@ export class Mat extends Float32Array {
 		return ans;
 	}
 
-	div(m: number) {
-		this.mul(1 / m);
+	div(m: number): this {
+		return this.mul(1 / m);
 	}
 
-	static transpose(m: Mat) {
+	static transpose(m: Mat): Mat {
 		const { rows, cols } = m;
 		const ans = mat(cols, rows);
 		for (let i = 0, { length } = this; i < length; i++) {

@@ -1,7 +1,7 @@
-import { dual } from "../fn";
-import { type Repeat } from "../types";
-import { map } from "./map";
-import { range } from "./range";
+import { dual } from "../fn/mod.ts";
+import { type Repeat } from "../types.ts";
+import { map } from "./map.ts";
+import { range } from "./range.ts";
 
 /**
  * Returns a tuple of iterables, which all yield the same items as the original iterable

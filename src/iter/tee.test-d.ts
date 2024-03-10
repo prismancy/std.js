@@ -5,7 +5,6 @@ import { tee } from "./tee";
 test("n: 0", () => {
 	const iter = range(0);
 	const iters = tee(iter, 0);
-	// eslint-disable-next-line @typescript-eslint/ban-types
 	expectTypeOf(iters).toEqualTypeOf<[]>();
 });
 

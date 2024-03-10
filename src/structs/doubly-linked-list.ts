@@ -1,4 +1,4 @@
-import { type uint } from "../types";
+import { type uint } from "../types.ts";
 
 interface Node<T> {
 	value: T;
@@ -20,11 +20,11 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 		return list;
 	}
 
-	get length() {
+	get length(): uint {
 		return this.size;
 	}
 
-	*[Symbol.iterator]() {
+	*[Symbol.iterator](): Iterator<T> {
 		let current = this.head;
 		while (current) {
 			yield current.value;
@@ -58,7 +58,7 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 		return oldValue;
 	}
 
-	push(value: T) {
+	push(value: T): uint {
 		const node: Node<T> = { value };
 
 		if (this.tail) {
@@ -85,7 +85,7 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 		return value;
 	}
 
-	unshift(value: T) {
+	unshift(value: T): uint {
 		const node: Node<T> = { value };
 
 		if (this.head) {
@@ -112,7 +112,7 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 		return value;
 	}
 
-	reverse() {
+	reverse(): this {
 		let current = this.head;
 		let previous: Node<T> | undefined;
 		let next: Node<T> | undefined;

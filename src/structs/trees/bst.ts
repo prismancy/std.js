@@ -1,4 +1,5 @@
-import { ascend, type Compare } from "../../cmp";
+import { ascend, type Compare } from "../../cmp.ts";
+import { uint } from "../../types.ts";
 
 export interface BinaryNode<T> {
 	parent?: BinaryNode<T>;
@@ -31,7 +32,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	static from<T>(
 		values: Iterable<T> | BinarySearchTree<T>,
 		compare?: Compare<T>,
-	) {
+	): BinarySearchTree<T> {
 		const tree = new BinarySearchTree<T>(compare);
 		if (values instanceof BinarySearchTree) {
 			const nodes: Array<BinaryNode<T>> = [];
@@ -52,32 +53,32 @@ export class BinarySearchTree<T> implements Iterable<T> {
 		return tree;
 	}
 
-	get size() {
+	get size(): uint {
 		return this.#size;
 	}
 
-	min() {
+	min(): T | undefined {
 		let { root: node } = this;
 		while (node?.left) node = node.left;
 		return node?.value;
 	}
 
-	max() {
+	max(): T | undefined {
 		let { root: node } = this;
 		while (node?.right) node = node.right;
 		return node?.value;
 	}
 
-	clear() {
+	clear(): void {
 		delete this.root;
 		this.#size = 0;
 	}
 
-	has(value: T) {
+	has(value: T): boolean {
 		return !!this.findNode(value);
 	}
 
-	protected findNode(value: T) {
+	protected findNode(value: T): BinaryNode<T> | undefined {
 		let { root: node, compare } = this;
 		while (node) {
 			const comparison = compare(value, node.value);
@@ -93,11 +94,11 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * @param value
 	 * @returns if the value was inserted
 	 */
-	insert(value: T) {
+	insert(value: T): boolean {
 		return !!this.insertNode({ value });
 	}
 
-	protected insertNode(node: BinaryNode<T>) {
+	protected insertNode(node: BinaryNode<T>): BinaryNode<T> | undefined {
 		const { root, compare } = this;
 		if (root) {
 			let parent = root;
@@ -131,14 +132,14 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * @param value
 	 * @returns if the value was removed
 	 */
-	remove(value: T) {
+	remove(value: T): boolean {
 		const node = this.findNode(value);
 		if (!node) return false;
 		this.removeNode(node);
 		return true;
 	}
 
-	protected removeNode(node: BinaryNode<T>) {
+	protected removeNode(node: BinaryNode<T>): void {
 		// Zero children
 		if (!node.left && !node.right) {
 			if (node.parent) {
@@ -179,7 +180,10 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * @param direction which direction to rotate the node
 	 * @returns if the rotation was successful (the node had a child in the given direction)
 	 */
-	protected rotate(node: BinaryNode<any>, direction: BinaryNodeDirection) {
+	protected rotate(
+		node: BinaryNode<T>,
+		direction: BinaryNodeDirection,
+	): boolean {
 		const replacementDirection: BinaryNodeDirection =
 			direction === "left" ? "right" : "left";
 		const replacement = node[replacementDirection];
@@ -197,7 +201,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses in-order (LNR) tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*lnrValues() {
+	*lnrValues(): Generator<T> {
 		const nodes: Array<BinaryNode<T>> = [];
 		let node = this.root;
 		while (nodes.length || node) {
@@ -216,7 +220,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses reverse in-order (RNL) tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*rnlValues() {
+	*rnlValues(): Generator<T> {
 		const nodes: Array<BinaryNode<T>> = [];
 		let node = this.root;
 		while (nodes.length || node) {
@@ -235,7 +239,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses pre-order (NLR) tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*nlrValues() {
+	*nlrValues(): Generator<T> {
 		const nodes: Array<BinaryNode<T>> = [];
 		if (this.root) nodes.push(this.root);
 		while (nodes.length) {
@@ -250,7 +254,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses post-order (LRN) tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*lrnValues() {
+	*lrnValues(): Generator<T> {
 		const nodes: Array<BinaryNode<T>> = [];
 		let node = this.root;
 		let lastNodeVisited: BinaryNode<T> | undefined;
@@ -274,7 +278,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses level order tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*lvlValues() {
+	*lvlValues(): Generator<T> {
 		const children: Array<BinaryNode<T>> = [];
 		let cursor = this.root;
 		while (cursor) {
@@ -289,7 +293,7 @@ export class BinarySearchTree<T> implements Iterable<T> {
 	 * Returns an iterator that uses in-order (LNR) tree traversal for
 	 * retrieving values from the binary search tree.
 	 */
-	*[Symbol.iterator]() {
+	*[Symbol.iterator](): Iterator<T> {
 		yield* this.lnrValues();
 	}
 }

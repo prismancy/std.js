@@ -1,12 +1,12 @@
-import { swap } from "../array";
-import { type uint } from "../types";
+import { swap } from "../array.ts";
+import { type uint } from "../types.ts";
 
 /**
  * ## Unordered Array
  * An array that maintains no order
  */
 export class UnorderedArray<T> extends Array<T> {
-	copy() {
+	copy(): UnorderedArray<T> {
 		return new UnorderedArray(...this);
 	}
 
@@ -31,7 +31,7 @@ export class UnorderedArray<T> extends Array<T> {
 	 * @param index the index of the item to remove
 	 * @returns the removed item, if it exists
 	 */
-	removeIndex(index: uint) {
+	removeIndex(index: uint): T | undefined {
 		swap(this, index, this.length - 1);
 		return this.pop();
 	}

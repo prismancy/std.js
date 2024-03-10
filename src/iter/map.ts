@@ -1,4 +1,4 @@
-import { dual } from "../fn";
+import { dual } from "../fn/mod.ts";
 
 export const map: {
 	<T, U>(iter: Iterable<T>, fn: (value: T) => U): Generator<U>;

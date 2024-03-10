@@ -1,4 +1,4 @@
-export function listItems(items: string[], conjunction = "and") {
+export function listItems(items: string[], conjunction = "and"): string {
 	switch (items.length) {
 		case 0: {
 			return "";

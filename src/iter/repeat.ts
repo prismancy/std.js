@@ -1,6 +1,6 @@
-import { dual } from "../fn";
-import { type uint } from "../types";
-import { range } from "./range";
+import { dual } from "../fn/mod.ts";
+import { type uint } from "../types.ts";
+import { range } from "./range.ts";
 
 /**
  * Repeats an iterable `n` times

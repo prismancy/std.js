@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-import { Queue } from "../structs";
-import { type AnyFunction, type Result, type uint } from "../types";
+import { Queue } from "../structs/mod.ts";
+import { type AnyFunction, type Result, type uint } from "../types.ts";
 
-export * from "./queue";
+export * from "./queue.ts";
 
-export const sleep = async (ms = 0) =>
+export const sleep = (ms = 0): Promise<void> =>
 	new Promise<void>(resolve => setTimeout(resolve, ms));
 
 export function throttle<T extends AnyFunction>(
@@ -46,10 +45,10 @@ export function debounce<T extends AnyFunction>(
  * @param max the most promises that can run at once
  * @returns an array of results of all the promises in the order they were passed in
  */
-export async function concurrently<T>(
+export function concurrently<T>(
 	funcs: Iterable<() => Promise<T>>,
 	max: number,
-) {
+): Promise<T[]> {
 	const tasks = [...funcs];
 	const results = Array.from<T>({ length: tasks.length });
 	const queue = new Queue(tasks);
@@ -77,7 +76,6 @@ export async function retry<T>(
 	{ maxAttempts = 5, delay = 0 }: { maxAttempts?: uint; delay?: number } = {},
 ): Promise<Result<T, unknown>> {
 	let attempts = 0;
-	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		try {
 			return [await fn(), undefined];
@@ -101,7 +99,6 @@ export async function retryWithExponentialBackoff<T>(
 	} = {},
 ): Promise<Result<T, unknown>> {
 	let attempts = 0;
-	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		try {
 			return [await fn(), undefined];

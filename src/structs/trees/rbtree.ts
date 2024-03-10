@@ -1,9 +1,9 @@
-import { type Compare } from "../../cmp";
+import { type Compare } from "../../cmp.ts";
 import {
 	BinarySearchTree,
 	type BinaryNode,
 	type BinaryNodeDirection,
-} from "./bst";
+} from "./bst.ts";
 
 export interface RedBlackNode<T> extends BinaryNode<T> {
 	parent?: RedBlackNode<T>;
@@ -28,13 +28,16 @@ export interface RedBlackNode<T> extends BinaryNode<T> {
 export class RedBlackTree<T> extends BinarySearchTree<T> {
 	protected declare root?: RedBlackNode<T>;
 
-	static override from<T>(values: Iterable<T>, compare?: Compare<T>) {
+	static override from<T>(
+		values: Iterable<T>,
+		compare?: Compare<T>,
+	): RedBlackTree<T> {
 		const tree = new RedBlackTree<T>(compare);
 		for (const value of values) tree.insert(value);
 		return tree;
 	}
 
-	override insert(value: T) {
+	override insert(value: T): boolean {
 		const node = this.insertNode({ value, red: true });
 		if (!node) return false;
 		this.rebalance(node);
@@ -47,7 +50,7 @@ export class RedBlackTree<T> extends BinarySearchTree<T> {
 		return super.insertNode(node) as RedBlackNode<T> | undefined;
 	}
 
-	override remove(value: T) {
+	override remove(value: T): boolean {
 		const node = this.findNode(value) as RedBlackNode<T> | undefined;
 		if (!node) return false;
 
@@ -56,7 +59,7 @@ export class RedBlackTree<T> extends BinarySearchTree<T> {
 		return true;
 	}
 
-	protected rebalance(node: RedBlackNode<T>) {
+	protected rebalance(node: RedBlackNode<T>): void {
 		let { parent } = node;
 		let current = node.left || node.right;
 		while (parent && !current?.red) {

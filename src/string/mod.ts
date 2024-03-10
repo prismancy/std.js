@@ -1,12 +1,15 @@
-export * from "./constants";
-export * from "./list";
-export * from "./word";
+export * from "./constants.ts";
+export * from "./list.ts";
+export * from "./word.ts";
 
-export function reverse(str: string) {
+export function reverse(str: string): string {
 	return str.split("").reverse().join();
 }
 
-export function replace(str: string, replacements: Record<string, string>) {
+export function replace(
+	str: string,
+	replacements: Record<string, string>,
+): string {
 	const regex = new RegExp(
 		Object.keys(replacements).map(escapeRegex).join("|"),
 		"g",

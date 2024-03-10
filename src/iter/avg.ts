@@ -1,4 +1,4 @@
-export function avg(iter: Iterable<number>) {
+export function avg(iter: Iterable<number>): number {
 	let total = 0;
 	let count = 0;
 	for (const value of iter) {

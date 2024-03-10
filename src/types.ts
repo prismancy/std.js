@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
-
+// deno-lint-ignore-file no-explicit-any
 export type Primitive =
 	| string
 	| number

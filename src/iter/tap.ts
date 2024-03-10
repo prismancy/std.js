@@ -1,4 +1,4 @@
-import { dual } from "../fn";
+import { dual } from "../fn/mod.ts";
 
 /**
  * Calls a function on each value of an iterable without modifying

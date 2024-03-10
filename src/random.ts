@@ -1,5 +1,5 @@
-import { swap, unorderedRemove } from "./array";
-import { type int, type uint } from "./types";
+import { swap, unorderedRemove } from "./array.ts";
+import { type int, type uint } from "./types.ts";
 
 /**
  * Returns a random number from 0 to a maximum non-inclusive
@@ -40,7 +40,7 @@ export function randomInt(min = 0, max?: int) {
  * @param array
  * @returns the original array
  */
-export function shuffle<T extends ArrayLike<unknown>>(array: T) {
+export function shuffle<T extends ArrayLike<unknown>>(array: T): T {
 	for (let { length } = array, i = length - 1; i > 0; i--) {
 		const j = randomInt(i);
 		swap(array, i, j);
@@ -99,7 +99,7 @@ export function choices<T>(array: ArrayLike<T>, n: uint): T[] | string {
  * @param n number of items to pick
  * @returns an array containing the random items
  */
-export function sample<T>(array: ArrayLike<T> & Iterable<T>, n: uint) {
+export function sample<T>(array: ArrayLike<T> & Iterable<T>, n: uint): T[] {
 	const copy = [...array];
 	const result = Array.from<T>({ length: n });
 	for (let i = 0; i < n; i++) {
