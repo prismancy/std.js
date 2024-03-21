@@ -158,6 +158,7 @@ export function pickByKeys<T, K extends keyof T>(
   if (Array.isArray(keys)) {
     const result = {} as Pick<T, K>;
     for (const key of keys) {
+      // @ts-expect-error Array.isArray returns any[]
       result[key] = object[key];
     }
 
