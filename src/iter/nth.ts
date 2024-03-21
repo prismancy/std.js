@@ -7,13 +7,13 @@ import { type uint } from "../types.ts";
  * @param n a zero-based index
  */
 export const nth: {
-	<T>(iter: Iterable<T>, n: uint): T;
-	<T>(n: uint): (iter: Iterable<T>) => T;
+  <T>(iter: Iterable<T>, n: uint): T;
+  <T>(n: uint): (iter: Iterable<T>) => T;
 } = dual(<T>(iter: Iterable<T>, n: uint) => {
-	let i = 0;
-	for (const value of iter) {
-		if (i++ === n) return value;
-	}
+  let i = 0;
+  for (const value of iter) {
+    if (i++ === n) return value;
+  }
 
-	return undefined;
+  return undefined;
 });

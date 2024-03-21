@@ -1,15 +1,15 @@
 import { type Compare } from "../../cmp.ts";
 import {
-	BinarySearchTree,
-	type BinaryNode,
-	type BinaryNodeDirection,
+  type BinaryNode,
+  type BinaryNodeDirection,
+  BinarySearchTree,
 } from "./bst.ts";
 
 export interface RedBlackNode<T> extends BinaryNode<T> {
-	parent?: RedBlackNode<T>;
-	left?: RedBlackNode<T>;
-	right?: RedBlackNode<T>;
-	red: boolean;
+  parent?: RedBlackNode<T>;
+  left?: RedBlackNode<T>;
+  right?: RedBlackNode<T>;
+  red: boolean;
 }
 
 /**
@@ -26,79 +26,81 @@ export interface RedBlackNode<T> extends BinaryNode<T> {
  * @unstable
  */
 export class RedBlackTree<T> extends BinarySearchTree<T> {
-	protected declare root?: RedBlackNode<T>;
+  declare protected root?: RedBlackNode<T>;
 
-	static override from<T>(
-		values: Iterable<T>,
-		compare?: Compare<T>,
-	): RedBlackTree<T> {
-		const tree = new RedBlackTree<T>(compare);
-		for (const value of values) tree.insert(value);
-		return tree;
-	}
+  static override from<T>(
+    values: Iterable<T>,
+    compare?: Compare<T>,
+  ): RedBlackTree<T> {
+    const tree = new RedBlackTree<T>(compare);
+    for (const value of values) tree.insert(value);
+    return tree;
+  }
 
-	override insert(value: T): boolean {
-		const node = this.insertNode({ value, red: true });
-		if (!node) return false;
-		this.rebalance(node);
-		return true;
-	}
+  override insert(value: T): boolean {
+    const node = this.insertNode({ value, red: true });
+    if (!node) return false;
+    this.rebalance(node);
+    return true;
+  }
 
-	protected override insertNode(
-		node: RedBlackNode<T>,
-	): RedBlackNode<T> | undefined {
-		return super.insertNode(node) as RedBlackNode<T> | undefined;
-	}
+  protected override insertNode(
+    node: RedBlackNode<T>,
+  ): RedBlackNode<T> | undefined {
+    return super.insertNode(node) as RedBlackNode<T> | undefined;
+  }
 
-	override remove(value: T): boolean {
-		const node = this.findNode(value) as RedBlackNode<T> | undefined;
-		if (!node) return false;
+  override remove(value: T): boolean {
+    const node = this.findNode(value) as RedBlackNode<T> | undefined;
+    if (!node) return false;
 
-		this.removeNode(node);
-		if (!node.red) this.rebalance(node);
-		return true;
-	}
+    this.removeNode(node);
+    if (!node.red) this.rebalance(node);
+    return true;
+  }
 
-	protected rebalance(node: RedBlackNode<T>): void {
-		let { parent } = node;
-		let current = node.left || node.right;
-		while (parent && !current?.red) {
-			const direction: BinaryNodeDirection =
-				parent.left === current ? "left" : "right";
-			const siblingDirection: BinaryNodeDirection =
-				direction === "right" ? "left" : "right";
-			let sibling: RedBlackNode<T> | undefined = parent[siblingDirection];
+  protected rebalance(node: RedBlackNode<T>): void {
+    let { parent } = node;
+    let current = node.left || node.right;
+    while (parent && !current?.red) {
+      const direction: BinaryNodeDirection = parent.left === current
+        ? "left"
+        : "right";
+      const siblingDirection: BinaryNodeDirection = direction === "right"
+        ? "left"
+        : "right";
+      let sibling: RedBlackNode<T> | undefined = parent[siblingDirection];
 
-			if (sibling?.red) {
-				sibling.red = false;
-				parent.red = true;
-				this.rotate(parent, direction);
-				sibling = parent[siblingDirection];
-			}
+      if (sibling?.red) {
+        sibling.red = false;
+        parent.red = true;
+        this.rotate(parent, direction);
+        sibling = parent[siblingDirection];
+      }
 
-			if (sibling) {
-				if (!sibling.left?.red && !sibling.right?.red) {
-					sibling.red = true;
-					current = parent;
-					parent = current.parent;
-				} else {
-					if (!sibling[siblingDirection]?.red) {
-						sibling[direction]!.red = false;
-						sibling.red = true;
-						this.rotate(sibling, siblingDirection);
-						sibling = parent[siblingDirection];
-					}
+      if (sibling) {
+        if (!sibling.left?.red && !sibling.right?.red) {
+          sibling.red = true;
+          current = parent;
+          parent = current.parent;
+        } else {
+          if (!sibling[siblingDirection]?.red) {
+            sibling[direction]!.red = false;
+            sibling.red = true;
+            this.rotate(sibling, siblingDirection);
+            sibling = parent[siblingDirection];
+          }
 
-					sibling!.red = parent.red;
-					parent.red = false;
-					sibling![siblingDirection]!.red = false;
-					this.rotate(parent, direction);
-					current = this.root;
-					parent = undefined;
-				}
-			}
-		}
+          sibling!.red = parent.red;
+          parent.red = false;
+          sibling![siblingDirection]!.red = false;
+          this.rotate(parent, direction);
+          current = this.root;
+          parent = undefined;
+        }
+      }
+    }
 
-		if (current) current.red = false;
-	}
+    if (current) current.red = false;
+  }
 }

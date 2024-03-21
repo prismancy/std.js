@@ -3,7 +3,7 @@
  * @param iterables
  */
 export function* chain<T>(...iterables: Array<Iterable<T>>): Iterator<T> {
-	for (const iterable of iterables) {
-		yield* iterable;
-	}
+  for (const iterable of iterables) {
+    yield* iterable;
+  }
 }

@@ -1,8 +1,0 @@
-{
-	"name": "@iz7n/std",
-	"type": "module",
-	"devDependencies": {
-		"@iz7n/prettier-config": "^1.2.0"
-	},
-	"prettier": "@iz7n/prettier-config"
-}

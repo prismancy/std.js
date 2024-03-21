@@ -6,11 +6,11 @@ import { dual } from "../fn/mod.ts";
  * @param fn a function to call on each value
  */
 export const tap: {
-	<T>(iter: Iterable<T>, fn: (value: T) => unknown): Generator<T>;
-	<T>(fn: (value: T) => unknown): (iter: Iterable<T>) => Generator<T>;
+  <T>(iter: Iterable<T>, fn: (value: T) => unknown): Generator<T>;
+  <T>(fn: (value: T) => unknown): (iter: Iterable<T>) => Generator<T>;
 } = dual(function* <T>(iter: Iterable<T>, fn: (value: T) => unknown) {
-	for (const value of iter) {
-		fn(value);
-		yield value;
-	}
+  for (const value of iter) {
+    fn(value);
+    yield value;
+  }
 });

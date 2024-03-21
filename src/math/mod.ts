@@ -1,3 +1,8 @@
+/**
+ * @module
+ * Math functions and constants
+ */
+
 export * from "./algebra.ts";
 export * from "./calculus/mod.ts";
 export * from "./constants.ts";

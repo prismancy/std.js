@@ -1,3 +1,8 @@
+/**
+ * @module
+ * Pipable functions for iterables
+ */
+
 export * from "./associate-by.ts";
 export * from "./chain.ts";
 export * from "./chunk.ts";

@@ -1,15 +1,15 @@
 export interface Vec extends Float32Array {
-	toString(): string;
+  toString(): string;
 
-	copy(): Vec;
+  copy(): Vec;
 
-	mag(): number;
+  mag(): number;
 
-	setMag(n: number): this;
+  setMag(n: number): this;
 
-	magSq(): number;
+  magSq(): number;
 
-	limit(max: number): this;
+  limit(max: number): this;
 
-	normalize(): this;
+  normalize(): this;
 }

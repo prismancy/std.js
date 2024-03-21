@@ -7,12 +7,12 @@ import { type uint } from "../types.ts";
  * @param n number of values to take
  */
 export const take: {
-	<T>(iter: Iterable<T>, n: uint): Generator<T>;
-	<T>(n: uint): (iter: Iterable<T>) => Generator<T>;
+  <T>(iter: Iterable<T>, n: uint): Generator<T>;
+  <T>(n: uint): (iter: Iterable<T>) => Generator<T>;
 } = dual(function* <T>(iter: Iterable<T>, n: uint) {
-	let count = 0;
-	for (const value of iter) {
-		if (count++ < n) yield value;
-		else break;
-	}
+  let count = 0;
+  for (const value of iter) {
+    if (count++ < n) yield value;
+    else break;
+  }
 });

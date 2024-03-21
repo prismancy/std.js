@@ -1,22 +1,27 @@
+/**
+ * @module
+ * String utility functions
+ */
+
 export * from "./constants.ts";
 export * from "./list.ts";
 export * from "./word.ts";
 
 export function reverse(str: string): string {
-	return str.split("").reverse().join();
+  return str.split("").reverse().join();
 }
 
 export function replace(
-	str: string,
-	replacements: Record<string, string>,
+  str: string,
+  replacements: Record<string, string>,
 ): string {
-	const regex = new RegExp(
-		Object.keys(replacements).map(escapeRegex).join("|"),
-		"g",
-	);
-	return str.replace(regex, matched => replacements[matched] || "");
+  const regex = new RegExp(
+    Object.keys(replacements).map(escapeRegex).join("|"),
+    "g",
+  );
+  return str.replace(regex, (matched) => replacements[matched] || "");
 }
 
 function escapeRegex(regexStr: string) {
-	return regexStr.replaceAll(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+  return regexStr.replaceAll(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 }

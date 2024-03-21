@@ -1,7 +1,7 @@
 {
-  "$shema": "https://jsr.io/schema/config-file.v1.json",
+  "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
   "name": "@iz7n/std",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "exports": {
     "./async": "./src/async/mod.ts",
     "./cmath": "./src/cmath/mod.ts",
@@ -21,5 +21,22 @@
     "./random": "./src/random.ts",
     "./stats": "./src/stats.ts",
     "./types": "./src/types.ts"
+  },
+  "lint": {
+    "rules": {
+      "include": [
+        "guard-for-in",
+        "no-const-assign",
+        "no-eval",
+        "no-external-import",
+        "no-inferrable-types",
+        "no-non-null-asserted-optional-chain",
+        "no-self-compare",
+        "no-sparse-arrays",
+        "no-throw-literal",
+        "triple-slash-reference",
+        "verbatim-module-syntax"
+      ]
+    }
   }
 }

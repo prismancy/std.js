@@ -1,4 +1,4 @@
-import { complex, Complex } from "./complex.ts";
+import { Complex, complex } from "./complex.ts";
 import { csqrt } from "./funcs.ts";
 
 /**
@@ -9,16 +9,16 @@ import { csqrt } from "./funcs.ts";
  * @returns An array of roots for the quadratic equation. Any imaginary roots will be NaN.
  */
 export function cquadraticRoots(
-	a: number,
-	b: number,
-	c: number,
+  a: number,
+  b: number,
+  c: number,
 ): [Complex, Complex] {
-	const discriminant = b * b - 4 * a * c;
-	const d = csqrt(complex(discriminant));
-	return [
-		Complex.sub(d, b).div(2 * a),
-		Complex.sub(d, b)
-			.mul(-1)
-			.div(2 * a),
-	];
+  const discriminant = b * b - 4 * a * c;
+  const d = csqrt(complex(discriminant));
+  return [
+    Complex.sub(d, b).div(2 * a),
+    Complex.sub(d, b)
+      .mul(-1)
+      .div(2 * a),
+  ];
 }

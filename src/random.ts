@@ -1,3 +1,8 @@
+/**
+ * @module
+ * Random number and array utilities
+ */
+
 import { swap, unorderedRemove } from "./array.ts";
 import { type int, type uint } from "./types.ts";
 
@@ -13,10 +18,10 @@ export function random(max?: number): number;
  */
 export function random(min?: number, max?: number): number;
 export function random(min?: number, max?: number) {
-	if (!min) return Math.random();
-	if (!max) return Math.random() * min;
-	const Min = Math.min(min, max);
-	return (Math.max(min, max) - Min) * Math.random() + Min;
+  if (!min) return Math.random();
+  if (!max) return Math.random() * min;
+  const Min = Math.min(min, max);
+  return (Math.max(min, max) - Min) * Math.random() + Min;
 }
 
 /**
@@ -31,8 +36,8 @@ export function randomInt(max?: int): int;
  */
 export function randomInt(min: int, max: int): int;
 export function randomInt(min = 0, max?: int) {
-	if (typeof max === "number") return Math.floor(random(min, max + 1));
-	return Math.floor(random(min + 1));
+  if (typeof max === "number") return Math.floor(random(min, max + 1));
+  return Math.floor(random(min + 1));
 }
 
 /**
@@ -41,12 +46,12 @@ export function randomInt(min = 0, max?: int) {
  * @returns the original array
  */
 export function shuffle<T extends ArrayLike<unknown>>(array: T): T {
-	for (let { length } = array, i = length - 1; i > 0; i--) {
-		const j = randomInt(i);
-		swap(array, i, j);
-	}
+  for (let { length } = array, i = length - 1; i > 0; i--) {
+    const j = randomInt(i);
+    swap(array, i, j);
+  }
 
-	return array;
+  return array;
 }
 
 /**
@@ -60,7 +65,7 @@ export function choice<T>(string: string): string;
  */
 export function choice<T>(array: ArrayLike<T>): T | undefined;
 export function choice<T>(array: ArrayLike<T>) {
-	return array[randomInt(array.length - 1)];
+  return array[randomInt(array.length - 1)];
 }
 
 /**
@@ -78,19 +83,19 @@ export function choices<T>(array: ArrayLike<T>, n: uint): T[];
  */
 export function choices<T>(string: string, n: uint): string;
 export function choices<T>(array: ArrayLike<T>, n: uint): T[] | string {
-	if (!array.length || !n) return [];
-	if (typeof array === "string") {
-		let result = "";
-		for (let i = 0; i < n; i++) {
-			result += choice(array);
-		}
+  if (!array.length || !n) return [];
+  if (typeof array === "string") {
+    let result = "";
+    for (let i = 0; i < n; i++) {
+      result += choice(array);
+    }
 
-		return result;
-	}
+    return result;
+  }
 
-	return Array.from<T>({ length: n }).map(
-		() => array[randomInt(array.length - 1)]!,
-	);
+  return Array.from<T>({ length: n }).map(
+    () => array[randomInt(array.length - 1)]!,
+  );
 }
 
 /**
@@ -100,13 +105,13 @@ export function choices<T>(array: ArrayLike<T>, n: uint): T[] | string {
  * @returns an array containing the random items
  */
 export function sample<T>(array: ArrayLike<T> & Iterable<T>, n: uint): T[] {
-	const copy = [...array];
-	const result = Array.from<T>({ length: n });
-	for (let i = 0; i < n; i++) {
-		const index = randomInt(copy.length - 1);
-		const item = unorderedRemove(copy, index);
-		if (item) result[i] = item;
-	}
+  const copy = [...array];
+  const result = Array.from<T>({ length: n });
+  for (let i = 0; i < n; i++) {
+    const index = randomInt(copy.length - 1);
+    const item = unorderedRemove(copy, index);
+    if (item) result[i] = item;
+  }
 
-	return result;
+  return result;
 }

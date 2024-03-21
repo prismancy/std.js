@@ -12,24 +12,24 @@ import { uint } from "../types.ts";
  * @see https://en.wikipedia.org/wiki/Queue_(abstract_data_type)
  */
 export class Queue<T> implements Iterable<T> {
-	constructor(protected items: T[] = []) {}
+  constructor(protected items: T[] = []) {}
 
-	get size(): uint {
-		return this.items.length;
-	}
+  get size(): uint {
+    return this.items.length;
+  }
 
-	enqueue(item: T): uint {
-		return this.items.push(item);
-	}
+  enqueue(item: T): uint {
+    return this.items.push(item);
+  }
 
-	dequeue(): T | undefined {
-		return this.items.shift();
-	}
+  dequeue(): T | undefined {
+    return this.items.shift();
+  }
 
-	*[Symbol.iterator](): Iterator<T> {
-		let item: T | undefined;
-		while ((item = this.dequeue())) {
-			yield item;
-		}
-	}
+  *[Symbol.iterator](): Iterator<T> {
+    let item: T | undefined;
+    while ((item = this.dequeue())) {
+      yield item;
+    }
+  }
 }

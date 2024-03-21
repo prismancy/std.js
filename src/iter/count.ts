@@ -5,10 +5,10 @@ import { uint } from "../types.ts";
  * @param iter
  */
 export function count<T>(iter: Iterable<T>): uint {
-	let count = 0;
-	for (const _ of iter) {
-		count++;
-	}
+  let count = 0;
+  for (const _ of iter) {
+    count++;
+  }
 
-	return count;
+  return count;
 }

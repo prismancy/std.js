@@ -6,11 +6,11 @@
  * @returns An array of roots for the quadratic equation. Any imaginary roots will be NaN.
  */
 export function quadraticRoots(
-	a: number,
-	b: number,
-	c: number,
+  a: number,
+  b: number,
+  c: number,
 ): [number, number] {
-	const discriminant = b * b - 4 * a * c;
-	const d = Math.sqrt(discriminant);
-	return [(-b + d) / (2 * a), (-b - d) / (2 * a)];
+  const discriminant = b * b - 4 * a * c;
+  const d = Math.sqrt(discriminant);
+  return [(-b + d) / (2 * a), (-b - d) / (2 * a)];
 }
