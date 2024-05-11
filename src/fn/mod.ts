@@ -5,7 +5,6 @@
 
 import { type Maybe } from "../types.ts";
 
-export * from "./curry.ts";
 export * from "./dual.ts";
 export * from "./pipe.ts";
 
