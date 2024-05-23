@@ -3,6 +3,6 @@
 
 Inspired by standard libraries from:
 - [Deno](https://github.com/denoland/deno_std)
-- [Go](standardhttps://pkg.go.dev/std)
+- [Go](https://pkg.go.dev/std)
 - [Python](https://docs.python.org/3.13/library/index.html)
 - [Rust](https://doc.rust-lang.org/std/#modules)
