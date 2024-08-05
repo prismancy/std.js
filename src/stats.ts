@@ -13,8 +13,8 @@ import { collect, filter, map, tee } from "./iter/mod.ts";
  * @example
  * ```ts
  * const numbers = [1, 2, 3, 4, 5];
- * const min = min(numbers);
- * console.log(min); // 1
+ * const minValue = min(numbers);
+ * console.log(minValue); // 1
  * ```
  */
 export function min(iter: Iterable<number>): number {
@@ -33,8 +33,8 @@ export function min(iter: Iterable<number>): number {
  * @example
  * ```ts
  * const numbers = [1, 2, 3, 4, 5];
- * const max = max(numbers);
- * console.log(max); // 5
+ * const maxValue = max(numbers);
+ * console.log(maxValue); // 5
  * ```
  */
 export function max(iter: Iterable<number>): number {
