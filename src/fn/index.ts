@@ -3,10 +3,10 @@
  * Common function wrappers and utilities
  */
 
-import { type Maybe } from "../types.ts";
+import { type Maybe } from "../types";
 
-export * from "./dual.ts";
-export * from "./pipe.ts";
+export * from "./dual";
+export * from "./pipe";
 
 export const noop: () => void = () => {};
 

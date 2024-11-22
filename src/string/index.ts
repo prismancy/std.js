@@ -3,9 +3,9 @@
  * String utility functions
  */
 
-export * from "./constants.ts";
-export * from "./list.ts";
-export * from "./word.ts";
+export * from "./constants";
+export * from "./list";
+export * from "./word";
 
 export function reverse(str: string): string {
   return str.split("").reverse().join();

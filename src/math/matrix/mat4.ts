@@ -1,6 +1,6 @@
-import { type int } from "../../types.ts";
-import { closeTo } from "../funcs.ts";
-import { mat3 } from "./mat3.ts";
+import { type int } from "../../types";
+import { closeTo } from "../funcs";
+import { mat3 } from "./mat3";
 
 export type Mat4Like =
   | [

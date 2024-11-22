@@ -1,9 +1,9 @@
-import { pipe } from "../../fn/mod.ts";
-import { chunk, collect } from "../../iter/mod.ts";
-import { repeat } from "../../iter/repeat.ts";
-import { random } from "../../random.ts";
-import { type uint } from "../../types.ts";
-import { closeTo } from "../funcs.ts";
+import { pipe } from "../../fn";
+import { chunk, collect } from "../../iter";
+import { repeat } from "../../iter/repeat";
+import { random } from "../../random";
+import { type uint } from "../../types";
+import { closeTo } from "../funcs";
 
 export class Mat extends Float32Array {
   rows: uint;

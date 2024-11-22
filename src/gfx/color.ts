@@ -1,4 +1,4 @@
-import { Vec3, vec3 } from "../math/mod.ts";
+import { Vec3, vec3 } from "../math";
 
 export function hsv2rgb(h: number, s: number, v: number): Vec3 {
   let r = 0;

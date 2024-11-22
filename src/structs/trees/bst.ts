@@ -1,5 +1,5 @@
-import { ascend, type Compare } from "../../cmp.ts";
-import { uint } from "../../types.ts";
+import { ascend, type Compare } from "../../cmp";
+import { uint } from "../../types";
 
 export interface BinaryNode<T> {
   parent?: BinaryNode<T>;

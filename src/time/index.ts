@@ -3,7 +3,7 @@
  * Date calcuation and manipulation functions
  */
 
-import { Duration, type DurationLike } from "./duration.ts";
+import { Duration, type DurationLike } from "./duration";
 
 interface DurationLikeWithMonths extends DurationLike {
   months?: number;

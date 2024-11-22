@@ -1,5 +1,5 @@
-import { ln } from "../funcs.ts";
-import { cos, cot, csc, sec, sin, tan } from "../trig/mod.ts";
+import { ln } from "../funcs";
+import { cos, cot, csc, sec, sin, tan } from "../trig";
 
 export const isin = (x: number, c = 0): number => -cos(x) + c;
 export const icos = (x: number, c = 0): number => sin(x) + c;

@@ -1,6 +1,6 @@
-import { swap } from "../../array.ts";
-import { type Compare } from "../../cmp.ts";
-import { uint } from "../../types.ts";
+import { swap } from "../../array";
+import { type Compare } from "../../cmp";
+import { uint } from "../../types";
 
 /**
  * ## Binary Heap

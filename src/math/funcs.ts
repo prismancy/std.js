@@ -1,5 +1,5 @@
-import { avg, minmax } from "../stats.ts";
-import { type int, type uint } from "../types.ts";
+import { avg, minmax } from "../stats";
+import { type int, type uint } from "../types";
 
 /**
  * Determines if a value is a number other than `NaN`

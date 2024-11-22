@@ -1,5 +1,5 @@
-import { dual } from "../fn/mod.ts";
-import { type uint } from "../types.ts";
+import { dual } from "../fn";
+import { type uint } from "../types";
 
 export const slidingWindow: {
   <T>(

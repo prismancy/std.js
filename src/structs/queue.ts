@@ -1,4 +1,4 @@
-import { uint } from "../types.ts";
+import { uint } from "../types";
 
 /**
  * ## Queue

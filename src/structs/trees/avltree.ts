@@ -1,10 +1,10 @@
-import { type Compare } from "../../cmp.ts";
-import { type int } from "../../types.ts";
+import { type Compare } from "../../cmp";
+import { type int } from "../../types";
 import {
   type BinaryNode,
   type BinaryNodeDirection,
   BinarySearchTree,
-} from "./bst.ts";
+} from "./bst";
 
 export interface AvlNode<T> extends BinaryNode<T> {
   parent?: AvlNode<T>;

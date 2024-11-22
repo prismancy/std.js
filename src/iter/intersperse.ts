@@ -1,4 +1,4 @@
-import { dual } from "../fn/mod.ts";
+import { dual } from "../fn";
 
 /**
  * Inserts a `separator` value between each value of the iterable

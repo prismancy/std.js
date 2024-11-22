@@ -1,5 +1,5 @@
-import { clamp, lerp } from "../funcs.ts";
-import { type Vec } from "./vec.ts";
+import { clamp, lerp } from "../funcs";
+import { type Vec } from "./vec";
 
 export type Vec4Like =
   | [x: number, y: number, z: number, w: number]

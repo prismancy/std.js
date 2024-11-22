@@ -1,9 +1,9 @@
-import { type Compare } from "../../cmp.ts";
+import { type Compare } from "../../cmp";
 import {
   type BinaryNode,
   type BinaryNodeDirection,
   BinarySearchTree,
-} from "./bst.ts";
+} from "./bst";
 
 export interface RedBlackNode<T> extends BinaryNode<T> {
   parent?: RedBlackNode<T>;

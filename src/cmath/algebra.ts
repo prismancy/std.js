@@ -1,5 +1,5 @@
-import { Complex, complex } from "./complex.ts";
-import { csqrt } from "./funcs.ts";
+import { Complex, complex } from "./complex";
+import { csqrt } from "./funcs";
 
 /**
  * Solves ax² + bx + c = 0 for x. In other words, finds the roots of a quadratic equation.

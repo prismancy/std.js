@@ -1,4 +1,4 @@
-import { dual } from "../fn/mod.ts";
+import { dual } from "../fn";
 
 /**
  * Checks if every item in an iterable passes a `predicate`

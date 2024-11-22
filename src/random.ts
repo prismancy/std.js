@@ -3,8 +3,8 @@
  * Random number and array utilities
  */
 
-import { swap, unorderedRemove } from "./array.ts";
-import { type int, type uint } from "./types.ts";
+import { swap, unorderedRemove } from "./array";
+import { type int, type uint } from "./types";
 
 /**
  * Returns a random number from 0 to a maximum non-inclusive

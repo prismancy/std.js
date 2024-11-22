@@ -1,6 +1,6 @@
-import { random } from "../../random.ts";
-import { clamp, lerp } from "../funcs.ts";
-import { type Vec } from "./vec.ts";
+import { random } from "../../random";
+import { clamp, lerp } from "../funcs";
+import { type Vec } from "./vec";
 
 export type Vec3Like = [x: number, y: number, z: number] | Float32Array;
 export type ReadonlyVec3Like = Readonly<Vec3Like>;

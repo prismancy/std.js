@@ -3,4 +3,4 @@
  * Color utilities
  */
 
-export * from "./color.ts";
+export * from "./color";

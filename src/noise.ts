@@ -3,8 +3,8 @@
  * Perlin noise implementation
  */
 
-import { lerp, type Vec2Like } from "./math/mod.ts";
-import { type int } from "./types.ts";
+import { lerp, type Vec2Like } from "./math";
+import { type int } from "./types";
 
 // Create pseudorandom direction vector
 function randomGradient(ix: int, iy: int): Vec2Like {

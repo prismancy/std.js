@@ -1,5 +1,5 @@
-import { ascend, type Compare } from "../cmp.ts";
-import { int, type uint } from "../types.ts";
+import { ascend, type Compare } from "../cmp";
+import { int, type uint } from "../types";
 
 /**
  * ## Sorted Array

@@ -3,10 +3,10 @@
  * Functions for working with promises
  */
 
-import { Queue } from "../structs/mod.ts";
-import { type AnyFunction, type Result, type uint } from "../types.ts";
+import { Queue } from "../structs";
+import { type AnyFunction, type Result, type uint } from "../types";
 
-export * from "./queue.ts";
+export * from "./queue";
 
 export const sleep = (ms = 0): Promise<void> =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));

@@ -1,5 +1,5 @@
-import { ascend } from "../../cmp.ts";
-import { Heap } from "./heap.ts";
+import { ascend } from "../../cmp";
+import { Heap } from "./heap";
 
 export class MinHeap<T> extends Heap<T> {
   constructor(data?: T[], heapify?: boolean) {

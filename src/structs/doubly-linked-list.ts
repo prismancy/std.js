@@ -1,4 +1,4 @@
-import { type uint } from "../types.ts";
+import { type uint } from "../types";
 
 interface Node<T> {
   value: T;

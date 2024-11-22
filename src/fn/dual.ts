@@ -1,4 +1,4 @@
-import { type AnyFunction } from "../types.ts";
+import { type AnyFunction } from "../types";
 
 export type Dual<Fn extends AnyFunction, Args = Parameters<Fn>> = Args extends [
   infer First,

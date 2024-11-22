@@ -1,4 +1,4 @@
-import { type Complex, complex, type ComplexLike } from "./complex.ts";
+import { type Complex, complex, type ComplexLike } from "./complex";
 
 export function csqrt(z: Complex): Complex {
   const { r, i } = z;

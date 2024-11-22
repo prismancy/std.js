@@ -1,5 +1,5 @@
-import { dual } from "../fn/mod.ts";
-import { type AnyRecord, type NonFalsy } from "../types.ts";
+import { dual } from "../fn";
+import { type AnyRecord, type NonFalsy } from "../types";
 
 /**
  * Allows values from an iterable based on a predicate function

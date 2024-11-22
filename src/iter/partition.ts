@@ -1,5 +1,5 @@
-import { dual } from "../fn/mod.ts";
-import { type NonFalsy } from "../types.ts";
+import { dual } from "../fn";
+import { type NonFalsy } from "../types";
 
 /**
  * Splits an iterable into two halves based on a condition

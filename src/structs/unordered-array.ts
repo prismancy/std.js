@@ -1,5 +1,5 @@
-import { swap } from "../array.ts";
-import { type uint } from "../types.ts";
+import { swap } from "../array";
+import { type uint } from "../types";
 
 /**
  * ## Unordered Array

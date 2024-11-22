@@ -3,10 +3,10 @@
  * EventEmitter implementation
  */
 
-import { pipe } from "./fn/mod.ts";
-import { pick } from "./iter/mod.ts";
-import { sum } from "./stats.ts";
-import { type AnyRecord, uint } from "./types.ts";
+import { pipe } from "./fn";
+import { pick } from "./iter";
+import { sum } from "./stats";
+import { type AnyRecord, uint } from "./types";
 
 type Unsubscribe = () => void;
 

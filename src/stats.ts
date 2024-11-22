@@ -3,8 +3,8 @@
  * Functions for working with numbers
  */
 
-import { pipe } from "./fn/pipe.ts";
-import { collect, filter, map, tee } from "./iter/mod.ts";
+import { pipe } from "./fn/pipe";
+import { collect, filter, map, tee } from "./iter";
 
 /**
  * Returns the minimum value in an iterable of numbers

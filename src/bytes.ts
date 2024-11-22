@@ -3,7 +3,7 @@
  * Utilities for working with binary data
  */
 
-import { type uint } from "./types.ts";
+import { type uint } from "./types";
 
 /**
  * Convert binary into its hex representation

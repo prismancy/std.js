@@ -1,0 +1,121 @@
+{
+  "name": "@iz7n/std",
+  "type": "module",
+  "version": "0.1.3",
+  "packageManager": "pnpm@9.13.2",
+  "description": "A standard library for JavaScript",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./async": {
+      "import": "./dist/async/index.js",
+      "require": "./dist/async/index.cjs",
+      "types": "./dist/async/index.d.ts"
+    },
+    "./cmath": {
+      "import": "./dist/cmath/index.js",
+      "require": "./dist/cmath/index.cjs",
+      "types": "./dist/cmath/index.d.ts"
+    },
+    "./fn": {
+      "import": "./dist/fn/index.js",
+      "require": "./dist/fn/index.cjs",
+      "types": "./dist/fn/index.d.ts"
+    },
+    "./gfx": {
+      "import": "./dist/gfx/index.js",
+      "require": "./dist/gfx/index.cjs",
+      "types": "./dist/gfx/index.d.ts"
+    },
+    "./iter": {
+      "import": "./dist/iter/index.js",
+      "require": "./dist/iter/index.cjs",
+      "types": "./dist/iter/index.d.ts"
+    },
+    "./math": {
+      "import": "./dist/math/index.js",
+      "require": "./dist/math/index.cjs",
+      "types": "./dist/math/index.d.ts"
+    },
+    "./string": {
+      "import": "./dist/string/index.js",
+      "require": "./dist/string/index.cjs",
+      "types": "./dist/string/index.d.ts"
+    },
+    "./structs": {
+      "import": "./dist/structs/index.js",
+      "require": "./dist/structs/index.cjs",
+      "types": "./dist/structs/index.d.ts"
+    },
+    "./time": {
+      "import": "./dist/time/index.js",
+      "require": "./dist/time/index.cjs",
+      "types": "./dist/time/index.d.ts"
+    },
+    "./array": {
+      "import": "./dist/array.js",
+      "require": "./dist/array.cjs",
+      "types": "./dist/array.d.ts"
+    },
+    "./bytes": {
+      "import": "./dist/bytes.js",
+      "require": "./dist/bytes.cjs",
+      "types": "./dist/bytes.d.ts"
+    },
+    "./cmp": {
+      "import": "./dist/cmp.js",
+      "require": "./dist/cmp.cjs",
+      "types": "./dist/cmp.d.ts"
+    },
+    "./easing": {
+      "import": "./dist/easing.js",
+      "require": "./dist/easing.cjs",
+      "types": "./dist/easing.d.ts"
+    },
+    "./events": {
+      "import": "./dist/events.js",
+      "require": "./dist/events.cjs",
+      "types": "./dist/events.d.ts"
+    },
+    "./object": {
+      "import": "./dist/object.js",
+      "require": "./dist/object.cjs",
+      "types": "./dist/object.d.ts"
+    },
+    "./random": {
+      "import": "./dist/random.js",
+      "require": "./dist/random.cjs",
+      "types": "./dist/random.d.ts"
+    },
+    "./stats": {
+      "import": "./dist/stats.js",
+      "require": "./dist/stats.cjs",
+      "types": "./dist/stats.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types.js",
+      "require": "./dist/types.cjs",
+      "types": "./dist/types.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "prettier": "@iz7n/prettier-config",
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest",
+    "prepack": "nr build",
+    "release": "bumpp && pnpm publish",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@iz7n/prettier-config": "^1.4.0",
+    "bumpp": "^9.8.1",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.5"
+  }
+}

@@ -3,9 +3,9 @@
  * Functions for working with arrays
  */
 
-import { ascend, type Compare } from "./cmp.ts";
-import { zip } from "./iter/mod.ts";
-import { type Indexable, type MaybeArray } from "./types.ts";
+import { ascend, type Compare } from "./cmp";
+import { zip } from "./iter";
+import { type Indexable, type MaybeArray } from "./types";
 
 /**
  * Switches the positions of two values in an array in-place

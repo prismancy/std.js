@@ -1,4 +1,4 @@
-import { Queue } from "../structs/mod.ts";
+import { Queue } from "../structs";
 
 export class AsyncQueue<T> extends Queue<() => Promise<T>>
   implements AsyncIterable<T> {
