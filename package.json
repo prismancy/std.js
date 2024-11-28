@@ -107,11 +107,17 @@
   "scripts": {
     "build": "tsup",
     "test": "vitest",
+    "fmt": "prettier . --write --cache --ignore-unknown",
+    "fmt:check": "prettier . --check --cache --ignore-unknown",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "lint:fix-dry": "eslint --fix-dry-run",
     "prepack": "nr build",
     "release": "bumpp && pnpm publish",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@iz7n/eslint-config": "^0.12.2",
     "@iz7n/prettier-config": "^1.4.0",
     "bumpp": "^9.8.1",
     "tsup": "^8.3.5",
