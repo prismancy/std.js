@@ -77,7 +77,7 @@ export function unorderedRemove<T>(array: T[], index: number): T | undefined {
 export function intersection<T>(...arrays: ReadonlyArray<readonly T[]>): T[] {
   const [first, ...rest] = arrays;
   if (!first) return [];
-  return first.filter((item) => rest.every((array) => array.includes(item)));
+  return first.filter(item => rest.every(array => array.includes(item)));
 }
 
 /**
@@ -94,7 +94,7 @@ export function added<T, U>(
   oldArray: readonly T[],
   newArray: readonly U[],
 ): U[] {
-  return newArray.filter((value) => !oldArray.includes(value as unknown as T));
+  return newArray.filter(value => !oldArray.includes(value as unknown as T));
 }
 
 /**
@@ -111,7 +111,7 @@ export function removed<T, U>(
   oldArray: readonly T[],
   newArray: readonly U[],
 ): T[] {
-  return oldArray.filter((value) => !newArray.includes(value as unknown as U));
+  return oldArray.filter(value => !newArray.includes(value as unknown as U));
 }
 
 /**
@@ -192,7 +192,7 @@ export function arraysEqual<T>(a: readonly T[], b: readonly T[]): boolean {
  * ```
  */
 export function includesAny<T, U>(a: readonly T[], b: readonly U[]): boolean {
-  return b.some((item) => a.includes(item as unknown as T));
+  return b.some(item => a.includes(item as unknown as T));
 }
 
 /**
@@ -207,7 +207,7 @@ export function includesAny<T, U>(a: readonly T[], b: readonly U[]): boolean {
  * ```
  */
 export function includesAll<T, U>(a: readonly T[], b: readonly U[]): boolean {
-  return b.every((item) => a.includes(item as unknown as T));
+  return b.every(item => a.includes(item as unknown as T));
 }
 
 /**
@@ -249,7 +249,7 @@ export function dedupe<T extends { [K in keyof T]: T[K] }>(
 }
 
 export function filterByKey<T>(array: readonly T[], key: keyof T): T[] {
-  return array.filter((item) => item[key]);
+  return array.filter(item => item[key]);
 }
 
 /**

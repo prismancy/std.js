@@ -1,12 +1,11 @@
 import { type AnyFunction } from "../types";
 
-export type Dual<Fn extends AnyFunction, Args = Parameters<Fn>> = Args extends [
-  infer First,
-  ...infer Rest,
-] ? {
-    (first: First, ...rest: Rest): ReturnType<Fn>;
-    (...rest: Rest): (first: First) => ReturnType<Fn>;
-  }
+export type Dual<Fn extends AnyFunction, Args = Parameters<Fn>> =
+  Args extends [infer First, ...infer Rest] ?
+    {
+      (first: First, ...rest: Rest): ReturnType<Fn>;
+      (...rest: Rest): (first: First) => ReturnType<Fn>;
+    }
   : never;
 
 /**
@@ -14,11 +13,12 @@ export type Dual<Fn extends AnyFunction, Args = Parameters<Fn>> = Args extends [
  * @param fn
  * @returns a functions a that takes in the rest of the arguments of `fn` and returns a function that takes the first argument of `fn` to finally return the result of `fn`
  */
-export const dual = <Fn extends AnyFunction>(fn: Fn): Dual<Fn> =>
-// @ts-ignore
-(...args: any[]) => {
+export const dual =
+  <Fn extends AnyFunction>(fn: Fn): Dual<Fn> =>
   // @ts-ignore
-  if (args.length === fn.length) return fn(...args);
-  // @ts-ignore
-  return (first: First) => fn(first, ...args);
-};
+  (...args: any[]) => {
+    // @ts-ignore
+    if (args.length === fn.length) return fn(...args);
+    // @ts-ignore
+    return (first: First) => fn(first, ...args);
+  };

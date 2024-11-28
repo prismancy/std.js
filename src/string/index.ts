@@ -19,7 +19,7 @@ export function replace(
     Object.keys(replacements).map(escapeRegex).join("|"),
     "g",
   );
-  return str.replace(regex, (matched) => replacements[matched] || "");
+  return str.replace(regex, matched => replacements[matched] || "");
 }
 
 function escapeRegex(regexStr: string) {

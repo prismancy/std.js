@@ -49,6 +49,6 @@ export function quantify<S extends string, P extends string>(
 export function titalize(str: string): string {
   return str
     .split(" ")
-    .map((word) => capitalize(word))
+    .map(word => capitalize(word))
     .join(" ");
 }

@@ -28,11 +28,9 @@ export class Mat extends Float32Array {
 
   override toString(): string {
     return `mat [
-  ${
-      pipe(this, chunk(this.cols), collect)
-        .map((row) => row.join(" "))
-        .join("\n  ")
-    }
+  ${pipe(this, chunk(this.cols), collect)
+    .map(row => row.join(" "))
+    .join("\n  ")}
 ]`;
   }
 

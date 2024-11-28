@@ -9,7 +9,7 @@ import { type AnyFunction, type Result, type uint } from "../types";
 export * from "./queue";
 
 export const sleep = (ms = 0): Promise<void> =>
-  new Promise<void>((resolve) => setTimeout(resolve, ms));
+  new Promise<void>(resolve => setTimeout(resolve, ms));
 
 export function throttle<T extends AnyFunction>(
   func: T,
@@ -59,7 +59,7 @@ export function concurrently<T>(
   const queue = new Queue(tasks);
   const length = queue.size;
   let i = 0;
-  return new Promise<T[]>((resolve) => {
+  return new Promise<T[]>(resolve => {
     const next = async () => {
       const func = queue.dequeue();
       if (func) {

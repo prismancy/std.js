@@ -3,16 +3,16 @@ import { closeTo } from "../funcs";
 
 export type Mat3Like =
   | [
-    m00: number,
-    m01: number,
-    m02: number,
-    m10: number,
-    m11: number,
-    m12: number,
-    m20: number,
-    m21: number,
-    m22: number,
-  ]
+      m00: number,
+      m01: number,
+      m02: number,
+      m10: number,
+      m11: number,
+      m12: number,
+      m20: number,
+      m21: number,
+      m22: number,
+    ]
   | Float32Array;
 export type ReadonlyMat3Like = Readonly<Mat3Like>;
 

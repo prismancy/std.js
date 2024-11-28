@@ -305,11 +305,7 @@ export class Vec4 extends Float32Array implements Vec {
     const nDot = this.dot(normal);
     const k = 1 - eta * eta * (1 - nDot * nDot);
     if (k < 0) {
-      this.x =
-        this.y =
-        this.z =
-        this.w =
-          0;
+      this.x = this.y = this.z = this.w = 0;
       return this;
     }
 

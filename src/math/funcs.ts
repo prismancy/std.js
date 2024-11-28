@@ -189,8 +189,8 @@ export const fahrenheit = (celsius: number) => celsius * (9 / 5) + 32;
 export function lineOfBestFit(
   points: Array<{ x: number; y: number }>,
 ): [m: number, b: number] {
-  const xs = points.map((p) => p.x);
-  const ys = points.map((p) => p.y);
+  const xs = points.map(p => p.x);
+  const ys = points.map(p => p.y);
 
   const meanX = avg(xs);
   const meanY = avg(ys);

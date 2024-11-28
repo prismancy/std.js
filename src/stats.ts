@@ -200,7 +200,7 @@ export function variance(iter: Iterable<number>): number {
   const [a, b] = tee(iter);
   const m = avg(a);
   return avg(
-    map(b, (n) => {
+    map(b, n => {
       const d = n - m;
       return d * d;
     }),
@@ -236,5 +236,5 @@ export function stddev(iter: Iterable<number>): number {
 export function meanAbsDev(iter: Iterable<number>): number {
   const [a, b] = tee(iter);
   const m = avg(a);
-  return avg(map(b, (n) => n - m));
+  return avg(map(b, n => n - m));
 }

@@ -9,7 +9,7 @@ interface Container {
 
 test("containing objects", () => {
   const heap = new Heap<Container>((a: Container, b: Container) =>
-    ascend(a.id, b.id)
+    ascend(a.id, b.id),
   );
   const ids: number[] = [-10, 9, -1, 100, 1, 0, -100, 10, -9];
 

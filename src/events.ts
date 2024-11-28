@@ -43,7 +43,7 @@ export class EventEmitter<Events extends AnyRecord = AnyRecord> {
     event: EventName,
     listener: (data: Events[EventName]) => any,
   ): Unsubscribe {
-    const unsubscribe = this.on(event, (data) => {
+    const unsubscribe = this.on(event, data => {
       unsubscribe();
       listener(data);
     });
