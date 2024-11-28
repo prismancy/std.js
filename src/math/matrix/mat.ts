@@ -5,6 +5,7 @@ import { random } from "../../random";
 import { type uint } from "../../types";
 import { closeTo } from "../funcs";
 
+/** @unstable */
 export class Mat extends Float32Array {
   rows: uint;
 

@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { identity, memo, memoize, once } from ".
+import { identity, memo, memoize, once } from ".";
 
 test("identity", () => {
   expect(identity(1)).toEqual(1);
