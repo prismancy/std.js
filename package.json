@@ -2,7 +2,7 @@
   "name": "@iz7n/std",
   "type": "module",
   "version": "0.2.0",
-  "packageManager": "pnpm@9.13.2",
+  "packageManager": "pnpm@9.14.4",
   "description": "A standard library for JavaScript",
   "license": "MIT",
   "publishConfig": {
@@ -117,11 +117,11 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@iz7n/eslint-config": "^0.12.2",
+    "@iz7n/eslint-config": "^0.13.1",
     "@iz7n/prettier-config": "^1.4.0",
     "bumpp": "^9.8.1",
     "tsup": "^8.3.5",
-    "typescript": "^5.6.3",
-    "vitest": "^2.1.5"
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.6"
   }
 }
