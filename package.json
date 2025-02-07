@@ -1,7 +1,7 @@
 {
   "name": "@in5net/std",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "packageManager": "pnpm@9.15.0",
   "description": "A standard library for JavaScript",
   "license": "MIT",
