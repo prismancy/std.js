@@ -9,10 +9,10 @@ importers:
   .:
     devDependencies:
       '@in5net/eslint-config':
-        specifier: ^0.14.1
+        specifier: ^0.14.2
         version: 0.14.2(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)
       '@in5net/prettier-config':
-        specifier: ^1.4.1
+        specifier: ^1.4.2
         version: 1.4.2(prettier@3.4.1)(svelte@5.3.0)
       bumpp:
         specifier: ^9.8.1

@@ -117,8 +117,8 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@in5net/eslint-config": "^0.14.1",
-    "@in5net/prettier-config": "^1.4.1",
+    "@in5net/eslint-config": "^0.14.2",
+    "@in5net/prettier-config": "^1.4.2",
     "bumpp": "^9.8.1",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2",
